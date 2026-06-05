@@ -582,6 +582,44 @@ input[type=range] {
    DATA 
 ═══════════════════════════════════════════════════════════ */
 /* ═══════════════════════════════════════════════════════════
+   DEMO CATALOGUE — always shown for display
+═══════════════════════════════════════════════════════════ */
+const DEMO_PRODUCTS = [
+{id:"demo-1",name:"MacBook 2017 Core i5",price:8000,category:"electronics",description:"Powerful laptop perfect for editing, business, and coding work.",images:["https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop"]},
+{id:"demo-2",name:"Gaming PC",price:12000,category:"electronics",description:"High performance gaming desktop with RGB setup and fast graphics.",images:["https://images.unsplash.com/photo-1587202372616-b43abea06c2a?w=600&auto=format&fit=crop"]},
+{id:"demo-3",name:"iPhone 11",price:6000,category:"electronics",description:"Clean condition iPhone with strong battery and smooth performance.",images:["https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&auto=format&fit=crop"]},
+{id:"demo-4",name:"Headphones",price:1200,category:"electronics",description:"Wireless headphones with deep bass and premium sound quality.",images:["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop"]},
+{id:"demo-5",name:"Sneakers",price:900,category:"clothing",description:"Comfortable sneakers designed for daily wear and street fashion.",images:["https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop"]},
+{id:"demo-6",name:"BMW",price:85000,category:"vehicles",description:"Luxury BMW in excellent condition with modern interior features.",images:["https://images.unsplash.com/photo-1502877338535-766e1452684a?w=600&auto=format&fit=crop"]},
+{id:"demo-7",name:"Desk",price:2500,category:"furniture",description:"Modern office desk perfect for home setup and productivity.",images:["https://images.unsplash.com/photo-1666249245520-eb1f564dc421?w=600&auto=format&fit=crop"]},
+{id:"demo-8",name:"Camera",price:7000,category:"electronics",description:"Professional camera for photography and content creation.",images:["https://images.unsplash.com/photo-1495707902641-75cac588d2e9?w=600&auto=format&fit=crop"]},
+{id:"demo-9",name:"Backpack",price:500,category:"clothing",description:"Stylish backpack with large storage and comfortable straps.",images:["https://images.unsplash.com/photo-1509762774605-f07235a08f1f?w=600&auto=format&fit=crop"]},
+{id:"demo-10",name:"PlayStation 5",price:14000,category:"electronics",description:"Next-gen gaming console with ultra fast performance and 4K gaming.",images:["https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&auto=format&fit=crop"]},
+{id:"demo-11",name:"Samsung TV",price:9500,category:"electronics",description:"Smart 4K television with vibrant display and streaming apps.",images:["https://images.unsplash.com/photo-1593784991095-a205069470b6?w=600&auto=format&fit=crop"]},
+{id:"demo-12",name:"Smart Watch",price:2200,category:"electronics",description:"Track fitness, calls, and notifications with this sleek smartwatch.",images:["https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop"]},
+{id:"demo-13",name:"Office Chair",price:1800,category:"furniture",description:"Ergonomic office chair designed for comfort during long work hours.",images:["https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=600&auto=format&fit=crop"]},
+{id:"demo-14",name:"Sofa Set",price:4500,category:"furniture",description:"Modern luxury sofa set perfect for living room spaces.",images:["https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&auto=format&fit=crop"]},
+{id:"demo-15",name:"Coffee Table",price:1300,category:"furniture",description:"Minimal wooden coffee table with modern stylish finish.",images:["https://images.unsplash.com/photo-1647967527216-adea2f078e07?w=600&auto=format&fit=crop"]},
+{id:"demo-16",name:"Hoodie",price:850,category:"clothing",description:"Warm and comfortable hoodie with trendy streetwear design.",images:["https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=600&auto=format&fit=crop"]},
+{id:"demo-17",name:"Leather Jacket",price:1800,category:"clothing",description:"Premium leather jacket with clean modern fit.",images:["https://images.unsplash.com/photo-1559551409-dadc959f76b8?w=600&auto=format&fit=crop"]},
+{id:"demo-18",name:"Designer Handbag",price:2400,category:"clothing",description:"Elegant handbag with spacious interior and luxury finish.",images:["https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&auto=format&fit=crop"]},
+{id:"demo-19",name:"Mountain Bicycle",price:5200,category:"vehicles",description:"Durable mountain bike suitable for off-road adventures.",images:["https://images.unsplash.com/photo-1517649763962-0c623066013b?w=600&auto=format&fit=crop"]},
+{id:"demo-20",name:"Motorbike",price:30000,category:"vehicles",description:"Sporty motorbike with powerful engine and sleek body design.",images:["https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=600&auto=format&fit=crop"]},
+{id:"demo-21",name:"Ford Mustang 2020",price:120000,category:"vehicles",description:"Executive luxury vehicle with premium comfort and performance.",images:["https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&auto=format&fit=crop"]},
+{id:"demo-22",name:"Makeup Kit",price:600,category:"beauty",description:"Complete makeup collection with premium beauty essentials.",images:["https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600&auto=format&fit=crop"]},
+{id:"demo-23",name:"Perfume",price:950,category:"beauty",description:"Long-lasting fragrance with elegant luxury scent.",images:["https://images.unsplash.com/photo-1541643600914-78b084683601?w=600&auto=format&fit=crop"]},
+{id:"demo-24",name:"Skincare Set",price:1100,category:"beauty",description:"Healthy skincare products for glowing and smooth skin.",images:["https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&auto=format&fit=crop"]},
+{id:"demo-25",name:"Dining Table",price:6000,category:"furniture",description:"Large family dining table with modern wooden finish.",images:["https://images.unsplash.com/photo-1572025442348-511bdcae389b?w=600&auto=format&fit=crop"]},
+{id:"demo-26",name:"AirPods Pro",price:3500,category:"electronics",description:"Premium wireless earbuds with active noise cancellation.",images:["https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=600&auto=format&fit=crop"]},
+{id:"demo-27",name:"Gaming Monitor",price:4800,category:"electronics",description:"Ultra smooth gaming monitor with high refresh rate display.",images:["https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600&auto=format&fit=crop"]},
+{id:"demo-28",name:"Tablet",price:5500,category:"electronics",description:"Portable tablet ideal for entertainment and productivity.",images:["https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&auto=format&fit=crop"]},
+{id:"demo-29",name:"Drone",price:9000,category:"electronics",description:"Professional drone with HD camera and stable flight control.",images:["https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600&auto=format&fit=crop"]},
+{id:"demo-30",name:"Gaming Keyboard",price:950,category:"electronics",description:"Mechanical RGB keyboard designed for gaming performance.",images:["https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=600&auto=format&fit=crop"]},
+{id:"demo-31",name:"Running Shoes",price:1300,category:"clothing",description:"Lightweight running shoes built for comfort and speed.",images:["https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop"]},
+{id:"demo-32",name:"Books Collection",price:300,category:"education",description:"Inspirational and educational books for personal growth.",images:["https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&auto=format&fit=crop"]}
+];
+
+/* ═══════════════════════════════════════════════════════════
    STATE
 ═══════════════════════════════════════════════════════════ */
 let allProducts = [];
@@ -595,17 +633,20 @@ let likedItems  = new Set();
 ═══════════════════════════════════════════════════════════ */
 async function loadProducts() {
     try {
-        allProducts = await api.products.list({ limit: 100 });
-        maxPrice = Math.max(...allProducts.map(p => p.price), 999999);
-        applyFilters();
-        buildCatCounts();
-        updateCartCount();
-        const dealsData = allProducts.filter(p => p.price < 2000);
-        if (document.getElementById('deals')) renderGrid(dealsData, 'deals');
+        // Load real listings from API
+        const apiProducts = await api.products.list({ limit: 100 });
+        // Merge: real listings first, then demo products (filtered to avoid duplicates)
+        allProducts = [...apiProducts, ...DEMO_PRODUCTS];
     } catch (e) {
-        const gw = document.getElementById('gridWrap');
-        if (gw) gw.innerHTML = '<p style="color:#94a3b8;padding:40px;text-align:center;">Failed to load products. Is the backend running?</p>';
+        // API unavailable — fall back to demo products only
+        allProducts = [...DEMO_PRODUCTS];
     }
+    maxPrice = Math.max(...allProducts.map(p => p.price), 999999);
+    applyFilters();
+    buildCatCounts();
+    updateCartCount();
+    const dealsData = allProducts.filter(p => p.price < 2000);
+    if (document.getElementById('deals')) renderGrid(dealsData, 'deals');
 }
 
 /* ═══════════════════════════════════════════════════════════
