@@ -549,7 +549,6 @@ body {
 
 </div>
 
-<script src="api.js"></script>
 <script>
 /* TOAST */
 function showToast(msg, type = '') {
@@ -578,37 +577,67 @@ function socialLogin(provider) {
 }
 
 /* LOGIN */
-async function login() {
-    const email = document.getElementById('loginEmail').value.trim();
-    const pass  = document.getElementById('loginPass').value;
-    const errEl = document.getElementById('loginError');
-    const btn   = document.getElementById('loginBtn');
+function login() {
+    const email   = document.getElementById('loginEmail').value.trim();
+    const pass    = document.getElementById('loginPass').value;
+    const errEl   = document.getElementById('loginError');
+    const btn     = document.getElementById('loginBtn');
 
     errEl.textContent = '';
     document.getElementById('loginEmail').classList.remove('err');
     document.getElementById('loginPass').classList.remove('err');
 
-    if (!email) { document.getElementById('loginEmail').classList.add('err'); errEl.textContent = 'Please enter your email address.'; return; }
-    if (!email.includes('@')) { document.getElementById('loginEmail').classList.add('err'); errEl.textContent = 'Please enter a valid email address.'; return; }
-    if (!pass) { document.getElementById('loginPass').classList.add('err'); errEl.textContent = 'Please enter your password.'; return; }
+    if (!email) {
+        document.getElementById('loginEmail').classList.add('err');
+        errEl.textContent = 'Please enter your email address.';
+        return;
+    }
+
+    if (!email.includes('@')) {
+        document.getElementById('loginEmail').classList.add('err');
+        errEl.textContent = 'Please enter a valid email address.';
+        return;
+    }
+
+    if (!pass) {
+        document.getElementById('loginPass').classList.add('err');
+        errEl.textContent = 'Please enter your password.';
+        return;
+    }
 
     btn.disabled = true;
     btn.innerHTML = '<div class="spin"></div> Signing in...';
 
-    try {
-        const user = await api.auth.login(email, pass);
+    setTimeout(() => {
+        const storedEmail = localStorage.getItem('userEmail');
+        const storedPass  = localStorage.getItem('userPassword');
+
+        if (storedEmail && storedEmail !== email) {
+            btn.disabled = false;
+            btn.textContent = 'Sign In';
+            document.getElementById('loginEmail').classList.add('err');
+            errEl.textContent = 'No account found with this email address.';
+            return;
+        }
+
+        if (storedPass && storedPass !== pass) {
+            btn.disabled = false;
+            btn.textContent = 'Sign In';
+            document.getElementById('loginPass').classList.add('err');
+            errEl.textContent = 'Incorrect password. Please try again.';
+            return;
+        }
+
         if (document.getElementById('rememberMe').checked) {
             localStorage.setItem('rememberEmail', email);
         }
+
+        localStorage.setItem('userEmail', email);
+        localStorage.setItem('isLoggedIn', 'true');
+
         showToast('Signed in successfully.', 'ok');
-        setTimeout(() => {
-            location.href = user.role === 'admin' ? 'admin.html' : 'index.html';
-        }, 900);
-    } catch (e) {
-        btn.disabled = false;
-        btn.textContent = 'Sign In';
-        errEl.textContent = e.message || 'Incorrect email or password.';
-    }
+        setTimeout(() => location.href = 'index.html', 900);
+    }, 1100);
 }
 
 /* FORGOT PASSWORD */

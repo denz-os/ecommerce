@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkUP — Admin Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --blue:      #1877f2;
+    --blue-dark: #1360cc;
+    --bg:        #f1f5f9;
+    --surface:   #ffffff;
+    --text:      #0f172a;
+    --muted:     #64748b;
+    --border:    #e4e9f2;
+    --red:       #ef4444;
+    --green:     #10b981;
+    --radius:    14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Background grid */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(24,119,242,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(24,119,242,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+}
+
+.card {
+    background: #1e293b;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+}
+
+/* Top accent bar */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 24px; right: 24px;
+    height: 2px;
+    background: linear-gradient(90deg, #1877f2, #60a5fa, #1877f2);
+    border-radius: 0 0 2px 2px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(24,119,242,0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(24,119,242,0.25);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+}
+
+.badge-dot {
+    width: 6px; height: 6px;
+    background: #60a5fa;
+    border-radius: 50%;
+    animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+}
+
+.logo span { color: #1877f2; }
+
+.subtitle {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 36px;
+}
+
+.divider {
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    margin: 28px 0;
+}
+
+label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #94a3b8;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.input-wrap {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.input-wrap svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px; height: 16px;
+    stroke: #475569;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    pointer-events: none;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    background: #0f172a;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 12px 14px 12px 40px;
+    font-size: 14px;
+    color: #f1f5f9;
+    font-family: inherit;
+    transition: border-color .2s, box-shadow .2s;
+    outline: none;
+}
+
+input:focus {
+    border-color: #1877f2;
+    box-shadow: 0 0 0 3px rgba(24,119,242,0.15);
+}
+
+input.err { border-color: var(--red); }
+
+.toggle-pw {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #475569;
+}
+
+.toggle-pw svg {
+    width: 16px; height: 16px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    position: static;
+    transform: none;
+}
+
+.error-msg {
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #fca5a5;
+    margin-bottom: 16px;
+    display: none;
+}
+
+.error-msg.show { display: block; }
+
+.submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #1877f2, #1360cc);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: opacity .2s, transform .1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.submit-btn:hover { opacity: 0.9; }
+.submit-btn:active { transform: scale(0.99); }
+.submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.spin {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.footer-note {
+    text-align: center;
+    font-size: 12px;
+    color: #334155;
+    margin-top: 24px;
+}
+
+.footer-note a {
+    color: #475569;
+    text-decoration: none;
+}
+
+.footer-note a:hover { color: #60a5fa; }
+
+/* Warning box */
+.warning-box {
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: #fbbf24;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.warning-box svg {
+    width: 14px; height: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    stroke: #fbbf24;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Toast */
+#toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: #1e293b;
+    color: #f1f5f9;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translateY(10px);
+    transition: opacity .22s, transform .22s;
+    border-left: 3px solid #1877f2;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+#toast.show { opacity: 1; transform: translateY(0); }
+#toast.ok   { border-left-color: var(--green); }
+#toast.fail { border-left-color: var(--red); }
+</style>
+</head>
+<body>
+
+<div class="card">
+    <div class="badge">
+        <div class="badge-dot"></div>
+        Admin Portal
+    </div>
+
+    <div class="logo">Link<span>UP</span></div>
+    <p class="subtitle">Restricted access — authorised personnel only.</p>
+
+    <div class="warning-box">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        This portal is for administrators only. Unauthorised access attempts are logged.
+    </div>
+
+    <div class="error-msg" id="errorMsg"></div>
+
+    <div>
+        <label>Admin Email</label>
+        <div class="input-wrap">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <input type="email" id="adminEmail" placeholder="admin@linkup.com" onkeypress="if(event.key==='Enter')adminLogin()">
+        </div>
+    </div>
+
+    <div>
+        <label>Admin Password</label>
+        <div class="input-wrap">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" id="adminPass" placeholder="Enter admin password" onkeypress="if(event.key==='Enter')adminLogin()">
+            <button class="toggle-pw" onclick="togglePw()">
+                <svg id="eyeIcon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <button class="submit-btn" id="loginBtn" onclick="adminLogin()">
+        <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+        </svg>
+        Access Admin Console
+    </button>
+
+    <p class="footer-note">
+        Not an admin? <a href="login.html">Return to user login →</a>
+    </p>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── Admin credentials ────────────────────────────────────────
+// Change these to your preferred admin credentials
+const ADMIN_CREDENTIALS = [
+    { email: 'admin@linkup.com',   password: 'Admin@2025' },
+    { email: 'denzel@linkup.com',  password: 'Denzel@2025' },
+];
+
+// ── Toast ────────────────────────────────────────────────────
+function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'show ' + type;
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.className = '', 3000);
+}
+
+// ── Toggle password ──────────────────────────────────────────
+function togglePw() {
+    const input = document.getElementById('adminPass');
+    const show  = input.type === 'password';
+    input.type  = show ? 'text' : 'password';
+    document.getElementById('eyeIcon').innerHTML = show
+        ? `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`
+        : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+}
+
+// ── Admin Login ──────────────────────────────────────────────
+function adminLogin() {
+    const email   = document.getElementById('adminEmail').value.trim().toLowerCase();
+    const pass    = document.getElementById('adminPass').value;
+    const errEl   = document.getElementById('errorMsg');
+    const btn     = document.getElementById('loginBtn');
+
+    errEl.classList.remove('show');
+    document.getElementById('adminEmail').classList.remove('err');
+    document.getElementById('adminPass').classList.remove('err');
+
+    if (!email) {
+        document.getElementById('adminEmail').classList.add('err');
+        errEl.textContent = 'Please enter your admin email address.';
+        errEl.classList.add('show');
+        return;
+    }
+
+    if (!pass) {
+        document.getElementById('adminPass').classList.add('err');
+        errEl.textContent = 'Please enter your admin password.';
+        errEl.classList.add('show');
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spin"></div> Verifying...';
+
+    setTimeout(() => {
+        const match = ADMIN_CREDENTIALS.find(
+            c => c.email === email && c.password === pass
+        );
+
+        if (!match) {
+            btn.disabled = false;
+            btn.innerHTML = `
+                <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                    <polyline points="10 17 15 12 10 7"/>
+                    <line x1="15" y1="12" x2="3" y2="12"/>
+                </svg>
+                Access Admin Console`;
+            document.getElementById('adminEmail').classList.add('err');
+            document.getElementById('adminPass').classList.add('err');
+            errEl.textContent = 'Invalid credentials. Access denied.';
+            errEl.classList.add('show');
+
+            // Log failed attempt
+            const attempts = JSON.parse(localStorage.getItem('admin_failed_attempts') || '[]');
+            attempts.push({ email, time: new Date().toISOString() });
+            localStorage.setItem('admin_failed_attempts', JSON.stringify(attempts));
+            return;
+        }
+
+        // Success
+        localStorage.setItem('adminLoggedIn', 'true');
+        localStorage.setItem('adminEmail', match.email);
+        localStorage.setItem('adminName', match.email === 'denzel@linkup.com' ? 'Denzel Chingodza' : 'Admin User');
+        showToast('Access granted. Loading console...', 'ok');
+        setTimeout(() => location.href = 'admin.html', 1000);
+    }, 900);
+}
+
+// ── Guard — redirect if already logged in ────────────────────
+if (localStorage.getItem('adminLoggedIn') === 'true') {
+    location.href = 'admin.html';
+}
+</script>
+</body>
+</html>

@@ -644,7 +644,6 @@ body {
 
 </div>
 
-<script src="api.js"></script>
 <script>
 /* ── TOAST ───────────────────────────────────────────────────── */
 function showToast(msg, type = '') {
@@ -724,10 +723,11 @@ function clearErrors() {
 }
 
 /* ── REGISTER ────────────────────────────────────────────────── */
-async function register() {
+function register() {
     const first   = document.getElementById('firstName').value.trim();
     const last    = document.getElementById('lastName').value.trim();
     const email   = document.getElementById('regEmail').value.trim();
+    const phone   = document.getElementById('phone').value.trim();
     const pass    = document.getElementById('regPass').value;
     const confirm = document.getElementById('confirmPass').value;
     const agreed  = document.getElementById('agreeTerms').checked;
@@ -736,27 +736,86 @@ async function register() {
 
     clearErrors();
 
-    if (!first) { document.getElementById('firstName').classList.add('err'); errEl.textContent = 'Please enter your first name.'; return; }
-    if (!last)  { document.getElementById('lastName').classList.add('err');  errEl.textContent = 'Please enter your last name.'; return; }
-    if (!email) { document.getElementById('regEmail').classList.add('err');  errEl.textContent = 'Please enter your email address.'; return; }
-    if (!email.includes('@') || !email.includes('.')) { document.getElementById('regEmail').classList.add('err'); errEl.textContent = 'Please enter a valid email address.'; return; }
-    if (pass.length < 6) { document.getElementById('regPass').classList.add('err'); errEl.textContent = 'Password must be at least 6 characters.'; return; }
-    if (pass !== confirm) { document.getElementById('confirmPass').classList.add('err'); errEl.textContent = 'Passwords do not match.'; return; }
-    if (!agreed) { errEl.textContent = 'Please agree to the Terms of Service to continue.'; return; }
+    // ── Validation (mirrors login page pattern) ──
+    if (!first) {
+        document.getElementById('firstName').classList.add('err');
+        errEl.textContent = 'Please enter your first name.';
+        return;
+    }
 
+    if (!last) {
+        document.getElementById('lastName').classList.add('err');
+        errEl.textContent = 'Please enter your last name.';
+        return;
+    }
+
+    if (!email) {
+        document.getElementById('regEmail').classList.add('err');
+        errEl.textContent = 'Please enter your email address.';
+        return;
+    }
+
+    if (!email.includes('@') || !email.includes('.')) {
+        document.getElementById('regEmail').classList.add('err');
+        errEl.textContent = 'Please enter a valid email address.';
+        return;
+    }
+
+    if (pass.length < 6) {
+        document.getElementById('regPass').classList.add('err');
+        errEl.textContent = 'Password must be at least 6 characters.';
+        return;
+    }
+
+    if (pass !== confirm) {
+        document.getElementById('confirmPass').classList.add('err');
+        errEl.textContent = 'Passwords do not match. Please try again.';
+        return;
+    }
+
+    if (!agreed) {
+        errEl.textContent = 'Please agree to the Terms of Service to continue.';
+        return;
+    }
+
+    // ── Check if email already registered ──
+    const existingEmail = localStorage.getItem('userEmail');
+    if (existingEmail && existingEmail === email) {
+        document.getElementById('regEmail').classList.add('err');
+        errEl.textContent = 'An account with this email already exists.';
+        return;
+    }
+
+    // ── Loading state (same pattern as login) ──
     btn.disabled = true;
     btn.innerHTML = '<div class="spin"></div> Creating account...';
 
-    try {
+    setTimeout(() => {
         const displayName = first + ' ' + last;
-        await api.auth.register(email, pass, displayName);
+
+        // ── Persist user data (same keys as login page expects) ──
+        localStorage.setItem('userEmail',    email);
+        localStorage.setItem('userPassword', pass);
+        localStorage.setItem('userName',     displayName);
+        localStorage.setItem('userUsername', email.split('@')[0]);
+        localStorage.setItem('userPhone',    phone);
+        localStorage.setItem('isLoggedIn',   'true');
+
+        // ── Register in users list for admin ──
+        const users = JSON.parse(localStorage.getItem('linkup_users')) || [];
+        users.unshift({
+            id:     users.length + 1,
+            name:   displayName,
+            email:  email,
+            status: 'Active',
+            role:   'Buyer',
+            joined: new Date().toLocaleDateString('en-ZA')
+        });
+        localStorage.setItem('linkup_users', JSON.stringify(users));
+
         showToast('Account created! Welcome to LinkUP 🎉', 'ok');
         setTimeout(() => location.href = 'index.html', 900);
-    } catch (e) {
-        btn.disabled = false;
-        btn.textContent = 'Create Account';
-        errEl.textContent = e.message || 'Registration failed. Please try again.';
-    }
+    }, 1100);
 }
 </script>
 </body>

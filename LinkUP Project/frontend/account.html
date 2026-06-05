@@ -1828,7 +1828,6 @@ textarea.f-input {
   </div><!-- /account-grid -->
 </main>
 
-<script src="api.js"></script>
 <script>
 /* ── Toast ─────────────────────────────────────────────────── */
 function showToast(msg, type = '') {
@@ -1840,14 +1839,18 @@ function showToast(msg, type = '') {
 }
 
 /* ── Cart ──────────────────────────────────────────────────── */
-async function updateCartCount() {
-    if (!api.isLoggedIn()) return;
-    try {
-        const cart = await api.cart.get();
-        const count = cart.items ? cart.items.length : 0;
-        const el = document.getElementById('cartCount');
-        if (el) el.textContent = count;
-    } catch (e) { /* silent */ }
+function addToCart(name, price, image, description) {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({ name, price, images: [image], description });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    showToast(name + ' added to cart.', 'ok');
+}
+
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const el = document.getElementById('cartCount');
+    if (el) el.textContent = cart.length;
 }
 
 /* ── Tab Switcher ──────────────────────────────────────────── */
@@ -1858,65 +1861,87 @@ function switchTab(name, link) {
     link.classList.add('active');
 }
 
-/* ── Load Profile from API ─────────────────────────────────── */
-async function loadProfile() {
-    try {
-        const user = await api.auth.me();
-        const name     = user.username || user.email.split('@')[0];
-        const email    = user.email;
+/* ── Load Profile from localStorage ───────────────────────── */
+function loadProfile() {
+    const name     = localStorage.getItem('userName') || '';
+    const email    = localStorage.getItem('userEmail') || '';
+    const phone    = localStorage.getItem('userPhone') || '';
+    const username = localStorage.getItem('userUsername') || email.split('@')[0] || 'user';
+    const bio      = localStorage.getItem('userBio') || '';
+    const location = localStorage.getItem('userLocation') || '';
 
-        document.getElementById('heroName').textContent     = name;
-        document.getElementById('heroUsername').textContent = '@' + name.replace(/\s+/g,'').toLowerCase();
+    const parts = name.split(' ');
+    const first = parts[0] || '';
+    const last  = parts.slice(1).join(' ') || '';
 
-        const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2);
-        document.getElementById('avatarInitials').textContent = initials || '?';
+    // Hero
+    document.getElementById('heroName').textContent     = name || 'Your Name';
+    document.getElementById('heroUsername').textContent = '@' + username;
 
-        if (user.profile_pic) {
-            document.getElementById('avatarImg').src = user.profile_pic;
-            document.getElementById('avatarImg').style.display = 'block';
-            document.getElementById('avatarInitials').style.display = 'none';
-        }
+    // Initials
+    const initials = (first[0] || '') + (last[0] || '');
+    document.getElementById('avatarInitials').textContent = initials.toUpperCase() || '?';
 
-        if (document.getElementById('editFirstName')) {
-            const parts = name.split(' ');
-            document.getElementById('editFirstName').value = parts[0] || '';
-            document.getElementById('editLastName').value  = parts.slice(1).join(' ') || '';
-            document.getElementById('editEmail').value     = email;
-        }
+    // Saved avatar
+    const savedAvatar = localStorage.getItem('userAvatar');
+    if (savedAvatar) {
+        document.getElementById('avatarImg').src = savedAvatar;
+        document.getElementById('avatarImg').style.display = 'block';
+        document.getElementById('avatarInitials').style.display = 'none';
+    }
 
-        // Load user's listings count
-        const allProducts = await api.products.list({ limit: 100 });
-        const myProducts  = allProducts.filter(p => p.seller_id === user.id);
-        const statEl = document.getElementById('statListings');
-        if (statEl) statEl.textContent = myProducts.length;
-
-    } catch (e) {
-        showToast('Failed to load profile.', 'fail');
+    // Form fields
+    if (document.getElementById('editFirstName')) {
+        document.getElementById('editFirstName').value = first;
+        document.getElementById('editLastName').value  = last;
+        document.getElementById('editEmail').value     = email;
+        document.getElementById('editPhone').value     = phone;
+        document.getElementById('editBio').value       = bio;
+        document.getElementById('editLocation').value  = location;
     }
 }
 
 /* ── Save Profile ──────────────────────────────────────────── */
-async function saveProfile() {
+function saveProfile() {
     const first    = document.getElementById('editFirstName').value.trim();
     const last     = document.getElementById('editLastName').value.trim();
+    const email    = document.getElementById('editEmail').value.trim();
+    const phone    = document.getElementById('editPhone').value.trim();
+    const bio      = document.getElementById('editBio').value.trim();
+    const location = document.getElementById('editLocation').value.trim();
 
     if (!first) { showToast('Please enter your first name.', 'fail'); return; }
+    if (!email || !email.includes('@')) { showToast('Please enter a valid email.', 'fail'); return; }
 
     const displayName = (first + ' ' + last).trim();
-    try {
-        await api.auth.me(); // verify still logged in
-        showToast('Profile updated successfully.', 'ok');
-        loadProfile();
-    } catch (e) {
-        showToast(e.message || 'Failed to update profile.', 'fail');
-    }
+    localStorage.setItem('userName',     displayName);
+    localStorage.setItem('userEmail',    email);
+    localStorage.setItem('userPhone',    phone);
+    localStorage.setItem('userBio',      bio);
+    localStorage.setItem('userLocation', location);
+
+    loadProfile();
+    showToast('Profile updated successfully.', 'ok');
+}
+
+/* ── Avatar Change ─────────────────────────────────────────── */
+function changeAvatar(input) {
+    if (!input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById('avatarImg').src = e.target.result;
+        document.getElementById('avatarImg').style.display = 'block';
+        document.getElementById('avatarInitials').style.display = 'none';
+        localStorage.setItem('userAvatar', e.target.result);
+        showToast('Profile photo updated.', 'ok');
+    };
+    reader.readAsDataURL(input.files[0]);
 }
 
 /* ── Password Strength ─────────────────────────────────────── */
 function checkPwStrength(val) {
     const fill  = document.getElementById('secStrengthFill');
     const label = document.getElementById('secStrengthLabel');
-    if (!fill || !label) return;
     let score = 0;
     if (val.length >= 6)          score++;
     if (val.length >= 10)         score++;
@@ -1924,11 +1949,11 @@ function checkPwStrength(val) {
     if (/[0-9]/.test(val))        score++;
     if (/[^A-Za-z0-9]/.test(val)) score++;
     const levels = [
-        { w:'0%',   bg:'#e4e9f2', txt:'Enter a password', c:'#94a3b8' },
-        { w:'25%',  bg:'#ef4444', txt:'Weak',             c:'#ef4444' },
-        { w:'50%',  bg:'#f59e0b', txt:'Fair',             c:'#f59e0b' },
-        { w:'75%',  bg:'#3b82f6', txt:'Good',             c:'#3b82f6' },
-        { w:'100%', bg:'#22c55e', txt:'Strong',           c:'#22c55e' },
+        { w:'0%',   bg:'#e4e9f2', txt:'Enter a password',  c:'#94a3b8' },
+        { w:'25%',  bg:'#ef4444', txt:'Weak',              c:'#ef4444' },
+        { w:'50%',  bg:'#f59e0b', txt:'Fair',              c:'#f59e0b' },
+        { w:'75%',  bg:'#3b82f6', txt:'Good',              c:'#3b82f6' },
+        { w:'100%', bg:'#22c55e', txt:'Strong',            c:'#22c55e' },
     ];
     const lvl = val.length === 0 ? levels[0] : levels[Math.min(score, 4)];
     fill.style.width      = lvl.w;
@@ -1939,7 +1964,22 @@ function checkPwStrength(val) {
 
 /* ── Change Password ───────────────────────────────────────── */
 function changePassword() {
-    showToast('Password change coming soon.', 'ok');
+    const curr    = document.getElementById('currentPass').value;
+    const newP    = document.getElementById('newPass').value;
+    const confirm = document.getElementById('confirmNewPass').value;
+    const stored  = localStorage.getItem('userPassword');
+
+    if (!curr) { showToast('Please enter your current password.', 'fail'); return; }
+    if (stored && curr !== stored) { showToast('Current password is incorrect.', 'fail'); return; }
+    if (newP.length < 6) { showToast('New password must be at least 6 characters.', 'fail'); return; }
+    if (newP !== confirm) { showToast('Passwords do not match.', 'fail'); return; }
+
+    localStorage.setItem('userPassword', newP);
+    document.getElementById('currentPass').value  = '';
+    document.getElementById('newPass').value      = '';
+    document.getElementById('confirmNewPass').value = '';
+    checkPwStrength('');
+    showToast('Password updated successfully.', 'ok');
 }
 
 /* ── Unsave Item ───────────────────────────────────────────── */
@@ -1948,7 +1988,10 @@ function unsaveItem(btn) {
     card.style.transition = 'opacity .3s, transform .3s';
     card.style.opacity = '0';
     card.style.transform = 'scale(.92)';
-    setTimeout(() => { card.remove(); showToast('Item removed from saved list.', 'ok'); }, 300);
+    setTimeout(() => {
+        card.remove();
+        showToast('Item removed from saved list.', 'ok');
+    }, 300);
 }
 
 /* ── Confirm Modal ─────────────────────────────────────────── */
@@ -1958,31 +2001,62 @@ function openModal(title, desc, onConfirm) {
     document.getElementById('modalConfirmBtn').onclick = () => { closeModal(); onConfirm(); };
     document.getElementById('confirmModal').classList.add('show');
 }
-function closeModal() { document.getElementById('confirmModal').classList.remove('show'); }
+
+function closeModal() {
+    document.getElementById('confirmModal').classList.remove('show');
+}
 
 function confirmDelete(type, name) {
-    openModal('Delete ' + name + '?', 'This listing will be permanently removed.', () => showToast(name + ' listing deleted.', 'ok'));
+    openModal(
+        'Delete ' + name + '?',
+        'This listing will be permanently removed from the marketplace.',
+        () => showToast(name + ' listing deleted.', 'ok')
+    );
 }
 
 function confirmDeleteAccount() {
-    openModal('Delete your account?', 'All your data will be permanently erased. This cannot be undone.', async () => {
-        api.auth.logout();
-    });
+    openModal(
+        'Delete your account?',
+        'All your listings, orders and data will be permanently erased. This cannot be undone.',
+        () => {
+            localStorage.clear();
+            showToast('Account deleted. Redirecting...', 'fail');
+            setTimeout(() => location.href = 'index.html', 1800);
+        }
+    );
 }
 
 function confirmLogout() {
-    openModal('Sign out of LinkUP?', 'You will need to sign in again.', () => {
-        api.auth.logout();
-    });
+    openModal(
+        'Sign out of LinkUP?',
+        'You will be returned to the home page and will need to sign in again.',
+        () => {
+            localStorage.setItem('isLoggedIn', 'false');
+            showToast('Signed out successfully.', 'ok');
+            setTimeout(() => location.href = 'login.html', 1000);
+        }
+    );
+}
+
+/* ── Auth Guard ────────────────────────────────────────────── */
+function checkAuth() {
+    const loggedIn = localStorage.getItem('isLoggedIn');
+    if (loggedIn !== 'true') {
+        showToast('Please sign in to view your account.', 'fail');
+        setTimeout(() => location.href = 'login.html', 1200);
+    }
 }
 
 /* ── Init ──────────────────────────────────────────────────── */
-if (!api.isLoggedIn()) {
-    location.href = 'login.html';
-} else {
-    loadProfile();
-    updateCartCount();
-}
+checkAuth();
+loadProfile();
+updateCartCount();
+
+// Sync stat numbers
+document.getElementById('statListings').textContent = '3';
+document.getElementById('statSold').textContent     = '2';
+document.getElementById('statOrders').textContent   = '4';
+document.getElementById('statSaved').textContent    = '5';
 </script>
 </body>
 </html>

@@ -328,7 +328,6 @@ body { margin:0; font-family:'Poppins','Segoe UI',Arial,sans-serif; background:#
   </div>
 </div>
 
-<script src="api.js"></script>
 <script>
 /* ── TOAST ────────────────────────────────────────────────── */
 function showToast(msg, type='') {
@@ -400,8 +399,10 @@ function renderPreview() {
 }
 
 /* ── SUBMIT ───────────────────────────────────────────────── */
-async function submitProduct() {
-    if (!api.isLoggedIn()) {
+function isLoggedIn() { return localStorage.getItem('userEmail'); }
+
+function submitProduct() {
+    if (!isLoggedIn()) {
         document.getElementById('loginWarning').style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
@@ -418,27 +419,26 @@ async function submitProduct() {
     document.getElementById('prodName').classList.remove('err');
     document.getElementById('price').classList.remove('err');
 
-    if (!name)  { document.getElementById('prodName').classList.add('err'); showToast('Please enter a product name.', 'error'); return; }
+    if (!name) { document.getElementById('prodName').classList.add('err'); showToast('Please enter a product name.', 'error'); return; }
     if (!price || Number(price) <= 0) { document.getElementById('price').classList.add('err'); showToast('Please enter a valid price.', 'error'); return; }
 
     const btn = document.getElementById('publishBtn');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span>Publishing...';
 
-    try {
-        const product = await api.products.create({
-            name, price: Number(price), description: desc,
-            category, location, condition, delivery
-        });
+    const images = selectedFiles.map(f => URL.createObjectURL(f));
 
-        if (selectedFiles.length > 0) {
-            await api.products.uploadImages(product.id, selectedFiles);
-        }
+    setTimeout(() => {
+        const products = JSON.parse(localStorage.getItem('products')) || [];
+        products.unshift({ name, price: Number(price), desc, category, location, condition, delivery, images, listedAt: new Date().toLocaleDateString('en-ZA') });
+        localStorage.setItem('products', JSON.stringify(products));
 
         btn.disabled = false;
-        btn.textContent = '\uD83D\uDE80 Publish Listing';
-        showToast(name + ' listed successfully! \uD83C\uDF89', 'success');
+        btn.textContent = '🚀 Publish Listing';
 
+        showToast(name + ' listed successfully! 🎉', 'success');
+
+        // Reset form
         document.getElementById('prodName').value = '';
         document.getElementById('price').value = '';
         document.getElementById('desc').value = '';
@@ -448,59 +448,39 @@ async function submitProduct() {
         document.getElementById('preview').innerHTML = '';
 
         renderMyListings();
-    } catch (e) {
-        btn.disabled = false;
-        btn.textContent = '\uD83D\uDE80 Publish Listing';
-        showToast(e.message || 'Failed to publish listing.', 'error');
-    }
+    }, 1200);
 }
 
 /* ── MY LISTINGS ──────────────────────────────────────────── */
-async function renderMyListings() {
+function renderMyListings() {
+    const products = JSON.parse(localStorage.getItem('products')) || [];
     const box = document.getElementById('myListings');
-    box.innerHTML = '<p style="color:#94a3b8;font-size:13px;padding:16px;">Loading your listings...</p>';
+    document.getElementById('listingCountBadge').textContent = products.length;
 
-    try {
-        if (!api.isLoggedIn()) {
-            box.innerHTML = '<div class="no-listings">Sign in to see your listings.</div>';
-            document.getElementById('listingCountBadge').textContent = 0;
-            return;
-        }
-
-        const me = await api.auth.me();
-        const allProducts = await api.products.list();
-        const myProducts = allProducts.filter(p => p.seller_id === me.id);
-
-        document.getElementById('listingCountBadge').textContent = myProducts.length;
-
-        if (!myProducts.length) {
-            box.innerHTML = "<div class=\"no-listings\">You haven\'t listed any products yet.</div>";
-            return;
-        }
-
-        box.innerHTML = myProducts.map(p => `
-        <div class="listing-card">
-            <img src="${p.images && p.images[0] ? p.images[0] : 'https://via.placeholder.com/60'}" alt="${p.name}">
-            <div class="listing-card-info">
-                <h4>${p.name}</h4>
-                <p>${p.category} \u2022 ${p.condition || 'N/A'} \u2022 ${new Date(p.created_at).toLocaleDateString('en-ZA')}</p>
-            </div>
-            <span class="price">R${Number(p.price).toLocaleString()}</span>
-            <button onclick="deleteListing('${p.id}', '${p.name}')">Delete</button>
-        </div>`).join('');
-    } catch (e) {
-        box.innerHTML = '<div class="no-listings">Failed to load listings.</div>';
+    if (!products.length) {
+        box.innerHTML = '<div class="no-listings">You haven\'t listed any products yet.</div>';
+        return;
     }
+
+    box.innerHTML = products.map((p, i) => `
+    <div class="listing-card">
+        <img src="${p.images && p.images[0] ? p.images[0] : 'https://via.placeholder.com/60'}" alt="${p.name}">
+        <div class="listing-card-info">
+            <h4>${p.name}</h4>
+            <p>${p.category} • ${p.condition} • ${p.listedAt || 'Today'}</p>
+        </div>
+        <span class="price">R${Number(p.price).toLocaleString()}</span>
+        <button onclick="deleteListing(${i})">Delete</button>
+    </div>`).join('');
 }
 
-async function deleteListing(id, name) {
-    try {
-        await api.products.remove(id);
-        showToast(name + ' removed.', 'error');
-        renderMyListings();
-    } catch (e) {
-        showToast(e.message || 'Failed to delete.', 'error');
-    }
+function deleteListing(i) {
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+    const name = products[i].name;
+    products.splice(i, 1);
+    localStorage.setItem('products', JSON.stringify(products));
+    renderMyListings();
+    showToast(name + ' removed.', 'error');
 }
 
 /* ── INIT ─────────────────────────────────────────────────── */

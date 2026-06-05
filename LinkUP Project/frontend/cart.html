@@ -1318,44 +1318,15 @@ input, select { font-family: inherit; }
 
 </div><!-- /page-wrap -->
 
-<script src="api.js"></script>
 <script>
 /* ══════════════════════════════════════════════════════
    STATE
 ══════════════════════════════════════════════════════ */
-let cart      = [];
+let cart      = JSON.parse(localStorage.getItem('cart'))       || [];
 let savedList = JSON.parse(localStorage.getItem('savedLater')) || [];
-let discount  = 0;
+let discount  = 0;        // percent
 let curStep   = 1;
 let payMethod = 'card';
-
-// Load cart from API on page load
-async function initCart() {
-    if (!api.isLoggedIn()) {
-        cart = [];
-        renderCart();
-        return;
-    }
-    try {
-        const data = await api.cart.get();
-        // Normalize API response to match frontend cart format
-        cart = (data.items || []).map(item => ({
-            id:          item.product_id,
-            name:        item.name,
-            price:       item.price,
-            images:      [item.image],
-            qty:         item.quantity,
-            line_total:  item.line_total,
-            category:    item.category || 'General',
-            description: item.description || '',
-        }));
-        renderCart();
-        loadUser();
-    } catch (e) {
-        cart = [];
-        renderCart();
-    }
-}
 
 const FREE_THRESHOLD = 1000;
 const PROMOS = { 'LINKUP10': 10, 'WELCOME20': 20, 'SAVE15': 15 };
@@ -1587,35 +1558,23 @@ function changeQty(i, d) {
 /* ══════════════════════════════════════════════════════
    REMOVE
 ══════════════════════════════════════════════════════ */
-async function removeItem(i) {
+function removeItem(i) {
     const el = document.getElementById('ci-' + i);
     if (!el) return;
     el.classList.add('removing');
-    const item = cart[i];
-    setTimeout(async () => {
-        try {
-            await api.cart.remove(item.id);
-            cart.splice(i, 1);
-            renderCart();
-            toast('Item removed from cart.', 'fail');
-        } catch (e) {
-            toast(e.message || 'Failed to remove item.', 'fail');
-            el.classList.remove('removing');
-        }
+    setTimeout(() => {
+        cart.splice(i, 1);
+        save(); renderCart();
+        toast('Item removed from cart.', 'fail');
     }, 320);
 }
 
-async function clearAll() {
+function clearAll() {
     if (!cart.length) return;
     if (!confirm('Remove all items from your cart?')) return;
-    try {
-        await api.cart.clear();
-        cart = [];
-        renderCart();
-        toast('Cart cleared.', 'fail');
-    } catch (e) {
-        toast(e.message || 'Failed to clear cart.', 'fail');
-    }
+    cart = [];
+    save(); renderCart();
+    toast('Cart cleared.', 'fail');
 }
 
 /* ══════════════════════════════════════════════════════
@@ -1868,7 +1827,7 @@ function closeSuccess() {
 /* ══════════════════════════════════════════════════════
    HELPERS
 ══════════════════════════════════════════════════════ */
-function save()  { /* cart state managed by API */ }
+function save()  { localStorage.setItem('cart', JSON.stringify(cart)); }
 function show(id){ document.getElementById(id).style.display = 'block'; }
 function hide(id){ document.getElementById(id).style.display = 'none'; }
 function cap(s)  { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
@@ -1876,7 +1835,8 @@ function cap(s)  { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
 /* ══════════════════════════════════════════════════════
    INIT
 ══════════════════════════════════════════════════════ */
-initCart();
+loadUser();
+renderCart();
 </script>
 </body>
 </html>

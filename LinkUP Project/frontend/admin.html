@@ -2608,7 +2608,9 @@ function confirmReset() {
 function logout() {
     if (confirm('Sign out of the admin console?')) {
         localStorage.removeItem('adminLoggedIn');
-        location.href = 'login.html';
+        localStorage.removeItem('adminEmail');
+        localStorage.removeItem('adminName');
+        location.href = 'admin-login.html';
     }
 }
 
@@ -2622,6 +2624,11 @@ function initAll() {
     updateSystemInfo();
     renderOrders();
     showToast('Data refreshed.', 'ok');
+}
+
+// ── Auth guard ───────────────────────────────────────────────
+if (localStorage.getItem('adminLoggedIn') !== 'true') {
+    location.href = 'admin-login.html';
 }
 
 initAll();

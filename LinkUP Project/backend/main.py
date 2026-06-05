@@ -29,7 +29,6 @@ from routes.auth     import router as auth_router
 from routes.products import router as products_router
 from routes.cart     import router as cart_router
 from routes.messages import router as messages_router
-from routes.admin    import router as admin_router
 
 
 # ── Lifespan (replaces deprecated on_event) ───────────────────
@@ -77,7 +76,6 @@ app.include_router(auth_router)
 app.include_router(products_router)
 app.include_router(cart_router)
 app.include_router(messages_router)
-app.include_router(admin_router)
 
 
 # ── Health check ──────────────────────────────────────────────
