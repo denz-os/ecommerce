@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Messages — LinkUP</title>
+<link rel="stylesheet" href="style.css">
+<style>
+
+/* ─────────────────────────────────────────────
+   RESET & BASE
+───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --blue:      #1877f2;
+    --blue-dk:   #1360cc;
+    --blue-lt:   #eff6ff;
+    --navy:      #0f172a;
+    --border:    #e2e8f0;
+    --surface:   #ffffff;
+    --bg:        #f1f5f9;
+    --muted:     #64748b;
+    --light:     #94a3b8;
+    --green:     #22c55e;
+    --red:       #ef4444;
+    --topbar-h:  64px;
+}
+
+html, body { height: 100%; overflow: hidden; }
+
+body {
+    font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--navy);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+}
+
+button { font-family: inherit; cursor: pointer; border: none; }
+input, textarea { font-family: inherit; }
+a { text-decoration: none; color: inherit; }
+
+/* ─────────────────────────────────────────────
+   TOPBAR
+───────────────────────────────────────────── */
+.topbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 1000;
+    height: var(--topbar-h);
+    background: linear-gradient(135deg, #1877f2 0%, #1360cc 55%, #0d4fa8 100%);
+    display: flex; align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    box-shadow: 0 3px 16px rgba(24,119,242,.28);
+}
+
+.topbar-brand {
+    display: flex; flex-direction: column; gap: 0;
+}
+
+.topbar-brand .name {
+    font-size: 20px; font-weight: 800; color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,.18); line-height: 1;
+    letter-spacing: .3px;
+}
+
+.topbar-brand .tag {
+    font-size: 11px; color: rgba(255,255,255,.7);
+    font-weight: 400; margin-top: 1px;
+}
+
+.topbar-nav { display: flex; align-items: center; gap: 3px; }
+
+.topbar-nav a {
+    color: rgba(255, 255, 255, 0.82); font-size: 13px; font-weight: 400;
+    padding: 7px 12px; border-radius: 8px;
+    transition: background .18s, transform .14s;
+}
+
+.topbar-nav a:hover { background: rgba(255,255,255,.16); transform: translateY(-1px); color: #2b2b2b; }
+.topbar-nav a.active { background: rgba(255,255,255,.22); color: #ffffff; font-weight: 600; }
+
+/* ─────────────────────────────────────────────
+   SHELL 
+───────────────────────────────────────────── */
+.chat-shell {
+    display: flex;
+    height: calc(100vh - var(--topbar-h));
+    margin-top: var(--topbar-h);
+    overflow: hidden;
+}
+
+/* ─────────────────────────────────────────────
+   LEFT PANEL — conversation list
+───────────────────────────────────────────── */
+.conv-panel {
+    width: 300px; flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+}
+
+/* Panel header */
+.conv-hdr {
+    padding: 18px 16px 14px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.conv-hdr-top {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 12px;
+}
+
+.conv-hdr-top h2 {
+    font-size: 18px; font-weight: 800; color: var(--navy);
+}
+
+.conv-hdr-top .new-chat-btn {
+    width: 32px; height: 32px; border-radius: 9px;
+    background: var(--blue-lt); color: var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 300; border: none;
+    cursor: pointer; transition: background .18s;
+}
+
+.conv-hdr-top .new-chat-btn:hover { background: #dbeafe; }
+
+/* Search */
+.conv-search {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 9px 12px;
+    transition: border-color .18s;
+}
+
+.conv-search:focus-within { border-color: var(--blue); background: #fff; }
+
+.conv-search svg {
+    width: 14px; height: 14px; color: var(--light);
+    stroke: currentColor; fill: none; stroke-width: 2;
+    stroke-linecap: round; flex-shrink: 0;
+}
+
+.conv-search input {
+    border: none; background: none; outline: none;
+    font-size: 13px; color: var(--navy); flex: 1;
+}
+
+.conv-search input::placeholder { color: var(--light); }
+
+/* Tabs */
+.conv-tabs {
+    display: flex; gap: 0;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.conv-tab {
+    flex: 1; padding: 10px 6px; text-align: center;
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    transition: color .18s, border-color .18s;
+}
+
+.conv-tab:hover { color: var(--blue); }
+.conv-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+/* Contact list */
+.conv-list { overflow-y: auto; flex: 1; }
+.conv-list::-webkit-scrollbar { width: 4px; }
+.conv-list::-webkit-scrollbar-thumb { background: #c9d7f2; border-radius: 4px; }
+
+.conv-item {
+    display: flex; align-items: center; gap: 11px;
+    padding: 12px 16px; cursor: pointer;
+    border-bottom: 1px solid #f8fafc;
+    transition: background .15s;
+    position: relative;
+}
+
+.conv-item:hover { background: var(--blue-lt); }
+
+.conv-item.active { background: var(--blue); }
+.conv-item.active .conv-name,
+.conv-item.active .conv-preview { color: #fff !important; }
+.conv-item.active .conv-time     { color: rgba(255,255,255,.7); }
+.conv-item.active .online-dot    { border-color: var(--blue); }
+.conv-item.active .unread        { background: #fff; color: var(--blue); }
+
+/* Avatar */
+.conv-avatar {
+    width: 46px; height: 46px; border-radius: 50%;
+    flex-shrink: 0; position: relative;
+    background: linear-gradient(135deg, #1877f2, #4facfe);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; font-weight: 800; color: #fff;
+    overflow: hidden;
+}
+
+.conv-avatar img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+}
+
+.online-dot {
+    position: absolute; bottom: 2px; right: 2px;
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--green); border: 2px solid #fff;
+}
+
+.offline-dot {
+    position: absolute; bottom: 2px; right: 2px;
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--light); border: 2px solid #fff;
+}
+
+.conv-info { flex: 1; min-width: 0; }
+
+.conv-row {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 3px;
+}
+
+.conv-name { font-size: 14px; font-weight: 700; color: var(--navy); }
+
+.conv-time { font-size: 11px; color: var(--light); white-space: nowrap; }
+
+.conv-preview {
+    font-size: 12px; color: var(--muted);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.unread {
+    background: var(--blue); color: #fff;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 99px;
+    flex-shrink: 0; margin-left: 6px;
+}
+
+/* ─────────────────────────────────────────────
+   CENTER — chat main
+───────────────────────────────────────────── */
+.chat-main {
+    flex: 1; display: flex; flex-direction: column;
+    background: #f8fafc; min-width: 0; overflow: hidden;
+}
+
+/* Chat header */
+.chat-hdr {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 13px 20px;
+    display: flex; align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+
+.chat-hdr-left { display: flex; align-items: center; gap: 12px; }
+
+.hdr-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(135deg, #1877f2, #4facfe);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: #fff;
+    flex-shrink: 0; position: relative; overflow: hidden;
+}
+
+.hdr-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+.hdr-info {}
+.hdr-name { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 1px; }
+.hdr-status { font-size: 12px; font-weight: 600; }
+.hdr-status.online  { color: var(--green); }
+.hdr-status.offline { color: var(--light); }
+
+.chat-hdr-right { display: flex; gap: 6px; }
+
+.hdr-btn {
+    width: 36px; height: 36px; border-radius: 9px;
+    background: var(--blue-lt); color: var(--blue);
+    border: none; display: flex; align-items: center;
+    justify-content: center; cursor: pointer;
+    transition: background .18s, transform .14s;
+}
+
+.hdr-btn:hover { background: #dbeafe; transform: translateY(-1px); }
+
+.hdr-btn svg {
+    width: 16px; height: 16px; stroke: currentColor;
+    fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ─────────────────────────────────────────────
+   MESSAGE AREA
+───────────────────────────────────────────── */
+.chat-body {
+    flex: 1; overflow-y: auto;
+    padding: 20px 22px;
+    display: flex; flex-direction: column;
+    gap: 2px;
+}
+
+.chat-body::-webkit-scrollbar { width: 5px; }
+.chat-body::-webkit-scrollbar-thumb { background: #c9d7f2; border-radius: 4px; }
+
+/* Date separator */
+.date-sep {
+    display: flex; align-items: center;
+    justify-content: center; margin: 14px 0;
+}
+
+.date-sep span {
+    background: #e2e8f0; color: var(--muted);
+    font-size: 11px; font-weight: 600;
+    padding: 4px 14px; border-radius: 99px;
+}
+
+/* Message row */
+.msg-row {
+    display: flex; gap: 9px; margin: 4px 0;
+    animation: msgIn .22s ease;
+    align-items: flex-end;
+}
+
+@keyframes msgIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.msg-row.sent { justify-content: flex-end; }
+.msg-row.sent .msg-avatar { display: none; }
+
+/* Message avatar */
+.msg-avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: linear-gradient(135deg, #1877f2, #4facfe);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; color: #fff;
+    flex-shrink: 0;
+}
+
+.msg-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+/* Bubble wrapper */
+.msg-wrap {
+    display: flex; flex-direction: column;
+    max-width: 66%; gap: 3px;
+}
+
+.msg-row.sent .msg-wrap { align-items: flex-end; }
+.msg-row.recv .msg-wrap { align-items: flex-start; }
+
+/* Bubble */
+.bubble {
+    padding: 10px 14px; border-radius: 18px;
+    font-size: 14px; line-height: 1.5;
+    word-break: break-word;
+    box-shadow: 0 1px 3px rgba(0,0,0,.07);
+}
+
+.msg-row.sent .bubble {
+    background: var(--blue); color: #fff;
+    border-bottom-right-radius: 5px;
+}
+
+.msg-row.recv .bubble {
+    background: var(--surface); color: var(--navy);
+    border-bottom-left-radius: 5px;
+    border: 1px solid var(--border);
+}
+
+/* Image message */
+.bubble-img {
+    max-width: 220px; border-radius: 14px;
+    overflow: hidden; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
+
+.bubble-img img {
+    width: 100%; display: block;
+    transition: opacity .18s;
+}
+
+.bubble-img:hover img { opacity: .9; }
+
+/* Message meta */
+.msg-meta {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 11px; color: var(--light);
+    padding: 0 4px;
+}
+
+.msg-row.sent .msg-meta { justify-content: flex-end; }
+
+.read-tick { font-size: 12px; color: var(--blue); }
+
+/* Typing indicator */
+.typing-row {
+    display: flex; gap: 9px; align-items: flex-end;
+    margin: 4px 0; animation: msgIn .22s ease;
+}
+
+.typing-bubble {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 12px 16px; border-radius: 18px;
+    border-bottom-left-radius: 5px;
+    display: flex; gap: 4px; align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+
+.typing-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--light);
+    animation: typePulse .9s infinite;
+}
+
+.typing-dot:nth-child(2) { animation-delay: .15s; }
+.typing-dot:nth-child(3) { animation-delay: .3s; }
+
+@keyframes typePulse {
+    0%, 80%, 100% { transform: translateY(0); opacity: .6; }
+    40%            { transform: translateY(-5px); opacity: 1; }
+}
+
+/* ─────────────────────────────────────────────
+   EMOJI PICKER
+───────────────────────────────────────────── */
+.emoji-tray {
+    display: none;
+    padding: 10px 14px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap; gap: 3px;
+}
+
+.emoji-tray.open { display: flex; }
+
+.e-btn {
+    font-size: 20px; background: none; border: none;
+    padding: 5px; border-radius: 7px; cursor: pointer;
+    transition: background .15s, transform .12s; line-height: 1;
+}
+
+.e-btn:hover { background: var(--blue-lt); transform: scale(1.15); }
+
+/* ─────────────────────────────────────────────
+   INPUT AREA
+───────────────────────────────────────────── */
+.chat-footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.input-toolbar {
+    display: flex; gap: 4px;
+    padding: 9px 16px 0;
+}
+
+.tool-btn {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: none; border: none; color: var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background .15s, color .15s;
+}
+
+.tool-btn:hover { background: var(--blue-lt); color: var(--blue); }
+
+.tool-btn svg {
+    width: 16px; height: 16px; stroke: currentColor;
+    fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.input-row {
+    display: flex; gap: 10px; align-items: flex-end;
+    padding: 8px 14px 13px;
+}
+
+.chat-textarea {
+    flex: 1; padding: 11px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 22px; background: var(--bg);
+    font-size: 14px; color: var(--navy);
+    outline: none; resize: none;
+    max-height: 110px; line-height: 1.45;
+    transition: border-color .18s, background .18s, box-shadow .18s;
+    overflow-y: auto;
+}
+
+.chat-textarea:focus {
+    border-color: var(--blue);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(24,119,242,.1);
+}
+
+.chat-textarea::placeholder { color: var(--light); }
+
+.chat-textarea::-webkit-scrollbar { width: 4px; }
+.chat-textarea::-webkit-scrollbar-thumb { background: #c9d7f2; border-radius: 4px; }
+
+.send-btn {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--blue); color: #fff;
+    border: none; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(24,119,242,.35);
+    transition: background .18s, transform .14s, box-shadow .18s;
+}
+
+.send-btn:hover { background: var(--blue-dk); transform: scale(1.08); }
+.send-btn:active { transform: scale(.95); }
+
+.send-btn svg {
+    width: 17px; height: 17px; stroke: currentColor;
+    fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Hidden file input */
+#imgInput { display: none; }
+
+/* ─────────────────────────────────────────────
+   RIGHT PANEL — seller / product info
+───────────────────────────────────────────── */
+.info-panel {
+    width: 280px; flex-shrink: 0;
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    overflow-y: auto; display: flex; flex-direction: column;
+}
+
+.info-panel::-webkit-scrollbar { width: 4px; }
+.info-panel::-webkit-scrollbar-thumb { background: #c9d7f2; border-radius: 4px; }
+
+/* Seller card */
+.seller-card {
+    padding: 22px 18px 16px;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+}
+
+.seller-avatar-lg {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, #1877f2, #4facfe);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 800; color: #fff;
+    margin: 0 auto 12px; position: relative; overflow: hidden;
+}
+
+.seller-avatar-lg img {
+    width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+}
+
+.seller-name { font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+
+.seller-rating {
+    display: flex; align-items: center; justify-content: center;
+    gap: 4px; font-size: 13px; color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.stars-mini { color: #f59e0b; font-size: 12px; }
+
+.seller-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: #d1fae5; color: #065f46;
+    font-size: 11px; font-weight: 700;
+    padding: 3px 12px; border-radius: 99px; margin-bottom: 14px;
+}
+
+.seller-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
+
+.seller-stat-row {
+    display: flex; justify-content: center; gap: 20px;
+    margin-bottom: 14px;
+}
+
+.seller-stat { text-align: center; }
+.seller-stat strong { display: block; font-size: 16px; font-weight: 800; color: var(--navy); }
+.seller-stat span   { font-size: 11px; color: var(--muted); }
+
+.info-action-btn {
+    width: 100%; padding: 10px; border: none;
+    background: var(--blue-lt); color: var(--blue);
+    border-radius: 10px; font-size: 13px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    transition: background .18s, transform .14s;
+}
+
+.info-action-btn:hover { background: #dbeafe; transform: translateY(-1px); }
+
+/* Product card in panel */
+.info-section-hdr {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .5px; color: var(--light);
+    padding: 14px 18px 8px;
+}
+
+.listed-product {
+    margin: 0 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+}
+
+.listed-product:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+
+.listed-product img {
+    width: 100%; height: 140px;
+    object-fit: cover; display: block;
+}
+
+.listed-product-info { padding: 12px; }
+.listed-product-info h4 { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+.listed-product-info p  { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+.listed-product-price   { font-size: 17px; font-weight: 800; color: var(--blue); margin-bottom: 10px; }
+
+.view-product-btn {
+    width: 100%; padding: 9px; border: none;
+    background: var(--blue); color: #fff;
+    border-radius: 9px; font-size: 13px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+    transition: background .18s;
+}
+
+.view-product-btn:hover { background: var(--blue-dk); }
+
+/* Shared media grid */
+.media-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 4px; margin: 0 14px 16px;
+}
+
+.media-thumb {
+    aspect-ratio: 1; border-radius: 8px;
+    object-fit: cover; cursor: pointer;
+    transition: opacity .18s;
+}
+
+.media-thumb:hover { opacity: .8; }
+
+/* ─────────────────────────────────────────────
+   MOBILE PANEL TOGGLE
+───────────────────────────────────────────── */
+.mobile-back-btn {
+    display: none;
+    align-items: center; gap: 7px;
+    background: none; border: none;
+    color: rgba(255,255,255,.85); font-size: 14px;
+    font-weight: 600; cursor: pointer; padding: 0;
+    margin-right: 10px;
+}
+
+.mobile-back-btn svg {
+    width: 16px; height: 16px; stroke: currentColor;
+    fill: none; stroke-width: 2.2; stroke-linecap: round;
+}
+
+/* ─────────────────────────────────────────────
+   EMPTY CHAT STATE
+───────────────────────────────────────────── */
+.chat-empty {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: var(--muted); text-align: center; padding: 40px;
+}
+
+.chat-empty-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--blue-lt);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 18px;
+}
+
+.chat-empty-icon svg {
+    width: 34px; height: 34px; stroke: var(--blue);
+    fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.chat-empty h3 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+.chat-empty p  { font-size: 13px; line-height: 1.6; }
+
+/* ─────────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────────── */
+@media (max-width: 1100px) {
+    .info-panel { display: none; }
+}
+
+@media (max-width: 720px) {
+    .topbar { padding: 0 14px; }
+    .topbar-nav a { font-size: 12px; padding: 6px 9px; }
+    .topbar-brand .tag { display: none; }
+
+    .conv-panel {
+        position: fixed; left: 0; top: var(--topbar-h);
+        height: calc(100vh - var(--topbar-h));
+        z-index: 500; transform: translateX(0);
+        transition: transform .28s ease;
+    }
+
+    .conv-panel.hidden { transform: translateX(-100%); }
+
+    .chat-main { width: 100%; }
+
+    .mobile-back-btn { display: flex; }
+
+    .chat-hdr { padding: 11px 14px; }
+    .chat-body { padding: 14px; }
+    .input-row { padding: 8px 10px 12px; }
+
+    html, body { overflow: auto; }
+    .chat-shell { height: calc(100vh - var(--topbar-h)); }
+}
+
+@media (max-width: 480px) {
+    .topbar-nav { display: none; }
+}
+</style>
+</head>
+<body>
+
+<input type="file" id="imgInput" accept="image/*" onchange="handleImageUpload(this)">
+
+<!-- ══════════════════════════════ TOPBAR ══════════════════════ -->
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <svg width="148" height="40" viewBox="0 0 148 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Left circle -->
+      <circle cx="14" cy="20" r="9" stroke="white" stroke-width="2.5" fill="none"/>
+      <!-- Right circle overlapping -->
+      <circle cx="28" cy="20" r="9" stroke="white" stroke-width="2.5" fill="none"/>
+      <!-- Upward arrow rising from overlap -->
+      <line x1="21" y1="17" x2="21" y2="7" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <polyline points="17,11 21,6 25,11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <!-- Wordmark -->
+      <text x="44" y="26" font-family="Poppins, Segoe UI, Arial, sans-serif"
+            font-size="20" font-weight="800" fill="white" letter-spacing="0.4">
+        Link<tspan fill="rgba(255,255,255,0.55)">UP</tspan>
+      </text>
+    </svg>
+  </a>
+    <nav class="topbar-nav">
+        <a href="index.html">Home</a>
+        <a href="products.html">Browse</a>
+        <a href="sell.html">Sell</a>
+        <a href="cart.html">Cart</a>
+        <a href="chat.html" class="active">Messages</a>
+        <a href="settings.html">Settings</a>
+    </nav>
+</header>
+
+<!-- ══════════════════════════════ SHELL ═══════════════════════ -->
+<div class="chat-shell">
+
+    <!-- ── LEFT: Conversation list ─────────────────────────── -->
+    <aside class="conv-panel" id="convPanel">
+
+        <div class="conv-hdr">
+            <div class="conv-hdr-top">
+                <h2>Messages</h2>
+                <button class="new-chat-btn" title="New message" onclick="toast('New conversation coming with backend.')">+</button>
+            </div>
+            <div class="conv-search">
+                <svg viewBox="0 0 24 24" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input id="convSearch" placeholder="Search messages..." oninput="filterConversations(this.value)">
+            </div>
+        </div>
+
+        <div class="conv-tabs">
+            <div class="conv-tab active" onclick="switchTab('all',this)">All</div>
+            <div class="conv-tab" onclick="switchTab('unread',this)">Unread</div>
+            <div class="conv-tab" onclick="switchTab('online',this)">Online</div>
+        </div>
+
+        <div class="conv-list" id="convList"></div>
+
+    </aside>
+
+    <!-- ── CENTER: Chat main ───────────────────────────────── -->
+    <main class="chat-main" id="chatMain">
+
+        <!-- Header -->
+        <div class="chat-hdr">
+            <div class="chat-hdr-left">
+                <button class="mobile-back-btn" id="mobileBackBtn" onclick="showConvPanel()">
+                    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                    Back
+                </button>
+                <div class="hdr-avatar" id="hdrAvatar">J</div>
+                <div class="hdr-info">
+                    <div class="hdr-name" id="hdrName">John Doe</div>
+                    <div class="hdr-status online" id="hdrStatus">Online</div>
+                </div>
+            </div>
+            <div class="chat-hdr-right">
+                <button class="hdr-btn" title="Call" onclick="toast('Voice call coming with backend.')">
+                    <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 11.21 19a19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.92-8.63A2 2 0 0 1 3.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+                </button>
+                <button class="hdr-btn" title="Video" onclick="toast('Video call coming with backend.')">
+                    <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+                </button>
+                <button class="hdr-btn" title="View profile" onclick="toast('Profile view coming soon.')">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-body" id="chatBody">
+            <div class="date-sep"><span>Today</span></div>
+        </div>
+
+        <!-- Emoji tray -->
+        <div class="emoji-tray" id="emojiTray">
+            <button class="e-btn" onclick="insertEmoji('😀')">😀</button>
+            <button class="e-btn" onclick="insertEmoji('😂')">😂</button>
+            <button class="e-btn" onclick="insertEmoji('❤️')">❤️</button>
+            <button class="e-btn" onclick="insertEmoji('👍')">👍</button>
+            <button class="e-btn" onclick="insertEmoji('🔥')">🔥</button>
+            <button class="e-btn" onclick="insertEmoji('✅')">✅</button>
+            <button class="e-btn" onclick="insertEmoji('😎')">😎</button>
+            <button class="e-btn" onclick="insertEmoji('🤝')">🤝</button>
+            <button class="e-btn" onclick="insertEmoji('💯')">💯</button>
+            <button class="e-btn" onclick="insertEmoji('🙏')">🙏</button>
+            <button class="e-btn" onclick="insertEmoji('🎉')">🎉</button>
+            <button class="e-btn" onclick="insertEmoji('💰')">💰</button>
+            <button class="e-btn" onclick="insertEmoji('📦')">📦</button>
+            <button class="e-btn" onclick="insertEmoji('🚚')">🚚</button>
+            <button class="e-btn" onclick="insertEmoji('📱')">📱</button>
+            <button class="e-btn" onclick="insertEmoji('💬')">💬</button>
+            <button class="e-btn" onclick="insertEmoji('⚡')">⚡</button>
+            <button class="e-btn" onclick="insertEmoji('🛒')">🛒</button>
+        </div>
+
+        <!-- Footer / input -->
+        <div class="chat-footer">
+            <div class="input-toolbar">
+                <button class="tool-btn" title="Emoji" onclick="toggleEmojiTray()">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                </button>
+                <button class="tool-btn" title="Send image" onclick="document.getElementById('imgInput').click()">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </button>
+                <button class="tool-btn" title="Attach file" onclick="toast('File sharing available with backend integration.')">
+                    <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                </button>
+            </div>
+            <div class="input-row">
+                <textarea
+                    class="chat-textarea"
+                    id="msgInput"
+                    placeholder="Write a message..."
+                    rows="1"
+                    oninput="autoResize(this)"
+                    onkeydown="handleKey(event)"
+                ></textarea>
+                <button class="send-btn" onclick="sendMessage()">
+                    <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ── RIGHT: Seller / product info ──────────────────── -->
+    <aside class="info-panel" id="infoPanel">
+
+        <div class="seller-card">
+            <div class="seller-avatar-lg" id="sellerAvatar">J</div>
+            <div class="seller-name" id="sellerName">John Doe</div>
+            <div class="seller-rating">
+                <span class="stars-mini">★★★★★</span>
+                <span>4.8 rating</span>
+            </div>
+            <div class="seller-badge">
+                <div class="seller-badge-dot"></div>
+                Trusted Seller
+            </div>
+            <div class="seller-stat-row">
+                <div class="seller-stat"><strong>47</strong><span>Sales</span></div>
+                <div class="seller-stat"><strong>98%</strong><span>Positive</span></div>
+                <div class="seller-stat"><strong>2yr</strong><span>Member</span></div>
+            </div>
+            <button class="info-action-btn" onclick="location.href='products.html'">View Seller Listings</button>
+        </div>
+
+        <div class="info-section-hdr">Listed Product</div>
+
+        <div class="listed-product" onclick="location.href='products.html'">
+            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&auto=format&fit=crop" alt="iPhone 11">
+            <div class="listed-product-info">
+                <h4>iPhone 11</h4>
+                <p>Excellent condition · 128GB · Battery 89%</p>
+                <div class="listed-product-price">R6,000</div>
+                <button class="view-product-btn">View Product</button>
+            </div>
+        </div>
+
+        <div class="info-section-hdr">Shared Media</div>
+
+        <div class="media-grid" id="mediaGrid">
+            <img class="media-thumb" src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200&auto=format&fit=crop" alt="">
+            <img class="media-thumb" src="https://images.unsplash.com/photo-1587202372616-b43abea06c2a?w=200&auto=format&fit=crop" alt="">
+            <img class="media-thumb" src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&auto=format&fit=crop" alt="">
+        </div>
+
+    </aside>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   DATA — conversations
+═══════════════════════════════════════════════════════════ */
+const CONTACTS = [
+    {
+        id: 1, name: 'John Doe',   initial: 'J',
+        status: 'Online',  unread: 2,
+        preview: 'Is this still available?',
+        time: '09:41',
+        messages: [
+            { from: 'recv', text: 'Hi! Is this still available?', time: '09:38' },
+            { from: 'sent', text: 'Yes, it is available. Are you interested?', time: '09:39' },
+            { from: 'recv', text: 'Definitely! Can we negotiate the price a little?', time: '09:40' },
+            { from: 'sent', text: 'I can do R5,800 if you collect today.', time: '09:41' },
+            { from: 'recv', text: 'That works for me. Can we meet this afternoon?', time: '09:41' },
+        ]
+    },
+    {
+        id: 2, name: 'Alice M.',   initial: 'A',
+        status: 'Offline', unread: 0,
+        preview: 'Can we meet tomorrow?',
+        time: 'Yesterday',
+        messages: [
+            { from: 'recv', text: 'Hey, I saw your listing for the MacBook.', time: 'Tue' },
+            { from: 'sent', text: 'Hi Alice! Yes, it\'s still available.', time: 'Tue' },
+            { from: 'recv', text: 'Great. Can we meet tomorrow at the V&A?', time: 'Tue' },
+        ]
+    },
+    {
+        id: 3, name: 'Michael K.', initial: 'M',
+        status: 'Online',  unread: 1,
+        preview: 'Item still available?',
+        time: '08:15',
+        messages: [
+            { from: 'recv', text: 'Item still available? I\'ve been looking for one.', time: '08:15' },
+        ]
+    },
+    {
+        id: 4, name: 'Sarah L.',   initial: 'S',
+        status: 'Offline', unread: 0,
+        preview: 'Lowest price?',
+        time: 'Mon',
+        messages: [
+            { from: 'recv', text: 'What\'s the absolute lowest price you can do?', time: 'Mon' },
+            { from: 'sent', text: 'Best I can do is R5,500 — it\'s in mint condition.', time: 'Mon' },
+            { from: 'recv', text: 'Let me think about it.', time: 'Mon' },
+        ]
+    },
+    {
+        id: 5, name: 'Kwame A.',   initial: 'K',
+        status: 'Online',  unread: 3,
+        preview: 'I\'ll take it!',
+        time: '10:02',
+        messages: [
+            { from: 'recv', text: 'Perfect, I\'ll take it! When can I collect?', time: '10:01' },
+            { from: 'recv', text: 'I\'m in Cape Town — is pickup available?', time: '10:01' },
+            { from: 'recv', text: 'Just confirming — R6,000 right?', time: '10:02' },
+        ]
+    },
+];
+
+let activeId  = 1;
+let allTab    = 'all';
+let typingTimer;
+
+/* ═══════════════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════════════ */
+function toast(msg) {
+    let el = document.getElementById('_toast');
+    if (!el) {
+        el = document.createElement('div');
+        el.id = '_toast';
+        el.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#111827;color:#fff;padding:13px 20px;border-radius:12px;font-size:13px;font-weight:500;z-index:99999;border-left:4px solid #1877f2;box-shadow:0 8px 24px rgba(0,0,0,.18);opacity:0;transform:translateY(12px);transition:opacity .22s,transform .22s;max-width:280px;';
+        document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    el.style.opacity = '1'; el.style.transform = 'translateY(0)';
+    clearTimeout(el._t);
+    el._t = setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateY(12px)'; }, 3000);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER CONVERSATION LIST
+═══════════════════════════════════════════════════════════ */
+function renderConvList(filter = '') {
+    const list = document.getElementById('convList');
+    let items = CONTACTS.filter(c => {
+        const matchSearch = c.name.toLowerCase().includes(filter.toLowerCase()) ||
+                            c.preview.toLowerCase().includes(filter.toLowerCase());
+        if (allTab === 'unread') return matchSearch && c.unread > 0;
+        if (allTab === 'online') return matchSearch && c.status === 'Online';
+        return matchSearch;
+    });
+
+    list.innerHTML = items.map(c => `
+    <div class="conv-item ${c.id === activeId ? 'active' : ''}" onclick="openConversation(${c.id})">
+        <div class="conv-avatar">
+            ${c.initial}
+            <div class="${c.status === 'Online' ? 'online-dot' : 'offline-dot'}"></div>
+        </div>
+        <div class="conv-info">
+            <div class="conv-row">
+                <span class="conv-name">${c.name}</span>
+                <span class="conv-time">${c.time}</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span class="conv-preview">${c.preview}</span>
+                ${c.unread ? `<span class="unread">${c.unread}</span>` : ''}
+            </div>
+        </div>
+    </div>`).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   OPEN CONVERSATION
+═══════════════════════════════════════════════════════════ */
+function openConversation(id) {
+    const c = CONTACTS.find(x => x.id === id);
+    if (!c) return;
+
+    activeId = id;
+    c.unread = 0;
+
+    // Update header
+    document.getElementById('hdrAvatar').textContent  = c.initial;
+    document.getElementById('hdrName').textContent    = c.name;
+    document.getElementById('sellerAvatar').textContent = c.initial;
+    document.getElementById('sellerName').textContent   = c.name;
+
+    const statusEl = document.getElementById('hdrStatus');
+    statusEl.textContent  = c.status;
+    statusEl.className    = 'hdr-status ' + (c.status === 'Online' ? 'online' : 'offline');
+
+    // Render messages
+    const body = document.getElementById('chatBody');
+    body.innerHTML = '<div class="date-sep"><span>Today</span></div>';
+    c.messages.forEach(m => appendMessage(m.from, m.text, m.time, false));
+    body.scrollTop = body.scrollHeight;
+
+    // Show typing if online
+    if (c.status === 'Online') {
+        setTimeout(() => showTyping(), 800);
+        setTimeout(() => hideTyping(), 2800);
+    }
+
+    renderConvList(document.getElementById('convSearch').value);
+
+    // Mobile: hide conv panel
+    if (window.innerWidth <= 720) {
+        document.getElementById('convPanel').classList.add('hidden');
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   APPEND MESSAGE
+═══════════════════════════════════════════════════════════ */
+function appendMessage(from, text, time, scroll = true) {
+    const body = document.getElementById('chatBody');
+    const c    = CONTACTS.find(x => x.id === activeId);
+    const row  = document.createElement('div');
+    row.className = 'msg-row ' + from;
+
+    if (from === 'recv') {
+        row.innerHTML = `
+        <div class="msg-avatar">${c ? c.initial : '?'}</div>
+        <div class="msg-wrap">
+            <div class="bubble">${text}</div>
+            <div class="msg-meta">${time}</div>
+        </div>`;
+    } else {
+        row.innerHTML = `
+        <div class="msg-wrap">
+            <div class="bubble">${text}</div>
+            <div class="msg-meta">${time} <span class="read-tick">✓✓</span></div>
+        </div>`;
+    }
+
+    body.appendChild(row);
+    if (scroll) body.scrollTop = body.scrollHeight;
+}
+
+function appendImageMessage(from, src, time) {
+    const body = document.getElementById('chatBody');
+    const c    = CONTACTS.find(x => x.id === activeId);
+    const row  = document.createElement('div');
+    row.className = 'msg-row ' + from;
+
+    if (from === 'recv') {
+        row.innerHTML = `
+        <div class="msg-avatar">${c ? c.initial : '?'}</div>
+        <div class="msg-wrap">
+            <div class="bubble-img"><img src="${src}" alt="Shared image"></div>
+            <div class="msg-meta">${time}</div>
+        </div>`;
+    } else {
+        row.innerHTML = `
+        <div class="msg-wrap">
+            <div class="bubble-img"><img src="${src}" alt="Shared image"></div>
+            <div class="msg-meta">${time} <span class="read-tick">✓✓</span></div>
+        </div>`;
+    }
+
+    body.appendChild(row);
+    body.scrollTop = body.scrollHeight;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SEND MESSAGE
+═══════════════════════════════════════════════════════════ */
+function sendMessage() {
+    const input = document.getElementById('msgInput');
+    const text  = input.value.trim();
+    if (!text) return;
+
+    const time = getTime();
+    appendMessage('sent', text, time, true);
+
+    const c = CONTACTS.find(x => x.id === activeId);
+    if (c) { c.preview = text; c.time = time; }
+
+    input.value = '';
+    input.style.height = 'auto';
+    renderConvList(document.getElementById('convSearch').value);
+
+    // Auto-reply if online
+    if (c && c.status === 'Online') {
+        setTimeout(() => showTyping(), 600);
+        const replies = [
+            'Got it! Thanks for the quick reply.',
+            'That sounds great. I\'ll confirm shortly.',
+            'Perfect. See you then!',
+            'Understood. Let me check my schedule.',
+            'Great, is the price negotiable at all?',
+            'I\'m very interested. Can you hold it for me?',
+        ];
+        setTimeout(() => {
+            hideTyping();
+            const reply = replies[Math.floor(Math.random() * replies.length)];
+            const rt = getTime();
+            appendMessage('recv', reply, rt, true);
+            if (c) { c.preview = reply; c.time = rt; c.messages.push({ from:'recv', text: reply, time: rt }); }
+            renderConvList(document.getElementById('convSearch').value);
+        }, 2400);
+    }
+}
+
+function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TYPING INDICATOR
+═══════════════════════════════════════════════════════════ */
+function showTyping() {
+    if (document.getElementById('typingRow')) return;
+    const body = document.getElementById('chatBody');
+    const c    = CONTACTS.find(x => x.id === activeId);
+    const row  = document.createElement('div');
+    row.id = 'typingRow';
+    row.className = 'typing-row';
+    row.innerHTML = `
+    <div class="msg-avatar">${c ? c.initial : '?'}</div>
+    <div class="typing-bubble">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+    </div>`;
+    body.appendChild(row);
+    body.scrollTop = body.scrollHeight;
+}
+
+function hideTyping() {
+    const el = document.getElementById('typingRow');
+    if (el) el.remove();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EMOJI TRAY
+═══════════════════════════════════════════════════════════ */
+function toggleEmojiTray() {
+    document.getElementById('emojiTray').classList.toggle('open');
+}
+
+function insertEmoji(e) {
+    const ta = document.getElementById('msgInput');
+    ta.value += e;
+    ta.focus();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   IMAGE UPLOAD
+═══════════════════════════════════════════════════════════ */
+function handleImageUpload(input) {
+    if (!input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        appendImageMessage('sent', ev.target.result, getTime());
+
+        // Add to shared media grid
+        const grid = document.getElementById('mediaGrid');
+        const img  = document.createElement('img');
+        img.className = 'media-thumb';
+        img.src = ev.target.result;
+        img.alt = '';
+        grid.prepend(img);
+    };
+    reader.readAsDataURL(input.files[0]);
+    input.value = '';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SEARCH & TABS
+═══════════════════════════════════════════════════════════ */
+function filterConversations(val) { renderConvList(val); }
+
+function switchTab(tab, btn) {
+    allTab = tab;
+    document.querySelectorAll('.conv-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    renderConvList(document.getElementById('convSearch').value);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE — back to conv list
+═══════════════════════════════════════════════════════════ */
+function showConvPanel() {
+    document.getElementById('convPanel').classList.remove('hidden');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TEXTAREA AUTO RESIZE
+═══════════════════════════════════════════════════════════ */
+function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 110) + 'px';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════════ */
+function getTime() {
+    const n = new Date();
+    return n.getHours() + ':' + String(n.getMinutes()).padStart(2,'0');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOAD USER from localStorage (shows their name/avatar)
+═══════════════════════════════════════════════════════════ */
+function loadCurrentUser() {
+    const email = localStorage.getItem('userEmail') || '';
+    const name  = localStorage.getItem('userName')  || '';
+    const pic   = localStorage.getItem('userPic')   || '';
+    // Could be used to personalise the "sent" side avatars
+    // For now contacts use their own initials
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════ */
+loadCurrentUser();
+renderConvList();
+openConversation(1);
+
+// Close emoji tray when clicking elsewhere
+document.addEventListener('click', e => {
+    const tray = document.getElementById('emojiTray');
+    if (tray.classList.contains('open') &&
+        !e.target.closest('.emoji-tray') &&
+        !e.target.closest('.tool-btn')) {
+        tray.classList.remove('open');
+    }
+});
+</script>
+</body>
+</html>

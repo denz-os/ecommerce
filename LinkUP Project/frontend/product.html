@@ -1,0 +1,2121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product — LinkUP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<style>
+:root {
+    --blue:       #1877f2;
+    --blue-dark:  #1360cc;
+    --blue-deep:  #0d4fa8;
+    --blue-light: #eef4ff;
+    --text:       #0f172a;
+    --text-muted: #64748b;
+    --border:     #e4e9f2;
+    --bg:         #f8fafc;
+    --white:      #ffffff;
+    --green:      #22c55e;
+    --red:        #ef4444;
+    --radius:     14px;
+    --shadow-sm:  0 2px 8px rgba(0,0,0,.06);
+    --shadow-md:  0 8px 32px rgba(0,0,0,.10);
+    --shadow-blue:0 8px 28px rgba(24,119,242,.22);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ── TOPBAR ──────────────────────────────────────────────── */
+.topbar {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 55%, var(--blue-deep) 100%);
+    height: 72px;
+    padding: 0 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 24px rgba(24,119,242,.32);
+    overflow: hidden;
+}
+
+.topbar::before {
+    content: '';
+    position: absolute;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    border: 55px solid rgba(255,255,255,.05);
+    top: -170px; right: 180px;
+    pointer-events: none;
+}
+
+.topbar::after {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 40px solid rgba(255,255,255,.04);
+    bottom: -110px; right: -30px;
+    pointer-events: none;
+}
+
+.brand { display: flex; align-items: center; text-decoration: none; position: relative; z-index: 1; }
+
+.nav-right {
+    display: flex; align-items: center; gap: 2px;
+    position: relative; z-index: 1;
+}
+
+.nav-right a {
+    color: rgba(255,255,255,.88);
+    font-size: 13.5px; font-weight: 500;
+    padding: 8px 14px; border-radius: 9px;
+    white-space: nowrap;
+    transition: background .18s, color .18s;
+}
+
+.nav-right a:hover,
+.nav-right a.active { background: rgba(255,255,255,.16); color: #fff; }
+
+.nav-right .cart-link {
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.24);
+    font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+}
+
+.nav-right .cart-link:hover { background: rgba(255,255,255,.24); }
+
+.cart-count {
+    background: #ef4444; color: #fff;
+    padding: 1px 7px; border-radius: 20px;
+    font-size: 11px; font-weight: 700;
+}
+
+.nav-right .login-link {
+    background: var(--white) !important;
+    color: var(--blue) !important;
+    font-weight: 700; padding: 8px 18px;
+    border-radius: 9px; margin-left: 4px;
+    transition: background .18s, box-shadow .18s;
+}
+
+.nav-right .login-link:hover {
+    background: #eef4ff !important;
+    box-shadow: 0 4px 14px rgba(24,119,242,.2);
+}
+
+/* ── BREADCRUMB ──────────────────────────────────────────── */
+.breadcrumb {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 20px 24px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+}
+
+.breadcrumb a {
+    color: var(--blue);
+    font-weight: 600;
+    transition: color .18s;
+}
+
+.breadcrumb a:hover { color: var(--blue-dark); }
+
+.breadcrumb span { color: #cbd5e1; }
+
+.breadcrumb strong { color: var(--text); font-weight: 600; }
+
+/* ── PAGE LAYOUT ─────────────────────────────────────────── */
+.product-page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 24px 80px;
+}
+
+/* ── MAIN PRODUCT SECTION ────────────────────────────────── */
+.product-main {
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 36px;
+    margin-bottom: 48px;
+    align-items: start;
+}
+
+/* ── IMAGE GALLERY ───────────────────────────────────────── */
+.gallery {
+    position: sticky;
+    top: 100px;
+}
+
+.gallery-main {
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--white);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    margin-bottom: 12px;
+    cursor: zoom-in;
+}
+
+.gallery-main img {
+    width: 100%;
+    height: 460px;
+    object-fit: cover;
+    display: block;
+    transition: transform .5s ease;
+}
+
+.gallery-main:hover img { transform: scale(1.04); }
+
+.gallery-badge {
+    position: absolute;
+    top: 16px; left: 16px;
+    background: var(--blue);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(24,119,242,.3);
+}
+
+.gallery-thumbs {
+    display: flex;
+    gap: 10px;
+}
+
+.gallery-thumb {
+    width: 80px; height: 80px;
+    border-radius: 11px;
+    overflow: hidden;
+    border: 2px solid var(--border);
+    cursor: pointer;
+    transition: border-color .18s, transform .18s;
+    flex-shrink: 0;
+}
+
+.gallery-thumb:hover { border-color: var(--blue); transform: translateY(-2px); }
+.gallery-thumb.active { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(24,119,242,.15); }
+
+.gallery-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ── PRODUCT INFO PANEL ──────────────────────────────────── */
+.product-info-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.product-category-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--blue-light);
+    color: var(--blue);
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 99px;
+    margin-bottom: 14px;
+    letter-spacing: .3px;
+    width: fit-content;
+}
+
+.product-title {
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.15;
+    letter-spacing: -.5px;
+    margin-bottom: 16px;
+}
+
+/* Rating row */
+.rating-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stars {
+    display: flex;
+    gap: 2px;
+}
+
+.star {
+    width: 16px; height: 16px;
+    fill: #f59e0b;
+    color: #f59e0b;
+}
+
+.star.empty { fill: #e4e9f2; color: #e4e9f2; }
+
+.rating-score {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.rating-count {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.rating-divider {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: #cbd5e1;
+}
+
+.views-count {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.views-count svg {
+    width: 14px; height: 14px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Price block */
+.price-block {
+    background: linear-gradient(135deg, var(--blue-light), #dbeafe);
+    border: 1.5px solid #bfdbfe;
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-bottom: 22px;
+}
+
+.price-main {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--blue);
+    letter-spacing: -.5px;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.price-note {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.price-note svg {
+    width: 13px; height: 13px;
+    stroke: var(--green); fill: none;
+    stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Condition / details */
+.detail-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+
+.detail-pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 99px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.detail-pill svg {
+    width: 13px; height: 13px;
+    stroke: var(--blue); fill: none;
+    stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Description */
+.product-desc-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-bottom: 24px;
+    padding: 16px 18px;
+    background: var(--bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+/* Action buttons */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.btn-add-cart {
+    width: 100%;
+    padding: 15px;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    box-shadow: var(--shadow-blue);
+    transition: background .18s, transform .15s, box-shadow .18s;
+}
+
+.btn-add-cart:hover {
+    background: var(--blue-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(24,119,242,.35);
+}
+
+.btn-add-cart svg {
+    width: 18px; height: 18px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.btn-row-secondary {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-save, .btn-share {
+    flex: 1;
+    padding: 12px;
+    border-radius: 11px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    font-size: 13.5px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    color: var(--text-muted);
+    transition: all .18s;
+}
+
+.btn-save:hover { border-color: var(--red); color: var(--red); background: #fff5f5; }
+.btn-share:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+
+.btn-save svg, .btn-share svg {
+    width: 16px; height: 16px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Safety note */
+.safety-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 13px 15px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 11px;
+    font-size: 12.5px;
+    color: #15803d;
+    line-height: 1.55;
+}
+
+.safety-note svg {
+    width: 16px; height: 16px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+/* ── SELLER CARD ─────────────────────────────────────────── */
+.seller-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    margin-top: 22px;
+    box-shadow: var(--shadow-sm);
+}
+
+.seller-card-header {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+}
+
+.seller-profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.seller-avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), #4facfe);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.seller-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.verified-tick {
+    width: 17px; height: 17px;
+    background: var(--blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.verified-tick svg {
+    width: 9px; height: 9px;
+    stroke: white; fill: none;
+    stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.seller-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.seller-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+
+.seller-stat {
+    background: var(--bg);
+    padding: 11px 8px;
+    text-align: center;
+}
+
+.seller-stat strong {
+    display: block;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 3px;
+}
+
+.seller-stat span {
+    font-size: 10.5px;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+
+.btn-message {
+    width: 100%;
+    padding: 12px;
+    background: var(--white);
+    border: 1.5px solid var(--blue);
+    border-radius: 11px;
+    color: var(--blue);
+    font-size: 13.5px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background .18s, box-shadow .18s;
+}
+
+.btn-message:hover {
+    background: var(--blue-light);
+    box-shadow: 0 4px 14px rgba(24,119,242,.15);
+}
+
+.btn-message svg {
+    width: 16px; height: 16px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ── TABS (Description / Specs / Reviews) ────────────────── */
+.info-tabs {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 48px;
+}
+
+.tab-nav {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+}
+
+.tab-nav-btn {
+    flex: 1;
+    padding: 16px;
+    border: none;
+    background: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color .18s, border-color .18s, background .18s;
+}
+
+.tab-nav-btn:hover { color: var(--text); background: var(--white); }
+.tab-nav-btn.active { color: var(--blue); border-bottom-color: var(--blue); background: var(--white); }
+
+.tab-content-pane { display: none; padding: 28px; }
+.tab-content-pane.active { display: block; }
+
+.tab-content-pane p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 14px;
+}
+
+/* Specs table */
+.specs-table { width: 100%; border-collapse: collapse; }
+
+.specs-table tr:nth-child(even) td { background: var(--bg); }
+
+.specs-table td {
+    padding: 12px 16px;
+    font-size: 13.5px;
+    border-bottom: 1px solid var(--border);
+}
+
+.specs-table td:first-child {
+    font-weight: 700;
+    color: var(--text);
+    width: 40%;
+}
+
+.specs-table td:last-child { color: var(--text-muted); }
+
+.specs-table tr:last-child td { border-bottom: none; }
+
+/* Reviews */
+.reviews-list { display: flex; flex-direction: column; gap: 20px; }
+
+.review-item {
+    display: flex;
+    gap: 16px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.review-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+.reviewer-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), #4facfe);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: #fff;
+    flex-shrink: 0;
+}
+
+.review-body { flex: 1; }
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+}
+
+.reviewer-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3px;
+}
+
+.review-date {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.review-stars { display: flex; gap: 2px; margin-bottom: 8px; }
+
+.review-text {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+
+/* ── RELATED PRODUCTS ────────────────────────────────────── */
+.related-section {}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -.3px;
+    margin-bottom: 20px;
+}
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.product-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: transform .22s, box-shadow .22s;
+    text-decoration: none;
+    display: block;
+}
+
+.product-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+.product-card-img {
+    overflow: hidden;
+    height: 170px;
+}
+
+.product-card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .4s;
+}
+
+.product-card:hover .product-card-img img { transform: scale(1.06); }
+
+.product-card-body { padding: 14px 16px 16px; }
+
+.product-card-body h4 {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-card-body .price {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--blue);
+    margin-bottom: 10px;
+}
+
+.product-card-body .desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.product-card-body button {
+    width: 100%;
+    padding: 9px;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    font-size: 12.5px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: background .18s;
+}
+
+.product-card-body button:hover { background: var(--blue-dark); }
+
+/* ── LIGHTBOX ────────────────────────────────────────────── */
+.lightbox {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.92);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    cursor: zoom-out;
+}
+
+.lightbox.show { display: flex; }
+
+.lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.5);
+    animation: zoomIn .22s ease;
+}
+
+@keyframes zoomIn { from { transform: scale(.88); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.lightbox-close {
+    position: absolute;
+    top: 20px; right: 24px;
+    background: rgba(255,255,255,.12);
+    border: none;
+    color: #fff;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .18s;
+}
+
+.lightbox-close:hover { background: rgba(255,255,255,.22); }
+
+/* ── CHAT MODAL ──────────────────────────────────────────── */
+.chat-modal-back {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(15,23,42,.5);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    align-items: center; justify-content: center;
+    padding: 16px;
+}
+
+.chat-modal-back.show { display: flex; }
+
+.chat-modal {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 420px; width: 100%;
+    box-shadow: 0 24px 64px rgba(0,0,0,.18);
+    animation: popIn .22s ease;
+}
+
+@keyframes popIn { from { transform: scale(.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.chat-modal h3 {
+    font-size: 18px; font-weight: 800;
+    margin-bottom: 6px; color: var(--text);
+}
+
+.chat-modal p {
+    font-size: 13px; color: var(--text-muted);
+    margin-bottom: 18px; line-height: 1.6;
+}
+
+.chat-modal textarea {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1.5px solid var(--border);
+    border-radius: 11px;
+    background: var(--bg);
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text);
+    outline: none;
+    resize: none;
+    height: 110px;
+    margin-bottom: 14px;
+    transition: border-color .18s;
+}
+
+.chat-modal textarea:focus {
+    border-color: var(--blue);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(24,119,242,.1);
+}
+
+.chat-modal-actions { display: flex; gap: 10px; }
+
+.btn-send {
+    flex: 1; padding: 13px;
+    background: var(--blue); color: #fff;
+    border: none; border-radius: 11px;
+    font-size: 14px; font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: background .18s;
+    display: flex; align-items: center;
+    justify-content: center; gap: 7px;
+}
+
+.btn-send:hover { background: var(--blue-dark); }
+.btn-send svg {
+    width: 15px; height: 15px;
+    stroke: currentColor; fill: none;
+    stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.btn-cancel-chat {
+    padding: 13px 20px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 11px;
+    font-size: 14px; font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: background .18s;
+}
+
+.btn-cancel-chat:hover { background: var(--border); }
+
+/* ── TOAST ───────────────────────────────────────────────── */
+#toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: var(--text); color: #fff;
+    padding: 13px 20px; border-radius: 12px;
+    font-size: 13px; font-weight: 500;
+    opacity: 0; pointer-events: none;
+    z-index: 10000; transform: translateY(12px);
+    transition: opacity .22s, transform .22s;
+    border-left: 4px solid var(--blue);
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+    max-width: 300px;
+}
+
+#toast.show { opacity: 1; transform: translateY(0); }
+#toast.ok   { border-left-color: var(--green); }
+#toast.fail { border-left-color: var(--red); }
+
+/* ── PAGE LOAD ANIMATION ─────────────────────────────────── */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp .5s ease forwards;
+}
+
+.fade-in-delay-1 { animation-delay: .08s; }
+.fade-in-delay-2 { animation-delay: .16s; }
+.fade-in-delay-3 { animation-delay: .24s; }
+
+@keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .product-main { grid-template-columns: 1fr; }
+    .gallery { position: static; }
+    .gallery-main img { height: 340px; }
+    .related-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .topbar { padding: 0 20px; }
+    .product-page { padding: 20px 16px 60px; }
+    .gallery-main img { height: 260px; }
+    .product-title { font-size: 24px; }
+    .price-main { font-size: 28px; }
+    .related-grid { grid-template-columns: repeat(2, 1fr); }
+    .tab-nav-btn { font-size: 12px; padding: 13px 8px; }
+    .nav-right a:not(.login-link):not(.cart-link) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&#x2715;</button>
+  <img id="lightboxImg" src="" alt="Product">
+</div>
+
+<!-- Chat Modal -->
+<div class="chat-modal-back" id="chatModal">
+  <div class="chat-modal">
+    <h3>Message Seller</h3>
+    <p id="chatModalDesc">Send a message about this listing.</p>
+    <textarea id="chatMessage" placeholder="Hi, is this still available? I would like to know more about..."></textarea>
+    <div class="chat-modal-actions">
+      <button class="btn-send" onclick="sendMessage()">
+        <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Send Message
+      </button>
+      <button class="btn-cancel-chat" onclick="closeChatModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ TOPBAR ══════════════════════ -->
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <svg width="158" height="44" viewBox="0 0 158 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="22" r="10" stroke="white" stroke-width="2.8" fill="none"/>
+      <circle cx="32" cy="22" r="10" stroke="white" stroke-width="2.8" fill="none"/>
+      <line x1="24" y1="19" x2="24" y2="7" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+      <polyline points="19,12 24,6 29,12" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <text x="50" y="29" font-family="Poppins, sans-serif" font-size="22" font-weight="900" fill="white" letter-spacing="0.3">Link<tspan fill="rgba(255,255,255,0.5)">UP</tspan></text>
+    </svg>
+  </a>
+  <nav class="nav-right">
+    <a href="index.html">Home</a>
+    <a href="products.html">Browse</a>
+    <a href="sell.html">Sell</a>
+    <a href="chat.html">Chat</a>
+    <a href="about.html">About</a>
+    <a href="cart.html" class="cart-link">Cart <span id="cartCount" class="cart-count">0</span></a>
+    <a href="login.html" class="login-link">Sign In</a>
+  </nav>
+</header>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  <a href="index.html">Home</a>
+  <span>&#8250;</span>
+  <a href="products.html">Browse</a>
+  <span>&#8250;</span>
+  <strong id="breadcrumbName">Product</strong>
+</div>
+
+<!-- ══════════════════════════ PRODUCT PAGE ════════════════ -->
+<div class="product-page">
+
+  <!-- Main product section -->
+  <div class="product-main">
+
+    <!-- Gallery -->
+    <div class="gallery fade-in">
+      <div class="gallery-main" onclick="openLightbox()" title="Click to zoom">
+        <img id="mainImage" src="" alt="Product">
+        <span class="gallery-badge" id="galleryBadge">Featured</span>
+      </div>
+      <div class="gallery-thumbs" id="thumbsContainer"></div>
+    </div>
+
+    <!-- Info panel -->
+    <div class="product-info-panel fade-in fade-in-delay-1">
+
+      <div class="product-category-tag" id="categoryTag">
+        <svg width="12" height="12" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20.59 13.41 15 19 9 13"/><line x1="15" y1="19" x2="15" y2="5"/></svg>
+        <span id="categoryTagText">Category</span>
+      </div>
+
+      <h1 class="product-title" id="productTitle">Loading...</h1>
+
+      <div class="rating-row">
+        <div class="stars" id="starsEl"></div>
+        <span class="rating-score" id="ratingScore"></span>
+        <div class="rating-divider"></div>
+        <span class="rating-count" id="ratingCount"></span>
+        <div class="rating-divider"></div>
+        <span class="views-count">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span id="viewsCount">0 views</span>
+        </span>
+      </div>
+
+      <div class="price-block">
+        <div class="price-main" id="productPrice">R0</div>
+        <div class="price-note">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Buyer protection included on all purchases
+        </div>
+      </div>
+
+      <div class="detail-pills" id="detailPills"></div>
+
+      <div class="product-desc-text" id="productDesc">Loading description...</div>
+
+      <div class="action-buttons">
+        <button class="btn-add-cart" id="addCartBtn">
+          <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Add to Cart
+        </button>
+        <div class="btn-row-secondary">
+          <button class="btn-save" id="saveBtn" onclick="toggleSave()">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Save Item
+          </button>
+          <button class="btn-share" onclick="shareProduct()">
+            <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share
+          </button>
+        </div>
+      </div>
+
+      <div class="safety-note">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Meet in a safe, public place. Never pay in advance without seeing the item. LinkUP buyer protection applies to all verified transactions.
+      </div>
+
+      <!-- Seller card -->
+      <div class="seller-card">
+        <div class="seller-card-header">Listed by</div>
+        <div class="seller-profile">
+          <div class="seller-avatar" id="sellerAvatar">S</div>
+          <div>
+            <div class="seller-name">
+              <span id="sellerName">Seller</span>
+              <div class="verified-tick">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+            </div>
+            <div class="seller-meta" id="sellerMeta">Member since 2024</div>
+          </div>
+        </div>
+        <div class="seller-stats">
+          <div class="seller-stat">
+            <strong id="sellerListings">12</strong>
+            <span>Listings</span>
+          </div>
+          <div class="seller-stat">
+            <strong id="sellerSold">8</strong>
+            <span>Sold</span>
+          </div>
+          <div class="seller-stat">
+            <strong>4.8</strong>
+            <span>Rating</span>
+          </div>
+        </div>
+        <button class="btn-message" onclick="openChatModal()">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Message Seller
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Info Tabs -->
+  <div class="info-tabs fade-in fade-in-delay-2">
+    <div class="tab-nav">
+      <button class="tab-nav-btn active" onclick="switchInfoTab('description', this)">Description</button>
+      <button class="tab-nav-btn" onclick="switchInfoTab('specs', this)">Specifications</button>
+      <button class="tab-nav-btn" onclick="switchInfoTab('reviews', this)">Reviews (3)</button>
+    </div>
+
+    <div class="tab-content-pane active" id="pane-description">
+      <p id="tabDescription">Loading...</p>
+      <p>All items listed on LinkUP are sold as described. If you have questions, use the message seller button to speak directly with the seller before purchasing.</p>
+    </div>
+
+    <div class="tab-content-pane" id="pane-specs">
+      <table class="specs-table" id="specsTable"></table>
+    </div>
+
+    <div class="tab-content-pane" id="pane-reviews">
+      <div class="reviews-list">
+
+        <div class="review-item">
+          <div class="reviewer-avatar">T</div>
+          <div class="review-body">
+            <div class="review-header">
+              <div>
+                <div class="reviewer-name">Thabo M.</div>
+                <div class="review-stars">
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <span class="review-date">12 May 2025</span>
+            </div>
+            <p class="review-text">Excellent item, exactly as described. The seller was quick to respond and the handover was smooth. Would buy from again without hesitation.</p>
+          </div>
+        </div>
+
+        <div class="review-item">
+          <div class="reviewer-avatar">N</div>
+          <div class="review-body">
+            <div class="review-header">
+              <div>
+                <div class="reviewer-name">Naledi K.</div>
+                <div class="review-stars">
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star empty" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <span class="review-date">3 May 2025</span>
+            </div>
+            <p class="review-text">Good condition overall. Minor scratch not shown in the photos but the seller was honest about it when I asked. Fair price for what you get.</p>
+          </div>
+        </div>
+
+        <div class="review-item">
+          <div class="reviewer-avatar">S</div>
+          <div class="review-body">
+            <div class="review-header">
+              <div>
+                <div class="reviewer-name">Sipho D.</div>
+                <div class="review-stars">
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <svg class="star" width="14" height="14" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+              </div>
+              <span class="review-date">19 Apr 2025</span>
+            </div>
+            <p class="review-text">Super fast response from the seller. Item was well packaged and exactly as pictured. LinkUP made this process very easy. Highly recommend.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Products -->
+  <div class="related-section fade-in fade-in-delay-3">
+    <h2 class="section-title">You May Also Like</h2>
+    <div class="related-grid" id="relatedGrid"></div>
+  </div>
+
+</div>
+
+<script>
+/* ──────────────────────────────────────────────────────────
+   PRODUCT CATALOGUE
+   This is your full product database. Each product links to
+   product.html?id=X — add more products here as you grow.
+   ────────────────────────────────────────────────────────── */
+const PRODUCTS = [
+  {
+    id: 17,
+    name: 'Football Boots',
+    price: 1200,
+    category: 'Sports',
+    condition: 'Good',
+    location: 'Port Elizabeth, EC',
+    description: 'Addidas Mercurial Superfly 9 in blue/white. Size 9 UK. Used for one season on grass pitches only. Studs still in great shape, no cracks on the upper. Cleaned and ready for collection. Comes with original box.',
+    images: [
+      'https://images.unsplash.com/photo-1612387049695-637b743f80ad?q=80&w=994&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Football Boots',
+     
+    ],
+    specs: [
+      ['Brand', 'Addidas'],['Model', 'Mercurial Superfly 9'],['Size', '9 UK / 43 EU'],
+      ['Colour', 'Blue / White'],['Surface', 'Firm Ground (FG)'],['Used For', 'One season — grass only'],
+      ['Condition', 'Good'],['Includes', 'Original box'],['Location', 'Port Elizabeth, EC'],
+    ],
+    seller: { name: 'Andile Z.', initials: 'AZ', listings: 5, sold: 3, since: 'Member since 2024' },
+    rating: 4.5, reviews: 3, views: 48
+  },
+  {
+    id: 2,
+    name: 'PlayStation 5',
+    price: 14000,
+    category: 'Gaming',
+    condition: 'Like New',
+    location: 'Johannesburg, GP',
+    description: 'PlayStation 5 disc edition. Barely used — only 3 months old. Comes with 2 controllers, all original cables, and 3 games: FIFA 24, Spider-Man 2, and Mortal Kombat 1. No scratches, fully functional in every way.',
+    images: [
+      'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1617096200347-cb04ae810b1d?w=800&auto=format&fit=crop',
+    ],
+    specs: [
+      ['Brand', 'Sony'],['Model', 'PlayStation 5 Disc Edition'],['Storage', '825GB SSD'],
+      ['Controllers', '2 included'],['Games', 'FIFA 24, Spider-Man 2, MK1'],
+      ['Condition', 'Like New'],['Location', 'Johannesburg, GP'],
+    ],
+    seller: { name: 'Naledi K.', initials: 'NK', listings: 6, sold: 4, since: 'Member since 2024' },
+    rating: 4.9, reviews: 3, views: 247
+  },
+  {
+    id: 3,
+    name: 'Jordan Sneakers',
+    price: 1500,
+    category: 'Fashion',
+    condition: 'Good',
+    location: 'Durban, KZN',
+    description: 'Air Jordan 1 Mid in University Blue colourway. Size 10 US / 44 EU. Worn about 5 times, still in great shape. Comes with original box and both laces. No yellowing on the sole. Soles still very clean.',
+    images: [
+      'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=800&auto=format&fit=crop',
+      
+    ],
+    specs: [
+      ['Brand', 'Nike / Jordan'],['Model', 'Air Jordan 1 Mid'],['Size', '10 US / 44 EU'],
+      ['Colour', 'University Blue'],['Condition', 'Good — Worn ~5 times'],
+      ['Includes', 'Original box + spare laces'],['Location', 'Durban, KZN'],
+    ],
+    seller: { name: 'Thabo M.', initials: 'TM', listings: 22, sold: 18, since: 'Member since 2022' },
+    rating: 4.7, reviews: 3, views: 88
+  },
+  {
+    id: 4,
+    name: 'MacBook Pro M1',
+    price: 10000,
+    category: 'Electronics',
+    condition: 'Very Good',
+    location: 'Pretoria, GP',
+    description: 'MacBook Pro 13-inch with Apple M1 chip. 8GB RAM, 256GB SSD. Battery cycle count at 142 — still running very strong. Comes with original MagSafe charger. Minor wear on the bottom but screen is perfect. Running macOS Ventura.',
+    images: [
+      'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=800&auto=format&fit=crop',
+      
+    ],
+    specs: [
+      ['Brand', 'Apple'],['Model', 'MacBook Pro 13" M1'],['RAM', '8GB Unified Memory'],
+      ['Storage', '256GB SSD'],['Battery Cycles', '142'],['OS', 'macOS Ventura'],
+      ['Charger', 'Original MagSafe included'],['Condition', 'Very Good'],['Location', 'Pretoria, GP'],
+    ],
+    seller: { name: 'Zanele P.', initials: 'ZP', listings: 9, sold: 7, since: 'Member since 2023' },
+    rating: 4.9, reviews: 3, views: 193
+  },
+  {
+    id: 5,
+    name: 'Dell Laptop Core i9',
+    price: 13500,
+    category: 'Electronics',
+    condition: 'Excellent',
+    location: 'Sandton, GP',
+    description: 'Dell XPS 15 with Core i9 processor. 32GB RAM, 1TB NVMe SSD, Nvidia GeForce RTX 3050 Ti. Perfect for video editing, software development or heavy multitasking. Only 8 months old. Comes with Dell charger and sleeve bag.',
+    images: [
+      'https://images.unsplash.com/photo-1567521463850-4939134bcd4a?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=800&auto=format&fit=crop',
+    ],
+    specs: [
+      ['Brand', 'Dell'],['Model', 'XPS 15'],['CPU', 'Intel Core i9'],['RAM', '32GB DDR5'],
+      ['Storage', '1TB NVMe SSD'],['GPU', 'Nvidia RTX 3050 Ti'],
+      ['Age', '8 months'],['Condition', 'Excellent'],['Location', 'Sandton, GP'],
+    ],
+    seller: { name: 'Ruan V.', initials: 'RV', listings: 5, sold: 3, since: 'Member since 2024' },
+    rating: 4.8, reviews: 3, views: 76
+  },
+  {
+    id: 6,
+    name: 'Headphones',
+    price: 1200,
+    category: 'Electronics',
+    condition: 'Good',
+    location: 'Cape Town, WC',
+    description: 'Sony WH-1000XM4 wireless headphones with industry-leading noise cancellation. Deep bass, 30-hour battery life. Comes with carrying case, 3.5mm cable and USB-C charging cable. Ear cushions in perfect condition.',
+    images: [
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800&auto=format&fit=crop',
+    ],
+    specs: [
+      ['Brand', 'Sony'],['Model', 'WH-1000XM4'],['Type', 'Over-ear Wireless'],
+      ['Battery', '30 hours'],['Noise Cancellation', 'Yes — Industry leading'],
+      ['Includes', 'Case, 3.5mm cable, USB-C cable'],['Condition', 'Good'],['Location', 'Cape Town, WC'],
+    ],
+    seller: { name: 'Amara J.', initials: 'AJ', listings: 11, sold: 8, since: 'Member since 2023' },
+    rating: 4.6, reviews: 3, views: 134
+  },
+  {
+    id: 7,
+    name: 'Gaming PC',
+    price: 12000,
+    category: 'Gaming',
+    condition: 'Excellent',
+    location: 'Roodepoort, GP',
+    description: 'Custom-built RGB gaming PC. Ryzen 7 5800X CPU, RTX 3070 GPU, 32GB DDR4 RAM, 1TB NVMe SSD. Runs all modern games at ultra settings. RGB lighting on case, fans, and RAM. Ready to game out of the box.',
+    images: [
+      'https://images.unsplash.com/photo-1587202372616-b43abea06c2a?w=800&auto=format&fit=crop',
+      
+    ],
+    specs: [
+      ['CPU', 'AMD Ryzen 7 5800X'],['GPU', 'Nvidia RTX 3070 8GB'],['RAM', '32GB DDR4 3200MHz'],
+      ['Storage', '1TB NVMe SSD'],['Case', 'NZXT H510 with RGB'],['PSU', '750W Gold'],
+      ['Condition', 'Excellent'],['Location', 'Roodepoort, GP'],
+    ],
+    seller: { name: 'Luca B.', initials: 'LB', listings: 3, sold: 2, since: 'Member since 2024' },
+    rating: 5.0, reviews: 3, views: 201
+  },
+  {
+    id: 8,
+    name: 'Smart Watch',
+    price: 2200,
+    category: 'Electronics',
+    condition: 'Very Good',
+    location: 'Bloemfontein, FS',
+    description: 'Samsung Galaxy Watch 5 Pro in Titanium Grey. 45mm, LTE model. Tracks sleep, workouts, heart rate and more. Battery lasts 2 days. Comes with original charger and 2 extra bands. Screen protector already applied.',
+    images: [
+      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=800&auto=format&fit=crop',
+    ],
+    specs: [
+      ['Brand', 'Samsung'],['Model', 'Galaxy Watch 5 Pro'],['Size', '45mm'],
+      ['Connectivity', 'LTE + Bluetooth + Wi-Fi'],['Battery', '~2 days'],
+      ['Colour', 'Titanium Grey'],['Extras', '2 extra bands, original charger'],['Condition', 'Very Good'],
+    ],
+    seller: { name: 'Puleng O.', initials: 'PO', listings: 7, sold: 5, since: 'Member since 2023' },
+    rating: 4.7, reviews: 3, views: 99
+  },
+  {
+    id: 9,
+    name: 'Designer Handbag',
+    price: 2400,
+    category: 'Fashion',
+    condition: 'Excellent',
+    location: 'Sandton, GP',
+    description: 'Elegant designer handbag in pristine condition. Spacious interior with multiple compartments, gold-tone hardware and genuine leather finish. Comes with original dust bag and authenticity card. Barely used — purchased 4 months ago.',
+    images: [
+      'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop',
+    ],
+    specs: [
+      ['Type', 'Designer Handbag'],['Material', 'Genuine Leather'],['Hardware', 'Gold-tone'],
+      ['Interior', 'Multiple compartments'],['Includes', 'Dust bag + authenticity card'],
+      ['Age', '4 months'],['Condition', 'Excellent'],['Location', 'Sandton, GP'],
+    ],
+    seller: { name: 'Lerato M.', initials: 'LM', listings: 8, sold: 6, since: 'Member since 2023' },
+    rating: 4.8, reviews: 3, views: 143
+  },
+  {
+    id: 10,
+    name: 'Samsung TV 65"',
+    price: 9500,
+    category: 'Electronics',
+    condition: 'Very Good',
+    location: 'Johannesburg, GP',
+    description: 'Samsung 65-inch 4K Smart TV. Crystal clear display with HDR support and all major streaming apps built in — Netflix, YouTube, Prime Video. Wall mount bracket included. Remote control and all original cables included.',
+    images: [
+      'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=800&auto=format&fit=crop',
+      
+    ],
+    specs: [
+      ['Brand', 'Samsung'],['Screen Size', '65 inches'],['Resolution', '4K UHD'],
+      ['Smart TV', 'Yes — Netflix, YouTube, Prime'],['HDR', 'Yes'],
+      ['Wall Mount', 'Included'],['Condition', 'Very Good'],['Location', 'Johannesburg, GP'],
+    ],
+    seller: { name: 'Bongani N.', initials: 'BN', listings: 4, sold: 3, since: 'Member since 2023' },
+    rating: 4.7, reviews: 3, views: 189
+  },
+  {
+    id: 11,
+    name: 'Sofa Set',
+    price: 4500,
+    category: 'Furniture',
+    condition: 'Good',
+    location: 'Pretoria, GP',
+    description: 'Modern 3-piece sofa set in grey fabric. 3-seater, 2-seater and single chair. Very comfortable with firm cushioning. No stains or tears. Smoke-free and pet-free home. Buyer responsible for collection or delivery arrangements.',
+    images: [
+      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&auto=format&fit=crop',
+    ],
+    specs: [
+      ['Type', '3-Piece Sofa Set'],['Pieces', '3-seater, 2-seater, 1-seater'],['Colour', 'Grey'],
+      ['Material', 'Fabric upholstery'],['Condition', 'Good — no stains or tears'],
+      ['Pet Free', 'Yes'],['Smoke Free', 'Yes'],['Location', 'Pretoria, GP'],
+    ],
+    seller: { name: 'Ntombi S.', initials: 'NS', listings: 6, sold: 4, since: 'Member since 2022' },
+    rating: 4.5, reviews: 3, views: 77
+  },
+  {
+    id: 12,
+    name: 'BMW 4 Series',
+    price: 85000,
+    category: 'Vehicles',
+    condition: 'Excellent',
+    location: 'Cape Town, WC',
+    description: 'BMW 4 Series in excellent condition. 68,000km on the clock. Full service history at VW. One owner. No accidents. Comes with spare tyre, jack and original owner manual. Still under warranty.',
+    images: [
+      'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=800&auto=format&fit=crop',
+      
+    ],
+    specs: [
+      ['Make', 'Toyota'],['Model', 'Corolla Quest 1.8'],['Year', '2019'],
+      ['Mileage', '68,000 km'],['Transmission', 'Automatic'],['Owners', '1'],
+      ['Service History', 'Full — Toyota dealership'],['Colour', 'White'],['Location', 'Cape Town, WC'],
+    ],
+    seller: { name: 'Riaan V.', initials: 'RV', listings: 2, sold: 1, since: 'Member since 2024' },
+    rating: 5.0, reviews: 3, views: 312
+  },
+  {
+    id: 13,
+    name: 'Books Collection',
+    price: 300,
+    category: 'Books',
+    condition: 'Good',
+    location: 'Durban, KZN',
+    description: 'A collection of 12 bestselling books covering personal development, business, mindset and motivation. Titles include Rich Dad Poor Dad, Atomic Habits, Think and Grow Rich, and more. All books in great readable condition.',
+    images: [
+      'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=800&auto=format&fit=crop',
+    ],
+    specs: [
+      ['Quantity', '12 books'],['Genre', 'Personal Development, Business, Mindset'],
+      ['Notable Titles', 'Atomic Habits, Rich Dad Poor Dad, Think and Grow Rich'],
+      ['Language', 'English'],['Condition', 'Good — readable condition'],['Location', 'Durban, KZN'],
+    ],
+    seller: { name: 'Mpho K.', initials: 'MK', listings: 15, sold: 12, since: 'Member since 2022' },
+    rating: 4.6, reviews: 3, views: 54
+  },
+  {
+    id: 14,
+    name: 'Makeup Kit',
+    price: 600,
+    category: 'Beauty',
+    condition: 'Like New',
+    location: 'Bloemfontein, FS',
+    description: 'Complete professional makeup kit. Includes foundation, contour palette, eyeshadow palette (24 shades), mascara, lipsticks in 6 shades, brushes set and setting spray. Most items only swatched once. Perfect for makeup lovers or beginners.',
+    images: [
+      'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop',
+    ],
+    specs: [
+      ['Includes', 'Foundation, palettes, mascara, lipsticks, brushes'],['Eyeshadow Shades', '24'],
+      ['Lipstick Shades', '6'],['Brush Set', 'Included'],['Condition', 'Like New — mostly swatched'],
+      ['Suitable For', 'All skill levels'],['Location', 'Bloemfontein, FS'],
+    ],
+    seller: { name: 'Yolanda T.', initials: 'YT', listings: 9, sold: 7, since: 'Member since 2023' },
+    rating: 4.8, reviews: 3, views: 91
+  },
+  {
+    id: 15,
+    name: 'AirPods Pro',
+    price: 3500,
+    category: 'Electronics',
+    condition: 'Very Good',
+    location: 'Stellenbosch, WC',
+    description: 'Apple AirPods Pro 2nd generation. Active Noise Cancellation and Transparency mode. H2 chip for incredible sound. MagSafe charging case included. Battery holds charge well. Comes in original box with all ear tip sizes.',
+    images: [
+      'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=800&auto=format&fit=crop',
+      
+    ],
+    specs: [
+      ['Brand', 'Apple'],['Model', 'AirPods Pro 2nd Gen'],['Chip', 'Apple H2'],
+      ['ANC', 'Yes — Active Noise Cancellation'],['Transparency Mode', 'Yes'],
+      ['Case', 'MagSafe Charging Case'],['Includes', 'Original box, all ear tip sizes'],['Condition', 'Very Good'],
+    ],
+    seller: { name: 'Carel D.', initials: 'CD', listings: 7, sold: 5, since: 'Member since 2023' },
+    rating: 4.9, reviews: 3, views: 167
+  },
+  {
+    id: 16,
+    name: 'Hoodie',
+    price: 850,
+    category: 'Fashion',
+    condition: 'Like New',
+    location: 'East London, EC',
+    description: 'Premium heavyweight streetwear hoodie in washed black. 380GSM cotton blend — extremely warm and comfortable. Oversized fit, size XL. Only worn twice. No fading, pilling or damage. Washes well.',
+    images: [
+      'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&auto=format&fit=crop',
+      
+    ],
+    specs: [
+      ['Type', 'Heavyweight Hoodie'],['Material', '380GSM Cotton Blend'],['Fit', 'Oversized'],
+      ['Size', 'XL'],['Colour', 'Washed Black'],['Worn', 'Twice'],
+      ['Condition', 'Like New'],['Location', 'East London, EC'],
+    ],
+    seller: { name: 'Keenan P.', initials: 'KP', listings: 11, sold: 9, since: 'Member since 2022' },
+    rating: 4.7, reviews: 3, views: 62
+  },
+  {
+    id: 1,
+    name: 'iPhone 11',
+    price: 6000,
+    category: 'Electronics',
+    condition: 'Excellent',
+    location: 'Cape Town, WC',
+    description: 'iPhone 11 in excellent condition. 128GB storage, comes with original box and charger. Battery health at 89%. No cracks or chips on screen. Minor scuff on the back that is barely noticeable. Running the latest iOS. Ready for immediate collection.',
+    images: [
+      'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&auto=format&fit=crop',
+      
+      'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=800&auto=format&fit=crop',
+    ],
+    specs: [
+      ['Brand', 'Apple'],['Model', 'iPhone 11'],['Storage', '128GB'],
+      ['Colour', 'Black'],['Battery Health', '89%'],['Condition', 'Excellent'],
+      ['Network', 'Unlocked — All Networks'],['Location', 'Cape Town, WC'],
+    ],
+    seller: { name: 'Sipho D.', initials: 'SD', listings: 14, sold: 9, since: 'Member since 2023' },
+    rating: 4.8, reviews: 3, views: 112
+  },
+  // ── Browse-page products ─────────────────────────────────
+  {
+    id: 18, name: 'MacBook 2017 Core i5', price: 8000,
+    category: 'Electronics', condition: 'Good', location: 'Cape Town, WC',
+    description: 'MacBook Pro 2017 13-inch with Core i5 processor. 8GB RAM, 256GB SSD. Perfect for editing, business and coding. Battery recently replaced. Comes with charger. Minor wear on casing but screen is flawless.',
+    images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop'],
+    specs: [['Brand','Apple'],['Model','MacBook Pro 13" 2017'],['CPU','Intel Core i5'],['RAM','8GB'],['Storage','256GB SSD'],['Battery','Recently replaced'],['Condition','Good'],['Location','Cape Town, WC']],
+    seller: { name: 'Dean F.', initials: 'DF', listings: 3, sold: 2, since: 'Member since 2023' },
+    rating: 4.6, reviews: 3, views: 88
+  },
+  {
+    id: 19, name: 'BMW', price: 85000,
+    category: 'Vehicles', condition: 'Excellent', location: 'Johannesburg, GP',
+    description: 'Luxury BMW 3 Series in excellent condition. Full service history, leather interior, sunroof, reverse camera and parking sensors. One careful owner. Ready to drive away.',
+    images: ['https://images.unsplash.com/photo-1502877338535-766e1452684a?w=800&auto=format&fit=crop'],
+    specs: [['Make','BMW'],['Series','3 Series'],['Condition','Excellent'],['Interior','Leather'],['Features','Sunroof, reverse camera, parking sensors'],['Owners','1'],['Location','Johannesburg, GP']],
+    seller: { name: 'Franco B.', initials: 'FB', listings: 2, sold: 1, since: 'Member since 2023' },
+    rating: 4.9, reviews: 3, views: 274
+  },
+  {
+    id: 20, name: 'Desk', price: 2500,
+    category: 'Furniture', condition: 'Very Good', location: 'Pretoria, GP',
+    description: 'Modern home office desk with cable management and spacious work surface. 140cm wide. Light wood finish. No scratches. Ideal for work-from-home or student setups. Self-collection only.',
+    images: ['https://images.unsplash.com/photo-1666249245520-eb1f564dc421?w=800&auto=format&fit=crop'],
+    specs: [['Type','Office Desk'],['Width','140cm'],['Finish','Light Wood'],['Cable Management','Yes'],['Condition','Very Good'],['Location','Pretoria, GP']],
+    seller: { name: 'Sifiso M.', initials: 'SM', listings: 6, sold: 5, since: 'Member since 2022' },
+    rating: 4.7, reviews: 3, views: 55
+  },
+  {
+    id: 21, name: 'Camera', price: 7000,
+    category: 'Electronics', condition: 'Excellent', location: 'Cape Town, WC',
+    description: 'Canon EOS M50 mirrorless camera. 24.1MP sensor, 4K video, flip-out touchscreen. Comes with 15-45mm kit lens, original charger, 2 batteries and 64GB SD card. Perfect for content creators.',
+    images: ['https://images.unsplash.com/photo-1495707902641-75cac588d2e9?w=800&auto=format&fit=crop'],
+    specs: [['Brand','Canon'],['Model','EOS M50'],['Resolution','24.1MP'],['Video','4K'],['Includes','15-45mm lens, 2 batteries, 64GB SD card'],['Condition','Excellent'],['Location','Cape Town, WC']],
+    seller: { name: 'Tia N.', initials: 'TN', listings: 4, sold: 3, since: 'Member since 2023' },
+    rating: 4.9, reviews: 3, views: 163
+  },
+  {
+    id: 22, name: 'Backpack', price: 500,
+    category: 'Fashion', condition: 'Like New', location: 'Durban, KZN',
+    description: 'Stylish large-capacity backpack with laptop compartment (fits up to 15.6 inch), padded shoulder straps and USB charging port on the side. Only used a handful of times. Great for students or travel.',
+    images: ['https://images.unsplash.com/photo-1509762774605-f07235a08f1f?w=800&auto=format&fit=crop'],
+    specs: [['Type','Backpack'],['Laptop Fit','Up to 15.6 inch'],['USB Port','Yes'],['Condition','Like New'],['Location','Durban, KZN']],
+    seller: { name: 'Lebo T.', initials: 'LT', listings: 8, sold: 7, since: 'Member since 2022' },
+    rating: 4.6, reviews: 3, views: 41
+  },
+  {
+    id: 23, name: 'Office Chair', price: 1800,
+    category: 'Furniture', condition: 'Good', location: 'Sandton, GP',
+    description: 'Ergonomic mesh office chair with lumbar support, adjustable armrests and seat height. Breathable back rest. Suitable for long work hours. Minor scuff on base but fully functional.',
+    images: ['https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800&auto=format&fit=crop'],
+    specs: [['Type','Ergonomic Office Chair'],['Back','Mesh — breathable'],['Lumbar Support','Yes'],['Armrests','Adjustable'],['Condition','Good'],['Location','Sandton, GP']],
+    seller: { name: 'Pieter V.', initials: 'PV', listings: 5, sold: 4, since: 'Member since 2023' },
+    rating: 4.5, reviews: 3, views: 68
+  },
+  {
+    id: 24, name: 'Coffee Table', price: 1300,
+    category: 'Furniture', condition: 'Very Good', location: 'Bloemfontein, FS',
+    description: 'Minimalist wooden coffee table with hairpin legs. 110cm x 55cm. Walnut finish. No water stains or scratches. Pairs well with most living room styles. Self-collection only.',
+    images: ['https://images.unsplash.com/photo-1647967527216-adea2f078e07?w=800&auto=format&fit=crop'],
+    specs: [['Type','Coffee Table'],['Dimensions','110cm x 55cm'],['Finish','Walnut'],['Legs','Hairpin style'],['Condition','Very Good'],['Location','Bloemfontein, FS']],
+    seller: { name: 'Hannes O.', initials: 'HO', listings: 7, sold: 5, since: 'Member since 2022' },
+    rating: 4.7, reviews: 3, views: 39
+  },
+  {
+    id: 25, name: 'Leather Jacket', price: 1800,
+    category: 'Fashion', condition: 'Excellent', location: 'Johannesburg, GP',
+    description: 'Genuine leather jacket in black. Size M. Clean modern fit with zip-up collar. No peeling, scuffs or damage. Worn only a few times. A timeless wardrobe piece.',
+    images: ['https://images.unsplash.com/photo-1559551409-dadc959f76b8?w=800&auto=format&fit=crop'],
+    specs: [['Material','Genuine Leather'],['Colour','Black'],['Size','M'],['Condition','Excellent'],['Location','Johannesburg, GP']],
+    seller: { name: 'Khaya D.', initials: 'KD', listings: 10, sold: 8, since: 'Member since 2022' },
+    rating: 4.8, reviews: 3, views: 117
+  },
+  {
+    id: 26, name: 'Mountain Bicycle', price: 5200,
+    category: 'Vehicles', condition: 'Good', location: 'Stellenbosch, WC',
+    description: 'Trek Marlin 5 mountain bicycle. 29-inch wheels, 21-speed gears, front suspension fork. Serviced 2 months ago. Brakes and gears work perfectly. Minor scratches on frame only. Great for trails and daily rides.',
+    images: ['https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&auto=format&fit=crop'],
+    specs: [['Brand','Trek'],['Model','Marlin 5'],['Wheel Size','29 inch'],['Gears','21-speed'],['Suspension','Front fork'],['Condition','Good'],['Location','Stellenbosch, WC']],
+    seller: { name: 'Wian P.', initials: 'WP', listings: 3, sold: 2, since: 'Member since 2023' },
+    rating: 4.6, reviews: 3, views: 82
+  },
+  {
+    id: 27, name: 'Motorbike', price: 30000,
+    category: 'Vehicles', condition: 'Very Good', location: 'Pretoria, GP',
+    description: 'Kawasaki Ninja 400 in blue and black. 2020 model, 18,000km. Full service history. Recent tyre replacement. Roadworthy certificate available. Ideal first or second bike. Learner legal.',
+    images: ['https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&auto=format&fit=crop'],
+    specs: [['Make','Kawasaki'],['Model','Ninja 400'],['Year','2020'],['Mileage','18,000km'],['Licence','Learner legal'],['Roadworthy','Available'],['Location','Pretoria, GP']],
+    seller: { name: 'Dillon K.', initials: 'DK', listings: 2, sold: 1, since: 'Member since 2024' },
+    rating: 4.8, reviews: 3, views: 198
+  },
+  {
+    id: 28, name: 'Ford Mustang 2020', price: 120000,
+    category: 'Vehicles', condition: 'Excellent', location: 'Cape Town, WC',
+    description: '2020 Ford Mustang GT 5.0 V8 in Oxford White. 45,000km. Full Ford service history. No accidents. Premium audio, heated seats, reverse camera. A head-turner in pristine condition.',
+    images: ['https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&auto=format&fit=crop'],
+    specs: [['Make','Ford'],['Model','Mustang GT'],['Year','2020'],['Engine','5.0 V8'],['Mileage','45,000km'],['Colour','Oxford White'],['Service History','Full — Ford dealership'],['Location','Cape Town, WC']],
+    seller: { name: 'Brandon E.', initials: 'BE', listings: 1, sold: 0, since: 'Member since 2024' },
+    rating: 5.0, reviews: 3, views: 431
+  },
+  {
+    id: 29, name: 'Perfume', price: 950,
+    category: 'Beauty', condition: 'Like New', location: 'Durban, KZN',
+    description: 'Chanel Bleu de Chanel Eau de Parfum 100ml. Approximately 80% full. Long-lasting fresh woody scent. Stored correctly away from sunlight. Original box included.',
+    images: ['https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop'],
+    specs: [['Brand','Chanel'],['Fragrance','Bleu de Chanel EDP'],['Size','100ml'],['Remaining','~80%'],['Condition','Like New'],['Location','Durban, KZN']],
+    seller: { name: 'Aisha B.', initials: 'AB', listings: 9, sold: 8, since: 'Member since 2022' },
+    rating: 4.9, reviews: 3, views: 74
+  },
+  {
+    id: 30, name: 'Skincare Set', price: 1100,
+    category: 'Beauty', condition: 'Like New', location: 'Port Elizabeth, EC',
+    description: 'CeraVe skincare bundle — facial cleanser, moisturising cream, AM SPF moisturiser and eye repair cream. All full or barely used. Ideal for normal to dry skin. No reactions — just switching routines.',
+    images: ['https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop'],
+    specs: [['Brand','CeraVe'],['Includes','Cleanser, moisturiser, SPF, eye cream'],['Skin Type','Normal to dry'],['Condition','Like New — barely used'],['Location','Port Elizabeth, EC']],
+    seller: { name: 'Priya N.', initials: 'PN', listings: 6, sold: 5, since: 'Member since 2023' },
+    rating: 4.8, reviews: 3, views: 56
+  },
+  {
+    id: 31, name: 'Dining Table', price: 6000,
+    category: 'Furniture', condition: 'Very Good', location: 'Johannesburg, GP',
+    description: 'Large 8-seater solid wood dining table in dark oak finish. 220cm x 100cm. Chairs not included. Minor surface marks on one end but structurally perfect. A statement piece for any dining room.',
+    images: ['https://images.unsplash.com/photo-1572025442348-511bdcae389b?w=800&auto=format&fit=crop'],
+    specs: [['Type','Dining Table'],['Seats','8 people'],['Dimensions','220cm x 100cm'],['Material','Solid wood'],['Finish','Dark oak'],['Chairs','Not included'],['Condition','Very Good'],['Location','Johannesburg, GP']],
+    seller: { name: 'Ronel S.', initials: 'RS', listings: 4, sold: 3, since: 'Member since 2022' },
+    rating: 4.7, reviews: 3, views: 103
+  },
+  {
+    id: 32, name: 'Gaming Monitor', price: 4800,
+    category: 'Electronics', condition: 'Excellent', location: 'Roodepoort, GP',
+    description: 'LG 27-inch 165Hz IPS gaming monitor. 1ms response time, QHD resolution, FreeSync and G-Sync compatible. No dead pixels. Comes with original stand, HDMI and DisplayPort cables.',
+    images: ['https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&auto=format&fit=crop'],
+    specs: [['Brand','LG'],['Size','27 inch'],['Resolution','QHD 2560x1440'],['Refresh Rate','165Hz'],['Response Time','1ms'],['Adaptive Sync','FreeSync + G-Sync'],['Condition','Excellent'],['Location','Roodepoort, GP']],
+    seller: { name: 'Kyle M.', initials: 'KM', listings: 7, sold: 5, since: 'Member since 2023' },
+    rating: 4.9, reviews: 3, views: 145
+  },
+  {
+    id: 33, name: 'Refrigerator', price: 8500,
+    category: 'Electronics', condition: 'Very Good', location: 'Pretoria, GP',
+    description: 'Samsung 350L double-door fridge in silver. Energy efficient, bottom freezer design. Cooling works perfectly. Some light scuffs on the outside but interior is spotless. Buyer responsible for delivery or collection.',
+    images: ['https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=800&auto=format&fit=crop'],
+    specs: [['Brand','Samsung'],['Capacity','350L'],['Type','Double door — bottom freezer'],['Colour','Silver'],['Energy','A+ rated'],['Condition','Very Good'],['Location','Pretoria, GP']],
+    seller: { name: 'Musa Z.', initials: 'MZ', listings: 3, sold: 2, since: 'Member since 2023' },
+    rating: 4.6, reviews: 3, views: 87
+  },
+  {
+    id: 34, name: 'Washing Machine', price: 7200,
+    category: 'Electronics', condition: 'Good', location: 'Cape Town, WC',
+    description: 'LG 7kg front-loader washing machine. Multiple wash programmes, quick wash setting, and child lock. Works perfectly. Some minor marks on the door trim. Original manual included.',
+    images: ['https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=800&auto=format&fit=crop'],
+    specs: [['Brand','LG'],['Capacity','7kg'],['Type','Front-loader'],['Features','Quick wash, child lock'],['Condition','Good'],['Manual','Included'],['Location','Cape Town, WC']],
+    seller: { name: 'Fatima H.', initials: 'FH', listings: 5, sold: 4, since: 'Member since 2022' },
+    rating: 4.5, reviews: 3, views: 61
+  },
+  {
+    id: 35, name: 'Head Boards', price: 2500,
+    category: 'Furniture', condition: 'Excellent', location: 'East London, EC',
+    description: 'King-size LED headboard in dark grey fabric with adjustable ambient lighting strip. Upholstered, no damage. Fits standard king-size bed frames. Makes any bedroom look premium.',
+    images: ['https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800&auto=format&fit=crop'],
+    specs: [['Type','Headboard'],['Size','King'],['Material','Upholstered fabric'],['Colour','Dark grey'],['LED','Yes — ambient strip'],['Condition','Excellent'],['Location','East London, EC']],
+    seller: { name: 'Lindiwe G.', initials: 'LG', listings: 4, sold: 3, since: 'Member since 2023' },
+    rating: 4.8, reviews: 3, views: 44
+  },
+  {
+    id: 36, name: 'Tablet', price: 5500,
+    category: 'Electronics', condition: 'Very Good', location: 'Durban, KZN',
+    description: 'Samsung Galaxy Tab S7 in Mystic Navy. 11-inch display, 128GB storage, WiFi + LTE. Comes with S Pen, original charger and case. Screen is perfect — no scratches. Great for streaming, notes and productivity.',
+    images: ['https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=800&auto=format&fit=crop'],
+    specs: [['Brand','Samsung'],['Model','Galaxy Tab S7'],['Screen','11 inch'],['Storage','128GB'],['Connectivity','WiFi + LTE'],['Includes','S Pen, charger, case'],['Condition','Very Good'],['Location','Durban, KZN']],
+    seller: { name: 'Omar A.', initials: 'OA', listings: 6, sold: 4, since: 'Member since 2023' },
+    rating: 4.7, reviews: 3, views: 119
+  },
+  {
+    id: 37, name: 'Drone', price: 9000,
+    category: 'Electronics', condition: 'Excellent', location: 'Sandton, GP',
+    description: 'DJI Mini 3 Pro drone. Under 249g — no licence required. 4K HDR video, 48MP photos, 34-min battery life. Includes 2 batteries, ND filter set, carry bag and RC-N1 controller. Very few flights.',
+    images: ['https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=800&auto=format&fit=crop'],
+    specs: [['Brand','DJI'],['Model','Mini 3 Pro'],['Weight','Under 249g — no licence'],['Video','4K HDR'],['Photos','48MP'],['Battery Life','34 min'],['Includes','2 batteries, ND filters, bag, controller'],['Condition','Excellent']],
+    seller: { name: 'Jacques L.', initials: 'JL', listings: 3, sold: 2, since: 'Member since 2024' },
+    rating: 5.0, reviews: 3, views: 223
+  },
+  {
+    id: 38, name: 'Gaming Keyboard', price: 950,
+    category: 'Electronics', condition: 'Good', location: 'Johannesburg, GP',
+    description: 'Razer Huntsman Tournament Edition TKL mechanical keyboard. Linear optical switches, per-key RGB lighting, detachable USB-C cable. Compact tenkeyless layout. Minor keycap shine from use but fully functional.',
+    images: ['https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=800&auto=format&fit=crop'],
+    specs: [['Brand','Razer'],['Model','Huntsman TE TKL'],['Switches','Linear optical'],['Layout','Tenkeyless'],['RGB','Per-key'],['Cable','Detachable USB-C'],['Condition','Good'],['Location','Johannesburg, GP']],
+    seller: { name: 'Reece T.', initials: 'RT', listings: 9, sold: 7, since: 'Member since 2022' },
+    rating: 4.6, reviews: 3, views: 78
+  },
+  {
+    id: 39, name: 'Running Shoes', price: 1300,
+    category: 'Fashion', condition: 'Good', location: 'Cape Town, WC',
+    description: 'Nike Air Zoom Pegasus 40 in grey and white. Size 10 US. Used for about 3 months of light running. Cushioning still in great shape. Washed and ready. Comes with original box.',
+    images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop'],
+    specs: [['Brand','Nike'],['Model','Air Zoom Pegasus 40'],['Size','10 US / 44 EU'],['Colour','Grey / White'],['Used For','~3 months light running'],['Condition','Good'],['Includes','Original box'],['Location','Cape Town, WC']],
+    seller: { name: 'Taryn M.', initials: 'TM', listings: 6, sold: 5, since: 'Member since 2023' },
+    rating: 4.6, reviews: 3, views: 53
+  },
+  {
+    id: 40, name: 'Sneakers', price: 900,
+    category: 'Fashion', condition: 'Good', location: 'Pretoria, GP',
+    description: 'Clean casual sneakers great for daily wear and streetwear looks. Comfortable fit, well-cushioned sole. Worn a handful of times. Size 9 US.',
+    images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop'],
+    specs: [['Type','Casual Sneakers'],['Size','9 US / 43 EU'],['Condition','Good'],['Location','Pretoria, GP']],
+    seller: { name: 'Tshepo K.', initials: 'TK', listings: 4, sold: 3, since: 'Member since 2023' },
+    rating: 4.5, reviews: 3, views: 36
+  },
+  {
+    id: 41, name: 'Hoodies', price: 850,
+    category: 'Fashion', condition: 'Like New', location: 'Johannesburg, GP',
+    description: 'Premium heavyweight hoodie in charcoal grey. 380GSM cotton blend — thick, warm and comfortable. Oversized fit, size L. Only worn once. No fading or pilling.',
+    images: ['https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&auto=format&fit=crop'],
+    specs: [['Type','Heavyweight Hoodie'],['Material','380GSM Cotton'],['Fit','Oversized'],['Size','L'],['Colour','Charcoal Grey'],['Condition','Like New'],['Location','Johannesburg, GP']],
+    seller: { name: 'Simba N.', initials: 'SN', listings: 7, sold: 6, since: 'Member since 2022' },
+    rating: 4.7, reviews: 3, views: 49
+  },
+];
+
+/* ── Utility ───────────────────────────────────────────────── */
+function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'show ' + type;
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.className = '', 3000);
+}
+
+function addToCart(name, price, image, description) {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({ name, price, images: [image], description });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    showToast(name + ' added to cart.', 'ok');
+}
+
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const el = document.getElementById('cartCount');
+    if (el) el.textContent = cart.length;
+}
+
+/* ── Load product from URL param ───────────────────────────── */
+function getParam(key) {
+    return new URLSearchParams(window.location.search).get(key);
+}
+
+let currentProduct = null;
+
+/* Build a fallback product for browse-page items not in PRODUCTS array */
+function buildFallback(name) {
+    const fallbackImages = {
+        'macbook 2017 core i5':   'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop',
+        'bmw':                    'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=800&auto=format&fit=crop',
+        'desk':                   'https://images.unsplash.com/photo-1666249245520-eb1f564dc421?w=800&auto=format&fit=crop',
+        'camera':                 'https://images.unsplash.com/photo-1495707902641-75cac588d2e9?w=800&auto=format&fit=crop',
+        'backpack':               'https://images.unsplash.com/photo-1509762774605-f07235a08f1f?w=800&auto=format&fit=crop',
+        'office chair':           'https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800&auto=format&fit=crop',
+        'coffee table':           'https://images.unsplash.com/photo-1647967527216-adea2f078e07?w=800&auto=format&fit=crop',
+        'leather jacket':         'https://images.unsplash.com/photo-1559551409-dadc959f76b8?w=800&auto=format&fit=crop',
+        'mountain bicycle':       'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=800&auto=format&fit=crop',
+        'motorbike':              'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=800&auto=format&fit=crop',
+        'ford mustang 2020':      'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&auto=format&fit=crop',
+        'perfume':                'https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop',
+        'skincare set':           'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=800&auto=format&fit=crop',
+        'dining table':           'https://images.unsplash.com/photo-1572025442348-511bdcae389b?w=800&auto=format&fit=crop',
+        'gaming monitor':         'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&auto=format&fit=crop',
+        'refrigerator':           'https://images.unsplash.com/photo-1584568694244-14fbdf83bd30?w=800&auto=format&fit=crop',
+        'washing machine':        'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=800&auto=format&fit=crop',
+        'head boards':            'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800&auto=format&fit=crop',
+        'tablet':                 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=800&auto=format&fit=crop',
+        'drone':                  'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=800&auto=format&fit=crop',
+        'gaming keyboard':        'https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?w=800&auto=format&fit=crop',
+        'running shoes':          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop',
+        'sneakers':               'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop',
+        'hoodies':                'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&auto=format&fit=crop',
+    };
+    const key = name.toLowerCase();
+    const img = fallbackImages[key] || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop';
+    return {
+        id: 0,
+        name: name,
+        price: 0,
+        category: 'General',
+        condition: 'See description',
+        location: 'South Africa',
+        description: 'Contact the seller for full details on this item.',
+        images: [img],
+        specs: [['Item', name], ['Location', 'South Africa'], ['Condition', 'Contact seller']],
+        seller: { name: 'LinkUP Seller', initials: 'LS', listings: 1, sold: 0, since: 'Member since 2024' },
+        rating: 4.5, reviews: 0, views: 1
+    };
+}
+
+function loadProduct() {
+    const idParam   = getParam('id');
+    const nameParam = getParam('name');
+
+    let product = null;
+
+    // Try find by name first (from browse page)
+    if (nameParam) {
+        const normalized = nameParam.toLowerCase();
+        product = PRODUCTS.find(p => p.name.toLowerCase() === normalized);
+        // If not in our detailed list, build a fallback so the page still works
+        if (!product) product = buildFallback(nameParam);
+    }
+
+    // Try find by ID (from home page cards)
+    if (!product && idParam) {
+        product = PRODUCTS.find(p => p.id === parseInt(idParam));
+    }
+
+    // Final fallback — show first product
+    if (!product) product = PRODUCTS[0];
+
+    currentProduct = product;
+
+    document.title = product.name + ' — LinkUP';
+    document.getElementById('breadcrumbName').textContent = product.name;
+
+    // Category tag
+    document.getElementById('categoryTagText').textContent = product.category;
+
+    // Title
+    document.getElementById('productTitle').textContent = product.name;
+
+    // Price
+    document.getElementById('productPrice').textContent = 'R' + product.price.toLocaleString();
+
+    // Description
+    document.getElementById('productDesc').textContent = product.description;
+    document.getElementById('tabDescription').textContent = product.description;
+
+    // Rating & views
+    const rating = product.rating;
+    const starsEl = document.getElementById('starsEl');
+    starsEl.innerHTML = '';
+    for (let i = 1; i <= 5; i++) {
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('class', 'star' + (i > Math.round(rating) ? ' empty' : ''));
+        svg.setAttribute('width', '15'); svg.setAttribute('height', '15');
+        svg.setAttribute('viewBox', '0 0 24 24');
+        const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        poly.setAttribute('points', '12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2');
+        svg.appendChild(poly);
+        starsEl.appendChild(svg);
+    }
+    document.getElementById('ratingScore').textContent = rating.toFixed(1);
+    document.getElementById('ratingCount').textContent = product.reviews + ' reviews';
+    document.getElementById('viewsCount').textContent  = product.views + ' views';
+
+    // Detail pills
+    const pills = document.getElementById('detailPills');
+    const pillData = [
+        { icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>', label: product.condition },
+        { icon: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>', label: product.location },
+        { icon: '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>', label: 'Listed today' },
+    ];
+    pills.innerHTML = pillData.map(p => `
+        <div class="detail-pill">
+            <svg viewBox="0 0 24 24">${p.icon}</svg>
+            ${p.label}
+        </div>`).join('');
+
+    // Specs
+    const specsTable = document.getElementById('specsTable');
+    specsTable.innerHTML = product.specs.map(([k, v]) => `
+        <tr><td>${k}</td><td>${v}</td></tr>`).join('');
+
+    // Gallery
+    const mainImg = document.getElementById('mainImage');
+    mainImg.src = product.images[0];
+    mainImg.alt = product.name;
+
+    const thumbsContainer = document.getElementById('thumbsContainer');
+    thumbsContainer.innerHTML = '';
+    product.images.forEach((src, i) => {
+        const thumb = document.createElement('div');
+        thumb.className = 'gallery-thumb' + (i === 0 ? ' active' : '');
+        thumb.innerHTML = `<img src="${src}" alt="${product.name} view ${i + 1}">`;
+        thumb.onclick = () => {
+            mainImg.src = src;
+            document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+        };
+        thumbsContainer.appendChild(thumb);
+    });
+
+    // Seller
+    const s = product.seller;
+    document.getElementById('sellerAvatar').textContent = s.initials;
+    document.getElementById('sellerName').textContent   = s.name;
+    document.getElementById('sellerMeta').textContent   = s.since;
+    document.getElementById('sellerListings').textContent = s.listings;
+    document.getElementById('sellerSold').textContent   = s.sold;
+
+    // Add to cart button
+    document.getElementById('addCartBtn').onclick = () => {
+        addToCart(product.name, product.price, product.images[0], product.description);
+    };
+
+    // Chat modal description
+    document.getElementById('chatModalDesc').textContent =
+        'Send a message to ' + s.name + ' about ' + product.name + '.';
+
+    // Related products
+    buildRelated(product);
+}
+
+/* ── Related products ──────────────────────────────────────── */
+function buildRelated(product) {
+    const related = PRODUCTS
+        .filter(p => p.id !== product.id)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 4);
+
+    const grid = document.getElementById('relatedGrid');
+    grid.innerHTML = related.map(p => `
+        <a href="product.html?id=${p.id}" class="product-card">
+            <div class="product-card-img">
+                <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
+            </div>
+            <div class="product-card-body">
+                <h4>${p.name}</h4>
+                <div class="price">R${p.price.toLocaleString()}</div>
+                <p class="desc">${p.description.substring(0, 80)}...</p>
+                <button onclick="event.preventDefault(); addToCart('${p.name}', ${p.price}, '${p.images[0]}', '${p.description.replace(/'/g,"\\'")}')">Add to Cart</button>
+            </div>
+        </a>`).join('');
+}
+
+/* ── Lightbox ──────────────────────────────────────────────── */
+function openLightbox() {
+    document.getElementById('lightboxImg').src = document.getElementById('mainImage').src;
+    document.getElementById('lightbox').classList.add('show');
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('show');
+}
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeLightbox(); closeChatModal(); }
+});
+
+/* ── Info tabs ─────────────────────────────────────────────── */
+function switchInfoTab(name, btn) {
+    document.querySelectorAll('.tab-content-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('pane-' + name).classList.add('active');
+    btn.classList.add('active');
+}
+
+/* ── Save item ─────────────────────────────────────────────── */
+let saved = false;
+
+function toggleSave() {
+    saved = !saved;
+    const btn = document.getElementById('saveBtn');
+    if (saved) {
+        btn.innerHTML = `<svg viewBox="0 0 24 24" style="fill:#ef4444;stroke:#ef4444;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Saved`;
+        btn.style.background = '#fff5f5';
+        btn.style.color = '#ef4444';
+        btn.style.borderColor = '#fca5a5';
+        showToast(currentProduct.name + ' saved to your list.', 'ok');
+    } else {
+        btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Save Item`;
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+        showToast('Removed from saved items.', '');
+    }
+}
+
+/* ── Share ─────────────────────────────────────────────────── */
+function shareProduct() {
+    if (navigator.share) {
+        navigator.share({ title: currentProduct.name, text: 'Check out ' + currentProduct.name + ' on LinkUP for R' + currentProduct.price.toLocaleString(), url: window.location.href });
+    } else {
+        navigator.clipboard.writeText(window.location.href);
+        showToast('Link copied to clipboard.', 'ok');
+    }
+}
+
+/* ── Chat modal ────────────────────────────────────────────── */
+function openChatModal() {
+    document.getElementById('chatModal').classList.add('show');
+    setTimeout(() => document.getElementById('chatMessage').focus(), 100);
+}
+
+function closeChatModal() {
+    document.getElementById('chatModal').classList.remove('show');
+}
+
+function sendMessage() {
+    const msg = document.getElementById('chatMessage').value.trim();
+    if (!msg) { showToast('Please write a message first.', 'fail'); return; }
+
+    const loggedIn = localStorage.getItem('isLoggedIn');
+    if (loggedIn !== 'true') {
+        closeChatModal();
+        showToast('Please sign in to message sellers.', 'fail');
+        setTimeout(() => location.href = 'login.html', 1400);
+        return;
+    }
+
+    closeChatModal();
+    document.getElementById('chatMessage').value = '';
+    showToast('Message sent to ' + currentProduct.seller.name + '.', 'ok');
+}
+
+/* ── Init ──────────────────────────────────────────────────── */
+loadProduct();
+updateCartCount();
+</script>
+
+</body>
+</html>

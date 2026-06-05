@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkUP — Buy. Sell. Connect.</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+/* ── CSS Variables ─────────────────────────────────────────── */
+:root {
+    --blue:      #1877f2;
+    --blue-dark: #1360cc;
+    --blue-deep: #0d4fa8;
+    --bg:        #f1f5f9;
+    --surface:   #ffffff;
+    --text:      #0f172a;
+    --muted:     #64748b;
+    --border:    #e4e9f2;
+    --radius:    14px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── TOPBAR ────────────────────────────────────────────────── */
+.topbar {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue-dark) 55%, var(--blue-deep) 100%);
+    padding: 0 48px;
+    height: 72px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 24px rgba(24,119,242,0.32);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+/* Decorative rings */
+.topbar::before {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    border: 55px solid rgba(255,255,255,.06);
+    top: -160px; right: 200px;
+    pointer-events: none;
+}
+
+.topbar::after {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 40px solid rgba(255,255,255,.04);
+    bottom: -110px; right: -30px;
+    pointer-events: none;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    position: relative;
+    z-index: 1;
+}
+
+.nav-right a {
+    color: rgba(255,255,255,0.88);
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 9px;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: background 0.18s, transform 0.18s, color 0.18s;
+    letter-spacing: 0.1px;
+}
+
+.nav-right a:hover {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.nav-right a.active {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    font-weight: 600;
+}
+
+.nav-right .cart-link {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.28);
+    font-weight: 600;
+    color: #fff;
+}
+
+.nav-right .cart-link:hover { background: rgba(255,255,255,0.25); }
+
+.cart-count {
+    background: #ff3b30;
+    color: white;
+    padding: 1px 6px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 3px;
+}
+
+.nav-right .login-link {
+    background: white;
+    color: var(--blue) !important;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 9px;
+    margin-left: 4px;
+    transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.nav-right .login-link:hover {
+    background: #eef4ff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.14);
+}
+
+/* ── HERO ──────────────────────────────────────────────────── */
+.hero {
+    position: relative;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    background: url("tomasz-anusiewicz-4RNMungWX14-unsplash.jpg") center/cover no-repeat;
+    overflow: hidden;
+}
+
+
+/* Decorative shapes behind hero */
+.hero::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.04);
+    top: -260px; right: -100px;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.03);
+    bottom: -160px; left: 30%;
+}
+
+.hero-overlay {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    text-align: center;
+}
+
+.hero-overlay h2 {
+    font-size: clamp(30px, 5vw, 52px);
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -0.8px;
+    line-height: 1.12;
+    margin-bottom: 14px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.15);
+}
+
+.hero-overlay p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.78);
+    margin-bottom: 32px;
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+
+/* Search box */
+.search-box {
+    display: flex;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.search-box select {
+    border: none;
+    padding: 0 16px;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 600;
+    color: var(--text);
+    background: #f8fafc;
+    border-right: 1px solid var(--border);
+    outline: none;
+    cursor: pointer;
+    min-width: 130px;
+    -webkit-appearance: none;
+}
+
+.search-box input {
+    flex: 1;
+    border: none;
+    padding: 17px 18px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--text);
+    outline: none;
+}
+
+.search-box input::placeholder { color: #b0b8c8; }
+
+.search-box button {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    padding: 0 28px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.18s;
+    white-space: nowrap;
+}
+
+.search-box button:hover { background: var(--blue-dark); }
+
+/* ── TRUST STRIP ───────────────────────────────────────────── */
+.trust-strip {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    height: 58px;
+    overflow-x: auto;
+}
+
+.trust-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+.trust-icon {
+    font-size: 16px;
+}
+
+/* ── CATEGORY PILLS ────────────────────────────────────────── */
+.category-strip {
+    padding: 28px 48px 0;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.category-strip::-webkit-scrollbar { display: none; }
+
+.cat-pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 18px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.18s;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.cat-pill:hover, .cat-pill.active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(24,119,242,0.28);
+}
+
+/* ── SECTIONS ──────────────────────────────────────────────── */
+.home-section {
+    padding: 36px 48px;
+}
+
+.home-section + .home-section {
+    padding-top: 0;
+}
+
+.section-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.3px;
+}
+
+.section-row a {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
+    text-decoration: none;
+    transition: color 0.18s;
+}
+
+.section-row a:hover { color: var(--blue-dark); }
+
+/* ── PRODUCT ROW ───────────────────────────────────────────── */
+.product-row {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    padding: 4px 2px 16px;
+    scrollbar-width: thin;
+    scrollbar-color: #dbe2ea transparent;
+}
+
+.product-row::-webkit-scrollbar { height: 5px; }
+.product-row::-webkit-scrollbar-track { background: transparent; }
+.product-row::-webkit-scrollbar-thumb { background: #dbe2ea; border-radius: 99px; }
+
+/* ── PRODUCT CARD ──────────────────────────────────────────── */
+.product {
+    min-width: 210px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+}
+
+.product:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+    border-color: #c5d4e8;
+}
+
+.product img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s;
+}
+
+.product:hover img { transform: scale(1.04); }
+
+.product h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    padding: 12px 14px 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.price {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--blue);
+    padding: 0 14px 4px;
+}
+
+.product-desc {
+    font-size: 12px;
+    color: var(--muted);
+    padding: 0 14px 12px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-actions {
+    display: flex;
+    gap: 8px;
+    padding: 0 14px 14px;
+}
+
+.product-actions button {
+    flex: 1;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.18s;
+}
+
+.product-actions button:first-child {
+    background: #f1f5f9;
+    color: var(--muted);
+    border: 1.5px solid var(--border);
+}
+
+.product-actions button:first-child:hover {
+    background: #fee2e2;
+    color: #ef4444;
+    border-color: #fecaca;
+}
+
+.product-actions button:last-child {
+    background: var(--blue);
+    color: #fff;
+}
+
+.product-actions button:last-child:hover {
+    background: var(--blue-dark);
+    transform: translateY(-1px);
+}
+
+/* ── MID SLIDER ────────────────────────────────────────────── */
+.mid-slider {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    height: 260px;
+    background: #0f172a;
+}
+
+.mid-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+}
+
+.mid-slide.active { opacity: 1; }
+
+.mid-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.55);
+}
+
+.mid-overlay {
+    position: absolute;
+    top: 50%;
+    left: 7%;
+    transform: translateY(-50%);
+    color: white;
+}
+
+.mid-overlay h2 {
+    font-size: clamp(22px, 3vw, 34px);
+    font-weight: 800;
+    margin-bottom: 16px;
+    letter-spacing: -0.4px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.mid-overlay button {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    margin-right: 10px;
+    background: var(--blue);
+    color: #fff;
+    transition: background 0.18s, transform 0.18s;
+}
+
+.mid-overlay button:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+.mid-overlay button:last-child {
+    background: rgba(255,255,255,0.18);
+    border: 1.5px solid rgba(255,255,255,0.5);
+    backdrop-filter: blur(4px);
+}
+
+.mid-overlay button:last-child:hover { background: rgba(255,255,255,0.28); }
+
+/* Slider dots */
+.mid-dots {
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 2;
+}
+
+.mid-dot {
+    width: 6px; height: 6px;
+    border-radius: 99px;
+    background: rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: all 0.28s;
+}
+
+.mid-dot.active {
+    background: #fff;
+    width: 20px;
+}
+
+/* ── BOTTOM SLIDESHOW ──────────────────────────────────────── */
+.slideshow {
+    position: relative;
+    margin: 0 48px 40px;
+    border-radius: 18px;
+    overflow: hidden;
+    height: 220px;
+    background: #0f172a;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+}
+
+.slide.active { opacity: 1; }
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.65);
+}
+
+.slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 2;
+    transition: background 0.18s;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.slide-btn:hover { background: rgba(255,255,255,0.35); }
+.slide-btn.prev { left: 14px; }
+.slide-btn.next { right: 14px; }
+
+/* ── QUICK VIEW MODAL ──────────────────────────────────────── */
+.quick-view {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.6);
+    backdrop-filter: blur(6px);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.quick-content {
+    background: var(--surface);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 400px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+    animation: popIn 0.22s ease;
+}
+
+@keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.quick-content img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.close-quick {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    transition: background 0.18s;
+}
+
+.close-quick:hover { background: rgba(0,0,0,0.6); }
+
+.quick-content h2 {
+    font-size: 18px;
+    font-weight: 800;
+    padding: 18px 20px 6px;
+}
+
+.quick-content button {
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    width: calc(100% - 40px);
+    margin: 0 20px 20px;
+    padding: 13px;
+    border-radius: 11px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.18s;
+}
+
+.quick-content button:hover { background: var(--blue-dark); }
+
+/* ── TOAST ─────────────────────────────────────────────────── */
+#toast {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    background: #0f172a;
+    color: #fff;
+    padding: 13px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translateY(12px);
+    transition: opacity 0.22s, transform 0.22s;
+    border-left: 4px solid var(--blue);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    max-width: 280px;
+}
+
+#toast.show { opacity: 1; transform: translateY(0); }
+
+/* ── SCROLL REVEAL ─────────────────────────────────────────── */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── FOOTER ────────────────────────────────────────────────── */
+.footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 52px 48px 28px;
+    margin-top: 20px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer h3 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 10px;
+}
+
+.footer h4 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 14px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.footer p, .footer li {
+    color: var(--muted);
+    font-size: 13.5px;
+    margin-bottom: 9px;
+    list-style: none;
+    cursor: pointer;
+    transition: color 0.18s, transform 0.18s;
+    line-height: 1.5;
+}
+
+.footer p:hover, .footer li:hover {
+    color: var(--blue);
+    transform: translateX(3px);
+}
+
+.footer-brand-desc {
+    cursor: default !important;
+}
+
+.footer-brand-desc:hover {
+    color: var(--muted) !important;
+    transform: none !important;
+}
+
+.footer-btns {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+.footer-btns button {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.18s, transform 0.18s;
+}
+
+.footer-btns .btn-primary {
+    background: var(--blue);
+    color: #fff;
+}
+
+.footer-btns .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+
+.footer-btns .btn-secondary {
+    background: #f1f5f9;
+    color: var(--text);
+    border: 1.5px solid var(--border);
+}
+
+.footer-btns .btn-secondary:hover { background: #e4e9f2; transform: translateY(-1px); }
+
+.footer input {
+    width: 100%;
+    background: #f8fafc;
+    border: 1.5px solid var(--border);
+    color: var(--text);
+    border-radius: 9px;
+    padding: 11px 14px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.18s;
+}
+
+.footer input:focus { border-color: var(--blue); }
+.footer input::placeholder { color: #b0b8c8; }
+
+.footer-subscribe-btn {
+    width: 100%;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    padding: 11px;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.18s;
+}
+
+.footer-subscribe-btn:hover { background: var(--blue-dark); }
+
+.footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.footer-bottom p {
+    color: #94a3b8;
+    font-size: 13px;
+    cursor: default;
+}
+
+.footer-bottom p:hover { color: #94a3b8; transform: none; }
+
+.footer-socials {
+    display: flex;
+    gap: 6px;
+}
+
+.footer-socials span {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: background 0.18s, color 0.18s;
+}
+
+.footer-socials span:hover {
+    background: #f1f5f9;
+    color: var(--blue);
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────────── */
+@media (max-width: 1000px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+    .trust-strip { gap: 28px; padding: 0 24px; }
+}
+
+@media (max-width: 768px) {
+    .topbar { padding: 0 20px; height: 64px; }
+    .home-section { padding: 24px 20px; }
+    .category-strip { padding: 20px 20px 0; }
+    .slideshow { margin: 0 20px 28px; height: 160px; }
+    .mid-slider { height: 200px; }
+    .trust-strip { display: none; }
+}
+
+@media (max-width: 580px) {
+    .nav-right a:not(.cart-link):not(.login-link):not(.active) { display: none; }
+    .footer { padding: 36px 20px 24px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    .search-box select { min-width: 100px; font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Toast ──────────────────────────────────────────────── -->
+<div id="toast"></div>
+
+<!-- ── Quick View Modal ───────────────────────────────────── -->
+<div id="quickView" class="quick-view" onclick="if(event.target===this)closeQuickView()">
+  <div class="quick-content" style="position:relative;">
+    <span class="close-quick" onclick="closeQuickView()">✕</span>
+    <img id="quickImg" alt="Product">
+    <h2 id="quickName"></h2>
+    <p id="quickPrice" style="font-size:20px;font-weight:800;color:#1877f2;padding:4px 20px 8px;"></p>
+    <p id="quickDesc" style="padding:0 20px 16px;color:#64748b;font-size:13px;line-height:1.6;"></p>
+    <div>
+      <button id="quickCartBtn">Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ TOPBAR ══════════════ -->
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <svg width="158" height="44" viewBox="0 0 158 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="15" cy="22" r="10" stroke="white" stroke-width="2.8" fill="none"/>
+      <circle cx="31" cy="22" r="10" stroke="white" stroke-width="2.8" fill="none"/>
+      <line x1="23" y1="19" x2="23" y2="7" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+      <polyline points="18.5,12 23,6.5 27.5,12" stroke="white" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <text x="48" y="29" font-family="Poppins, Segoe UI, Arial, sans-serif"
+            font-size="22" font-weight="800" fill="white" letter-spacing="0.3">
+        Link<tspan fill="rgba(255,255,255,0.55)">UP</tspan>
+      </text>
+    </svg>
+  </a>
+
+  <nav class="nav-right">
+    <a href="index.html" class="active">Home</a>
+    <a href="products.html">Browse</a>
+    <a href="sell.html">Sell</a>
+    <a href="cart.html" class="cart-link">
+      🛒 Cart <span id="cartCount" class="cart-count">0</span>
+    </a>
+     <a href="chat.html">Chat</a>
+    <a href="settings.html">Settings</a>
+    <a href="about.html">About</a>
+    <a href="login.html" class="login-link">Sign In</a>
+  </nav>
+</header>
+
+<!-- ══════════════════════════════════ HERO ════════════════ -->
+<section class="hero">
+  <div class="hero-overlay">
+
+    <h2>Find Anything you want on LinkUP</h2>
+    <p>Explore deals across electronics, fashion, vehicles and more</p>
+
+    <div class="search-box">
+      <select id="heroCategory" aria-label="Category">
+        <option>All Categories</option>
+        <option>Electronics</option>
+        <option>Clothing</option>
+        <option>Furniture</option>
+        <option>Vehicles</option>
+        <option>Beauty</option>
+        <option>Gaming</option>
+        <option>Books</option>
+      </select>
+      <input type="text" id="heroSearch" placeholder="Search anything...">
+      <button onclick="doSearch()">Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════ TRUST STRIP ════════ -->
+<div class="trust-strip">
+  <div class="trust-item"><span class="trust-icon"></span> Secure Transactions</div>
+  <div class="trust-item"><span class="trust-icon"></span> Direct Messaging</div>
+  <div class="trust-item"><span class="trust-icon"></span> 100+ Listings</div>
+  <div class="trust-item"><span class="trust-icon"></span> South Africa's Marketplace</div>
+  <div class="trust-item"><span class="trust-icon"></span> Free to Join</div>
+</div>
+
+<!-- ══════════════════════════════════ CATEGORY PILLS ═════ -->
+<div class="category-strip">
+  <a href="products.html" class="cat-pill active">All</a>
+  <a href="products.html" class="cat-pill">Electronics</a>
+  <a href="products.html" class="cat-pill">Fashion</a>
+  <a href="products.html" class="cat-pill">Vehicles</a>
+  <a href="products.html" class="cat-pill">Furniture</a>
+  <a href="products.html" class="cat-pill">Beauty</a>
+  <a href="products.html" class="cat-pill">Gaming</a>
+  <a href="products.html" class="cat-pill">Books</a>
+  <a href="products.html" class="cat-pill">Sports</a>
+</div>
+
+<!-- ══════════════════════════════════ TODAY'S DEALS ══════ -->
+<div class="home-section reveal">
+  <div class="section-row">
+    <h2 class="section-title">Today's Deals</h2>
+    <a href="products.html">View all →</a>
+  </div>
+
+  <div class="product-row">
+
+    <div class="product">
+      <a href="product.html?id=17">
+        <img src="https://images.unsplash.com/photo-1612387049695-637b743f80ad?q=80&w=994&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Football Boots">
+        <h3>Football Boots</h3>
+      </a>
+      <p class="price">R1,200</p>
+      <p class="product-desc">Professional grade boots for the serious player.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('Football Boots',1200,'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=500','Pro football boots.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=2">
+        <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&auto=format&fit=crop" alt="PlayStation 5">
+        <h3>PlayStation 5</h3>
+      </a>
+      <p class="price">R14,000</p>
+      <p class="product-desc">Next-gen gaming with ultra-fast SSD and 4K gameplay.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('PlayStation 5',14000,'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500','Next-gen gaming console.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=3">
+        <img src="https://images.unsplash.com/photo-1552346154-21d32810aba3?w=500&auto=format&fit=crop" alt="Jordan Sneakers">
+        <h3>Jordan Sneakers</h3>
+      </a>
+      <p class="price">R1,500</p>
+      <p class="product-desc">Stylish streetwear sneakers with premium comfort.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('Jordan Sneakers',1500,'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=500','Stylish sneakers.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=4">
+        <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=500&auto=format&fit=crop" alt="MacBook Pro M1">
+        <h3>MacBook Pro M1</h3>
+      </a>
+      <p class="price">R10,000</p>
+      <p class="product-desc">Powerful Apple laptop for creators and developers.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('MacBook Pro M1',10000,'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=500','Powerful Apple laptop.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=5">
+        <img src="https://images.unsplash.com/photo-1567521463850-4939134bcd4a?w=500&auto=format&fit=crop" alt="Dell Laptop Core i9">
+        <h3>Dell Laptop Core i9</h3>
+      </a>
+      <p class="price">R13,500</p>
+      <p class="product-desc">High-performance laptop for heavy productivity tasks.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('Dell Laptop Core i9',13500,'https://images.unsplash.com/photo-1567521463850-4939134bcd4a?w=500','Core i9 productivity laptop.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=6">
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop" alt="Headphones">
+        <h3>Headphones</h3>
+      </a>
+      <p class="price">R1,200</p>
+      <p class="product-desc">Wireless, deep bass, crystal-clear sound quality.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('Headphones',1200,'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500','Wireless headphones with deep bass.')">Add to Cart</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ MID PROMO SLIDER ═══ -->
+<div class="home-section" style="padding-top:0;">
+  <div class="mid-slider" id="midSlider">
+    <div class="mid-slide active">
+      <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=1200&auto=format&fit=crop" alt="Join LinkUP">
+      <div class="mid-overlay">
+        <h2>Join LinkUP Today</h2>
+        <button onclick="location.href='login.html'">Create Account</button>
+        <button onclick="location.href='products.html'">Browse Deals</button>
+      </div>
+    </div>
+    <div class="mid-slide">
+      <img src="https://images.unsplash.com/photo-1650287052182-a13d8245c927?w=1200&auto=format&fit=crop" alt="Sell on LinkUP">
+      <div class="mid-overlay">
+        <h2>Start Selling Today</h2>
+        <button onclick="location.href='sell.html'">List an Item</button>
+      </div>
+    </div>
+    <div class="mid-slide">
+      <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&auto=format&fit=crop" alt="Tech deals">
+      <div class="mid-overlay">
+        <h2>Tech at Every Price</h2>
+        <button onclick="location.href='products.html'">Shop Electronics</button>
+      </div>
+    </div>
+    <div class="mid-dots" id="midDots">
+      <div class="mid-dot active" onclick="goToMidSlide(0)"></div>
+      <div class="mid-dot" onclick="goToMidSlide(1)"></div>
+      <div class="mid-dot" onclick="goToMidSlide(2)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ TRENDING ═══════════ -->
+<div class="home-section reveal">
+  <div class="section-row">
+    <h2 class="section-title">Trending on LinkUP</h2>
+    <a href="products.html">View all →</a>
+  </div>
+
+  <div class="product-row">
+
+    <div class="product">
+      <a href="product.html?id=7">
+        <img src="https://images.unsplash.com/photo-1587202372616-b43abea06c2a?w=500&auto=format&fit=crop" alt="Gaming PC">
+        <h3>Gaming PC</h3>
+      </a>
+      <p class="price">R12,000</p>
+      <p class="product-desc">High-performance RGB gaming desktop — ultimate power.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('Gaming PC',12000,'https://images.unsplash.com/photo-1587202372616-b43abea06c2a?w=500','RGB gaming desktop.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=9">
+        <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&auto=format&fit=crop" alt="Designer Handbag">
+        <h3>Designer Handbag</h3>
+      </a>
+      <p class="price">R2,400</p>
+      <p class="product-desc">Elegant bag with spacious interior and luxury finish.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('Designer Handbag',2400,'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500','Luxury handbag.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=8">
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop" alt="Smart Watch">
+        <h3>Smart Watch</h3>
+      </a>
+      <p class="price">R2,200</p>
+      <p class="product-desc">Fitness tracking, calls and notifications — sleek design.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('Smart Watch',2200,'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500','Sleek smartwatch.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=10">
+        <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?w=500&auto=format&fit=crop" alt="Samsung TV">
+        <h3>Samsung TV 65"</h3>
+      </a>
+      <p class="price">R9,500</p>
+      <p class="product-desc">Smart 4K TV with vibrant display and streaming apps.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('Samsung TV',9500,'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=500','Smart 4K TV.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=11">
+        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop" alt="Sofa Set">
+        <h3>Sofa Set</h3>
+      </a>
+      <p class="price">R4,500</p>
+      <p class="product-desc">Modern luxury sofa set perfect for any living room.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('Sofa Set',4500,'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500','Modern sofa set.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=12">
+        <img src="https://images.unsplash.com/photo-1502877338535-766e1452684a?w=500&auto=format&fit=crop" alt="Toyota Corolla">
+        <h3>BMW 4 Series</h3>
+      </a>
+      <p class="price">R85,000</p>
+      <p class="product-desc">Reliable, fuel-efficient sedan in excellent condition.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('Toyota Corolla',85000,'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=500','Reliable sedan.')">Add to Cart</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════ MORE DEALS ════════ -->
+<div class="home-section reveal">
+  <div class="section-row">
+    <h2 class="section-title">More Great Deals</h2>
+    <a href="products.html">View all →</a>
+  </div>
+
+  <div class="product-row">
+
+    <div class="product">
+      <a href="product.html?id=13">
+        <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=500&auto=format&fit=crop" alt="Books Collection">
+        <h3>Books Collection</h3>
+      </a>
+      <p class="price">R300</p>
+      <p class="product-desc">Inspirational and educational books for personal growth.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('Books Collection',300,'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=500','Educational books.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=14">
+        <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=500&auto=format&fit=crop" alt="Makeup Kit">
+        <h3>Makeup Kit</h3>
+      </a>
+      <p class="price">R600</p>
+      <p class="product-desc">Complete beauty kit with all essentials for a flawless look.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('Makeup Kit',600,'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=500','Complete makeup collection.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=15">
+        <img src="https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=500&auto=format&fit=crop" alt="AirPods Pro">
+        <h3>AirPods Pro</h3>
+      </a>
+      <p class="price">R3,500</p>
+      <p class="product-desc">Premium wireless earbuds with active noise cancellation.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('AirPods Pro',3500,'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=500','ANC earbuds.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=16">
+        <img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500&auto=format&fit=crop" alt="Hoodie">
+        <h3>Hoodie</h3>
+      </a>
+      <p class="price">R850</p>
+      <p class="product-desc">Warm, comfortable hoodie with modern streetwear design.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('Hoodie',850,'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=500','Streetwear hoodie.')">Add to Cart</button>
+      </div>
+    </div>
+
+    <div class="product">
+      <a href="product.html?id=1">
+        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&auto=format&fit=crop" alt="iPhone 11">
+        <h3>iPhone 11</h3>
+      </a>
+      <p class="price">R6,000</p>
+      <p class="product-desc">128GB, excellent camera and smooth daily performance.</p>
+      <div class="product-actions">
+        <button onclick="likeItem(this)">♡ Like</button>
+        <button onclick="addToCart('iPhone 11',6000,'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500','Great condition phone with 128GB storage.')">Add to Cart</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════---------- BOTTOM SLIDESHOW ---------------══ -->
+<div class="slideshow">
+  <div class="slide active">
+    <img src="https://images.unsplash.com/photo-1590333748338-d629e4564ad9?w=1400&auto=format&fit=crop" alt="Promo 1">
+  </div>
+  <div class="slide">
+    <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1400&auto=format&fit=crop" alt="Promo 2">
+  </div>
+  <div class="slide">
+    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1400&auto=format&fit=crop" alt="Promo 3">
+  </div>
+  <button class="slide-btn prev" onclick="changeSlide(-1)">❮</button>
+  <button class="slide-btn next" onclick="changeSlide(1)">❯</button>
+</div>
+
+<!-- ══════════════════════════════════ FOOTER ════════════ -->
+<footer class="footer">
+  <div class="footer-grid">
+
+    <div>
+      <h3>LinkUP</h3>
+      <p class="footer-brand-desc">South Africa's growing marketplace for buying, selling and connecting with your community.</p>
+      <div class="footer-btns">
+        <button class="btn-primary" onclick="location.href='sell.html'">Start Selling</button>
+        <button class="btn-secondary" onclick="location.href='products.html'">Browse Deals</button>
+      </div>
+    </div>
+
+    <div>
+      <h4>Marketplace</h4>
+      <ul>
+        <li onclick="location.href='products.html'">Browse Products</li>
+        <li onclick="location.href='sell.html'">Sell an Item</li>
+        <li onclick="location.href='cart.html'">Your Cart</li>
+        <li onclick="location.href='chat.html'">Messages</li>
+        <li onclick="location.href='account.html'">My Account</li>
+        <li onclick="location.href='login.html'">Login</li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Categories</h4>
+      <ul>
+        <li onclick="location.href='products.html'">Electronics</li>
+        <li onclick="location.href='products.html'">Fashion</li>
+        <li onclick="location.href='products.html'">Vehicles</li>
+        <li onclick="location.href='products.html'">Furniture</li>
+        <li onclick="location.href='products.html'">Beauty</li>
+        <li onclick="location.href='products.html'">Sports</li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Support</h4>
+      <ul>
+        <li onclick="location.href='chat.html'">Live Chat</li>
+        <li onclick="location.href='settings.html'">Settings</li>
+        <li onclick="location.href='about.html'">About Us</li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Stay Updated</h4>
+      <p class="footer-brand-desc" style="margin-bottom:12px;">Get the latest deals from LinkUP.</p>
+      <input type="email" id="newsletterEmail" placeholder="Your email address">
+      <button class="footer-subscribe-btn" onclick="subscribeNews()">Subscribe</button>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <p>©️ 2026 LinkUP Marketplace · Made in South Africa 🇿🇦</p>
+    <div class="footer-socials">
+      <span onclick="location.href='https://facebook.com'">Facebook</span>
+      <span onclick="location.href='https://instagram.com'">Instagram</span>
+      <span onclick="location.href='https://twitter.com'">Twitter/X</span>
+      <span onclick="location.href='about.html'">About</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── Toast ─────────────────────────────────────────────────── */
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ── Cart ──────────────────────────────────────────────────── */
+function addToCart(name, price, image, description) {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({ name, price, images: [image], description });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+    showToast(name + ' added to cart 🛒');
+}
+
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const el = document.getElementById('cartCount');
+    if (el) el.textContent = cart.length;
+}
+
+/* ── Like ──────────────────────────────────────────────────── */
+function likeItem(btn) {
+    const liked = btn.textContent.includes('♥️');
+    btn.textContent = liked ? '♡ Like' : '♥️ Liked';
+    btn.style.background = liked ? '' : '#fee2e2';
+    btn.style.color      = liked ? '' : '#ef4444';
+    btn.style.borderColor = liked ? '' : '#fecaca';
+}
+
+/* ── Quick View ────────────────────────────────────────────── */
+function openQuickView(name, price, image, desc) {
+    document.getElementById('quickView').style.display = 'flex';
+    document.getElementById('quickImg').src = image;
+    document.getElementById('quickName').textContent  = name;
+    document.getElementById('quickPrice').textContent = 'R' + price.toLocaleString();
+    document.getElementById('quickDesc').textContent  = desc || '';
+    document.getElementById('quickCartBtn').onclick = () => {
+        addToCart(name, price, image, desc || '');
+        closeQuickView();
+    };
+}
+
+function closeQuickView() {
+    document.getElementById('quickView').style.display = 'none';
+}
+
+/* ── Mid Slider ────────────────────────────────────────────── */
+let midIdx = 0;
+const midSlides = document.querySelectorAll('.mid-slide');
+const midDots   = document.querySelectorAll('.mid-dot');
+
+function goToMidSlide(n) {
+    midSlides[midIdx].classList.remove('active');
+    midDots[midIdx].classList.remove('active');
+    midIdx = n;
+    midSlides[midIdx].classList.add('active');
+    midDots[midIdx].classList.add('active');
+}
+
+function nextMidSlide() {
+    goToMidSlide((midIdx + 1) % midSlides.length);
+}
+
+setInterval(nextMidSlide, 4500);
+
+/* ── Bottom Slideshow ──────────────────────────────────────── */
+let slideIdx = 0;
+const slides = document.querySelectorAll('.slideshow .slide');
+
+function changeSlide(n) {
+    slides[slideIdx].classList.remove('active');
+    slideIdx = (slideIdx + n + slides.length) % slides.length;
+    slides[slideIdx].classList.add('active');
+}
+
+setInterval(() => changeSlide(1), 4000);
+
+/* ── Scroll Reveal ─────────────────────────────────────────── */
+const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('active');
+    });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ── Search ────────────────────────────────────────────────── */
+function doSearch() {
+    const q = document.getElementById('heroSearch').value.trim();
+    location.href = q ? 'products.html?search=' + encodeURIComponent(q) : 'products.html';
+}
+
+document.getElementById('heroSearch')
+    .addEventListener('keypress', e => { if (e.key === 'Enter') doSearch(); });
+
+/* ── Newsletter ────────────────────────────────────────────── */
+function subscribeNews() {
+    const email = document.getElementById('newsletterEmail').value.trim();
+    if (!email || !email.includes('@')) {
+        showToast('Please enter a valid email address.');
+        return;
+    }
+    showToast('Thanks for subscribing to LinkUP updates! 🎉');
+    document.getElementById('newsletterEmail').value = '';
+}
+
+/* ── Init ──────────────────────────────────────────────────── */
+updateCartCount();
+</script>
+</body>
+</html>

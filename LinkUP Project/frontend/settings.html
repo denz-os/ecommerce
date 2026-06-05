@@ -1,0 +1,1991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings — LinkUP</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+/* ── Base ──────────────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+    font-family:'Poppins','Segoe UI',Arial,sans-serif;
+    background:#f4f7fb;
+    color:#1d1d1d;
+}
+
+/* ── TOPBAR ──────────────────────── */
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 40px;
+    height:66px;
+    background:linear-gradient(135deg, #1877f2 0%, #1360cc 55%, #0d4fa8 100%);
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 4px 18px rgba(24,119,242,.25);
+}
+
+.topbar h1{
+    color:#ffffff;
+    margin:0;
+    font-size:26px;
+    font-weight:800;
+    letter-spacing:.5px;
+    text-shadow:0 2px 8px rgba(0,0,0,.2);
+}
+
+.topbar nav{display:flex;gap:4px;flex-wrap:wrap;align-items:center;}
+
+.topbar nav a{
+    text-decoration:none;
+    color:rgba(255, 255, 255, 0.85);
+    font-weight:400;
+    font-size:14px;
+    padding:8px 13px;
+    border-radius:9px;
+    transition:background .2s,transform .15s;
+    cursor:pointer;
+}
+
+.topbar nav a:hover{
+    background:rgba(44, 44, 44, 0.18);
+    transform:translateY(-1px);
+}
+
+.topbar nav a.active{
+    background:rgba(255,255,255,.22);
+    color:#ffffff;
+    font-weight:600;
+}
+
+/* ── LAYOUT ────────────────────────────────────────────────── */
+.settings-layout{
+    display:flex;
+    min-height:calc(100vh - 66px);
+}
+
+/* ── SIDEBAR ───────────────────────────────────────────────── */
+.settings-sidebar{
+    width:272px;
+    flex-shrink:0;
+    background:#fff;
+    border-right:1px solid #e4e9f2;
+    padding:0;
+    position:sticky;
+    top:66px;
+    height:calc(100vh - 66px);
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+}
+
+.settings-sidebar::-webkit-scrollbar{width:5px;}
+.settings-sidebar::-webkit-scrollbar-thumb{background:#c9d7f2;border-radius:10px;}
+
+/* Profile mini card inside sidebar */
+.sb-profile{
+    background:linear-gradient(135deg,#1877f2,#4facfe);
+    padding:24px 20px 20px;
+    text-align:center;
+    flex-shrink:0;
+}
+
+.sb-avatar{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    background:rgba(255,255,255,.25);
+    border:3px solid rgba(255,255,255,.5);
+    margin:0 auto 12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    font-weight:800;
+    color:#fff;
+    cursor:pointer;
+    transition:opacity .2s;
+    position:relative;
+    overflow:hidden;
+}
+
+.sb-avatar:hover{opacity:.85;}
+
+.sb-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    position:absolute;
+    border-radius:50%;
+}
+
+.sb-avatar-input{
+    position:absolute;
+    inset:0;
+    opacity:0;
+    cursor:pointer;
+    width:100%;
+    height:100%;
+}
+
+.sb-name{
+    font-size:16px;
+    font-weight:700;
+    color:#fff;
+    margin-bottom:2px;
+}
+
+.sb-email{
+    font-size:12px;
+    color:rgba(255,255,255,.75);
+    margin-bottom:12px;
+}
+
+.sb-status-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.25);
+    color:#fff;
+    font-size:11px;
+    font-weight:600;
+    padding:4px 12px;
+    border-radius:20px;
+}
+
+.sb-status-dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#22c55e;
+}
+
+/* Sidebar nav items */
+.sb-nav{padding:12px 12px 8px;flex:1;}
+
+.sb-nav-label{
+    font-size:10px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.8px;
+    color:#94a3b8;
+    padding:10px 8px 5px;
+}
+
+.sb-item{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:11px 12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:500;
+    color:#475569;
+    margin-bottom:2px;
+    transition:background .18s,color .18s,transform .15s;
+    border:none;
+    background:none;
+    width:100%;
+    text-align:left;
+}
+
+.sb-item:hover{
+    background:#eef4ff;
+    color:#1877f2;
+    transform:translateX(3px);
+}
+
+.sb-item.active{
+    background:#1877f2;
+    color:#fff;
+    font-weight:600;
+}
+
+.sb-item.active .sb-icon{color:#fff;}
+
+.sb-icon{
+    width:16px;
+    height:16px;
+    stroke:currentColor;
+    fill:none;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    flex-shrink:0;
+}
+
+/* Sidebar bottom */
+.sb-bottom{
+    padding:12px;
+    border-top:1px solid #e4e9f2;
+}
+
+.sb-logout{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    width:100%;
+    padding:11px 12px;
+    border-radius:10px;
+    border:none;
+    background:none;
+    color:#ef4444;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background .18s;
+    font-family:inherit;
+}
+
+.sb-logout:hover{background:#fee2e2;}
+
+/* ── MAIN CONTENT ──────────────────────────────────────────── */
+.settings-main{
+    flex:1;
+    padding:28px 32px;
+    min-width:0;
+}
+
+/* Sections */
+.settings-section{display:none;}
+.settings-section.active{display:block;}
+
+/* Section header */
+.sec-hdr{
+    margin-bottom:22px;
+    padding-bottom:16px;
+    border-bottom:1px solid #e4e9f2;
+}
+
+.sec-hdr h2{
+    font-size:22px;
+    font-weight:800;
+    color:#111827;
+    margin-bottom:3px;
+}
+
+.sec-hdr p{
+    font-size:13px;
+    color:#64748b;
+}
+
+/* ── PROFILE CARD ─────────────────────────────────────────── */
+.profile-hero{
+    background:linear-gradient(135deg,#1877f2,#4facfe);
+    border-radius:20px;
+    padding:28px 28px 24px;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:22px;
+    margin-bottom:22px;
+    position:relative;
+    overflow:hidden;
+}
+
+.profile-hero::after{
+    content:'';
+    position:absolute;
+    right:-60px;
+    top:-60px;
+    width:240px;
+    height:240px;
+    border-radius:50%;
+    border:50px solid rgba(255,255,255,.08);
+    pointer-events:none;
+}
+
+.profile-hero-avatar{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:rgba(255,255,255,.2);
+    border:3px solid rgba(255,255,255,.4);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    font-weight:800;
+    color:#fff;
+    flex-shrink:0;
+    position:relative;
+    overflow:hidden;
+}
+
+.profile-hero-avatar img{
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
+}
+
+.profile-hero-info{flex:1;}
+
+.profile-hero-info h3{
+    font-size:22px;
+    font-weight:800;
+    margin-bottom:3px;
+}
+
+.profile-hero-info p{
+    font-size:13px;
+    opacity:.8;
+    margin-bottom:14px;
+}
+
+.profile-stats{
+    display:flex;
+    gap:22px;
+    flex-wrap:wrap;
+}
+
+.profile-stat{text-align:center;}
+
+.profile-stat strong{
+    display:block;
+    font-size:20px;
+    font-weight:800;
+}
+
+.profile-stat span{
+    font-size:11px;
+    opacity:.75;
+    font-weight:500;
+}
+
+/* ── SETTINGS CARD ────────────────────────────────────────── */
+.card{
+    background:#fff;
+    border-radius:18px;
+    border:1px solid #e4e9f2;
+    box-shadow:0 2px 12px rgba(0,0,0,.06);
+    margin-bottom:18px;
+    overflow:hidden;
+}
+
+.card-hdr{
+    padding:18px 22px;
+    border-bottom:1px solid #e4e9f2;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.card-hdr h3{
+    font-size:15px;
+    font-weight:700;
+    color:#111827;
+}
+
+.card-hdr p{
+    font-size:12px;
+    color:#64748b;
+    margin-top:2px;
+}
+
+.card-body{padding:22px;}
+
+/* ── FORM ELEMENTS ────────────────────────────────────────── */
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+}
+
+.form-grid.cols1{grid-template-columns:1fr;}
+
+.form-group{display:flex;flex-direction:column;gap:7px;}
+
+.form-group.full{grid-column:1/-1;}
+
+.form-label{
+    font-size:12px;
+    font-weight:700;
+    color:#475569;
+    text-transform:uppercase;
+    letter-spacing:.4px;
+}
+
+.form-input{
+    padding:12px 14px;
+    border:1.5px solid #dbe2ea;
+    border-radius:11px;
+    background:#f8fafc;
+    font-size:14px;
+    font-family:inherit;
+    color:#111827;
+    outline:none;
+    transition:border-color .18s,box-shadow .18s,background .18s;
+    width:100%;
+}
+
+.form-input:focus{
+    border-color:#1877f2;
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(24,119,242,.12);
+}
+
+.form-input[readonly]{
+    background:#f1f5f9;
+    color:#64748b;
+    cursor:default;
+}
+
+.form-input::placeholder{color:#94a3b8;}
+
+select.form-input{cursor:pointer;}
+
+/* Password wrap */
+.pw-wrap{position:relative;}
+.pw-wrap .form-input{padding-right:46px;}
+.pw-eye{
+    position:absolute;
+    right:13px;
+    top:50%;
+    transform:translateY(-50%);
+    background:none;
+    border:none;
+    cursor:pointer;
+    color:#94a3b8;
+    font-size:15px;
+    padding:0;
+    transition:color .18s;
+    margin-top:0;
+}
+.pw-eye:hover{color:#1877f2;}
+
+/* ── BUTTONS ──────────────────────────────────────────────── */
+.btn{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:10px 20px;
+    border:none;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    font-family:inherit;
+    transition:opacity .18s,transform .15s;
+}
+
+.btn:hover{opacity:.88;transform:translateY(-1px);}
+.btn:active{transform:translateY(0);}
+
+.btn-primary{
+    background:linear-gradient(135deg,#1877f2,#4facfe);
+    color:#fff;
+    box-shadow:0 4px 14px rgba(24,119,242,.25);
+}
+
+.btn-ghost{
+    background:#eef4ff;
+    color:#1877f2;
+}
+
+.btn-ghost:hover{background:#dbeafe;opacity:1;}
+
+.btn-outline{
+    background:#fff;
+    color:#475569;
+    border:1.5px solid #e4e9f2;
+}
+
+.btn-outline:hover{border-color:#1877f2;color:#1877f2;background:#f8fafc;opacity:1;}
+
+.btn-danger{
+    background:#fee2e2;
+    color:#dc2626;
+}
+
+.btn-danger:hover{background:#fecaca;opacity:1;}
+
+.btn-full{width:100%;}
+
+/* ── TOGGLE SWITCH ────────────────────────────────────────── */
+.toggle-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 0;
+    border-bottom:1px solid #f1f5f9;
+}
+
+.toggle-row:last-child{border-bottom:none;}
+
+.toggle-info strong{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    color:#111827;
+    margin-bottom:2px;
+}
+
+.toggle-info span{
+    font-size:12px;
+    color:#64748b;
+}
+
+.toggle{
+    position:relative;
+    width:46px;
+    height:26px;
+    flex-shrink:0;
+}
+
+.toggle input{
+    opacity:0;
+    width:0;
+    height:0;
+    position:absolute;
+}
+
+.toggle-track{
+    position:absolute;
+    inset:0;
+    background:#dbe2ea;
+    border-radius:99px;
+    cursor:pointer;
+    transition:background .22s;
+}
+
+.toggle input:checked + .toggle-track{background:#1877f2;}
+
+.toggle-track::after{
+    content:'';
+    position:absolute;
+    left:3px;
+    top:3px;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 1px 4px rgba(0,0,0,.15);
+    transition:transform .22s;
+}
+
+.toggle input:checked + .toggle-track::after{transform:translateX(20px);}
+
+/* ── PAYMENT CARDS ────────────────────────────────────────── */
+.payment-card{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px;
+    border:1.5px solid #e4e9f2;
+    border-radius:14px;
+    margin-bottom:12px;
+    transition:border-color .18s;
+}
+
+.payment-card:hover{border-color:#1877f2;}
+
+.payment-card-icon{
+    width:48px;
+    height:32px;
+    border-radius:6px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    font-weight:800;
+    font-style:italic;
+    flex-shrink:0;
+}
+
+.payment-card-icon.visa{background:#1a1f71;color:#fff;font-size:14px;}
+.payment-card-icon.mc{background:#eb001b;color:#fff;font-size:22px;}
+.payment-card-icon.eft{background:#22c55e;color:#fff;font-size:13px;font-style:normal;}
+
+.payment-card-info{flex:1;}
+.payment-card-info strong{font-size:14px;font-weight:700;display:block;}
+.payment-card-info span{font-size:12px;color:#64748b;}
+
+.payment-default{
+    background:#eef4ff;
+    color:#1877f2;
+    font-size:11px;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:20px;
+}
+
+/* ── ACTIVITY LOG ─────────────────────────────────────────── */
+.activity-item{
+    display:flex;
+    gap:13px;
+    align-items:flex-start;
+    padding:12px 0;
+    border-bottom:1px solid #f1f5f9;
+}
+
+.activity-item:last-child{border-bottom:none;}
+
+.activity-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    flex-shrink:0;
+    margin-top:4px;
+}
+
+.activity-dot.blue{background:#1877f2;}
+.activity-dot.green{background:#22c55e;}
+.activity-dot.amber{background:#f59e0b;}
+.activity-dot.red{background:#ef4444;}
+
+.activity-text strong{
+    font-size:13px;
+    font-weight:600;
+    color:#111827;
+    display:block;
+    margin-bottom:2px;
+}
+
+.activity-text span{font-size:12px;color:#94a3b8;}
+
+/* ── FAQ ACCORDION ────────────────────────────────────────── */
+.faq-item{
+    border:1px solid #e4e9f2;
+    border-radius:12px;
+    margin-bottom:10px;
+    overflow:hidden;
+}
+
+.faq-question{
+    padding:15px 18px;
+    font-size:14px;
+    font-weight:600;
+    color:#111827;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:background .18s;
+    user-select:none;
+}
+
+.faq-question:hover{background:#f8fafc;}
+
+.faq-question.open{background:#eef4ff;color:#1877f2;}
+
+.faq-chevron{
+    font-size:16px;
+    transition:transform .22s;
+    color:#94a3b8;
+}
+
+.faq-question.open .faq-chevron{transform:rotate(180deg);color:#1877f2;}
+
+.faq-answer{
+    display:none;
+    padding:14px 18px 16px;
+    font-size:13px;
+    color:#64748b;
+    line-height:1.6;
+    background:#f8fbff;
+    border-top:1px solid #e4e9f2;
+}
+
+.faq-answer.open{display:block;}
+
+/* ── DANGER ZONE ──────────────────────────────────────────── */
+.danger-zone{
+    border:1.5px solid #fecaca;
+    border-radius:14px;
+    padding:18px;
+    background:#fff5f5;
+}
+
+.danger-zone h4{
+    font-size:14px;
+    font-weight:700;
+    color:#dc2626;
+    margin-bottom:4px;
+}
+
+.danger-zone p{
+    font-size:12px;
+    color:#64748b;
+    margin-bottom:14px;
+}
+
+/* ── TOAST ────────────────────────────────────────────────── */
+#toast{
+    position:fixed;
+    bottom:24px;
+    right:24px;
+    background:#111827;
+    color:#fff;
+    padding:13px 20px;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:500;
+    opacity:0;
+    pointer-events:none;
+    z-index:9999;
+    transform:translateY(14px);
+    transition:opacity .25s,transform .25s;
+    border-left:4px solid #1877f2;
+    box-shadow:0 8px 24px rgba(0,0,0,.18);
+    max-width:300px;
+}
+
+#toast.show{opacity:1;transform:translateY(0);}
+#toast.ok{border-left-color:#22c55e;}
+#toast.fail{border-left-color:#ef4444;}
+
+/* ── DARK MODE ────────────────────────────────────────────── */
+.dark-mode{background:#0f172a;color:#f1f5f9;}
+.dark-mode .settings-sidebar{background:#1e293b;border-color:#334155;}
+.dark-mode .sb-item{color:#94a3b8;}
+.dark-mode .sb-item:hover{background:rgba(255,255,255,.07);color:#fff;}
+.dark-mode .sb-item.active{background:#1877f2;color:#fff;}
+.dark-mode .sb-bottom{border-color:#334155;}
+.dark-mode .settings-main{background:#0f172a;}
+.dark-mode .card{background:#1e293b;border-color:#334155;}
+.dark-mode .card-hdr{border-color:#334155;}
+.dark-mode .card-hdr h3{color:#f1f5f9;}
+.dark-mode .form-input{background:#0f172a;border-color:#334155;color:#f1f5f9;}
+.dark-mode .form-input:focus{background:#0f172a;}
+.dark-mode .form-input[readonly]{background:#334155;color:#94a3b8;}
+.dark-mode .toggle-row{border-color:#334155;}
+.dark-mode .toggle-info strong{color:#f1f5f9;}
+.dark-mode .toggle-track{background:#334155;}
+.dark-mode .payment-card{border-color:#334155;}
+.dark-mode .payment-card:hover{border-color:#1877f2;}
+.dark-mode .payment-card-info span{color:#94a3b8;}
+.dark-mode .activity-item{border-color:#334155;}
+.dark-mode .activity-text strong{color:#f1f5f9;}
+.dark-mode .faq-item{border-color:#334155;}
+.dark-mode .faq-question{color:#f1f5f9;}
+.dark-mode .faq-question:hover{background:#0f172a;}
+.dark-mode .faq-answer{background:#0f172a;border-color:#334155;}
+.dark-mode .danger-zone{background:#1a0a0a;border-color:#7f1d1d;}
+.dark-mode .btn-outline{background:#1e293b;border-color:#334155;color:#94a3b8;}
+.dark-mode .topbar nav a{color:rgba(255,255,255,.8);}
+.dark-mode .sec-hdr h2{color:#f1f5f9;}
+.dark-mode .sec-hdr{border-color:#334155;}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media(max-width:900px){
+    .settings-layout{flex-direction:column;}
+    .settings-sidebar{
+        width:100%;
+        height:auto;
+        position:relative;
+        top:0;
+        border-right:none;
+        border-bottom:1px solid #e4e9f2;
+    }
+    .sb-nav{display:flex;flex-wrap:wrap;gap:4px;padding:10px;}
+    .sb-item{width:auto;flex:0 0 auto;font-size:13px;padding:8px 12px;}
+    .sb-item:hover{transform:none;}
+    .settings-main{padding:18px 16px;}
+    .form-grid{grid-template-columns:1fr;}
+    .topbar{padding:0 18px;height:auto;flex-wrap:wrap;gap:10px;padding:12px 18px;}
+    .topbar nav{flex-wrap:wrap;justify-content:center;gap:4px;}
+    .topbar nav a{font-size:13px;padding:6px 10px;}
+    .profile-hero{flex-direction:column;text-align:center;}
+    .profile-stats{justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- ══════════════════════════════════════════════ TOPBAR -->
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <svg width="148" height="40" viewBox="0 0 148 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Left circle -->
+      <circle cx="14" cy="20" r="9" stroke="white" stroke-width="2.5" fill="none"/>
+      <!-- Right circle overlapping -->
+      <circle cx="28" cy="20" r="9" stroke="white" stroke-width="2.5" fill="none"/>
+      <!-- Upward arrow rising from overlap -->
+      <line x1="21" y1="17" x2="21" y2="7" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <polyline points="17,11 21,6 25,11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <!-- Wordmark -->
+      <text x="44" y="26" font-family="Poppins, Segoe UI, Arial, sans-serif"
+            font-size="20" font-weight="800" fill="white" letter-spacing="0.4">
+        Link<tspan fill="rgba(255,255,255,0.55)">UP</tspan>
+      </text>
+    </svg>
+  </a>
+    <nav>
+        <a onclick="location.href='index.html'">Home</a>
+        <a onclick="location.href='products.html'">Browse</a>
+        <a onclick="location.href='sell.html'">Sell</a>
+        <a onclick="location.href='chat.html'">Chat</a>
+        <a onclick="location.href='cart.html'">Cart</a>
+        <a onclick="location.href='settings.html'" class="active">Settings</a>
+        <a onclick="location.href='login.html'">Login</a>
+    </nav>
+</header>
+
+<div class="settings-layout">
+
+<!-- ══════════════════════════════════════════════ SIDEBAR -->
+<aside class="settings-sidebar">
+
+    <!-- Mini profile -->
+    <div class="sb-profile">
+        <div class="sb-avatar" title="Click to change photo">
+            <span id="sbInitial">?</span>
+            <img id="sbAvatarImg" src="" alt="" style="display:none;">
+            <input class="sb-avatar-input" type="file" accept="image/*" onchange="uploadAvatar(this)">
+        </div>
+        <div class="sb-name" id="sbName">Guest User</div>
+        <div class="sb-email" id="sbEmail">Not signed in</div>
+        <div class="sb-status-badge">
+            <div class="sb-status-dot"></div>
+            <span id="sbStatusLabel">Active</span>
+        </div>
+    </div>
+
+    <nav class="sb-nav">
+        <div class="sb-nav-label">Account</div>
+
+        <button class="sb-item active" onclick="showSection('profile',this)">
+            <svg class="sb-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            My Profile
+        </button>
+
+        <button class="sb-item" onclick="showSection('account',this)">
+            <svg class="sb-icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Account Details
+        </button>
+
+        <button class="sb-item" onclick="showSection('security',this)">
+            <svg class="sb-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Security
+        </button>
+
+        <div class="sb-nav-label">Preferences</div>
+
+        <button class="sb-item" onclick="showSection('notifications',this)">
+            <svg class="sb-icon" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            Notifications
+        </button>
+
+        <button class="sb-item" onclick="showSection('privacy',this)">
+            <svg class="sb-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Privacy
+        </button>
+
+        <button class="sb-item" onclick="showSection('appearance',this)">
+            <svg class="sb-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            Appearance
+        </button>
+
+        <button class="sb-item" onclick="showSection('payments',this)">
+            <svg class="sb-icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Payments
+        </button>
+
+        <div class="sb-nav-label">Other</div>
+
+        <button class="sb-item" onclick="showSection('activity',this)">
+            <svg class="sb-icon" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Activity Log
+        </button>
+
+        <button class="sb-item" onclick="showSection('help',this)">
+            <svg class="sb-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Help Centre
+        </button>
+    </nav>
+
+    <div class="sb-bottom">
+        <button class="sb-logout" onclick="logout()">
+            <svg style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Sign Out
+        </button>
+    </div>
+</aside>
+
+<!-- ══════════════════════════════════════════════ MAIN -->
+<div class="settings-main">
+
+<!-- ── MY PROFILE ─────────────────────────────────────────── -->
+<div class="settings-section active" id="sec-profile">
+
+    <div class="sec-hdr">
+        <h2>My Profile</h2>
+        <p>Your public profile and account summary.</p>
+    </div>
+
+    <!-- Hero profile card -->
+    <div class="profile-hero">
+        <div class="profile-hero-avatar">
+            <span id="heroInitial">?</span>
+            <img id="heroAvatarImg" src="" alt="" style="display:none;">
+        </div>
+        <div class="profile-hero-info">
+            <h3 id="heroName">Guest User</h3>
+            <p id="heroEmail">Not signed in</p>
+            <div class="profile-stats">
+                <div class="profile-stat">
+                    <strong id="statCartItems">0</strong>
+                    <span>Cart Items</span>
+                </div>
+                <div class="profile-stat">
+                    <strong id="statListings">0</strong>
+                    <span>Listings</span>
+                </div>
+                <div class="profile-stat">
+                    <strong id="statOrders">0</strong>
+                    <span>Orders</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick links -->
+    <div class="card">
+        <div class="card-hdr"><h3>Quick Actions</h3></div>
+        <div class="card-body" style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="showSection('account',null)">Edit Profile</button>
+            <button class="btn btn-ghost" onclick="location.href='sell.html'">Create Listing</button>
+            <button class="btn btn-outline" onclick="location.href='cart.html'">View Cart</button>
+            <button class="btn btn-outline" onclick="location.href='chat.html'">Messages</button>
+            <button class="btn btn-outline" onclick="location.href='products.html'">Browse</button>
+            <button class="btn btn-outline" onclick="location.href='account.html'">Account</button>
+        </div>
+    </div>
+
+    <!-- Account status card -->
+    <div class="card">
+        <div class="card-hdr">
+            <div>
+                <h3>Account Status</h3>
+                <p>Your current membership and verification</p>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Account Verified</strong>
+                    <span>Your email address has been confirmed</span>
+                </div>
+                <span style="color:#22c55e;font-size:13px;font-weight:700;">Verified</span>
+            </div>
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Membership Type</strong>
+                    <span>Current plan</span>
+                </div>
+                <span id="membershipType" style="background:#eef4ff;color:#1877f2;font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;">Free</span>
+            </div>
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Member Since</strong>
+                    <span>Account creation date</span>
+                </div>
+                <span id="memberSince" style="font-size:13px;color:#64748b;font-weight:600;">—</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- ── ACCOUNT DETAILS ─────────────────────────────────────── -->
+<div class="settings-section" id="sec-account">
+    <div class="sec-hdr">
+        <h2>Account Details</h2>
+        <p>Update your personal information and how others see you.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><h3>Personal Information</h3></div>
+        <div class="card-body">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input class="form-input" id="accFirstName" placeholder="First name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input class="form-input" id="accLastName" placeholder="Last name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input class="form-input" id="accUsername" placeholder="@username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input class="form-input" id="accEmail" type="email" placeholder="you@example.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input class="form-input" id="accPhone" placeholder="+27 81 234 5678">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">City / Location</label>
+                    <input class="form-input" id="accLocation" placeholder="e.g. Cape Town">
+                </div>
+                <div class="form-group full">
+                    <label class="form-label">Bio</label>
+                    <input class="form-input" id="accBio" placeholder="Tell buyers a bit about yourself...">
+                </div>
+            </div>
+            <div style="margin-top:18px;display:flex;gap:10px;">
+                <button class="btn btn-primary" onclick="saveAccount()">Save Changes</button>
+                <button class="btn btn-outline" onclick="loadAccount()">Discard</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><h3>Seller Profile</h3></div>
+        <div class="card-body">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Shop Name</label>
+                    <input class="form-input" id="shopName" placeholder="Your shop name">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Business Type</label>
+                    <select class="form-input" id="bizType">
+                        <option>Individual Seller</option>
+                        <option>Small Business</option>
+                        <option>Enterprise</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-top:18px;">
+                <button class="btn btn-ghost" onclick="saveSellerProfile()">Update Seller Profile</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><h3>Delete Account</h3></div>
+        <div class="card-body">
+            <div class="danger-zone">
+                <h4>Permanently Delete Account</h4>
+                <p>This will remove all your data, listings and order history. This action cannot be undone.</p>
+                <button class="btn btn-danger" onclick="deleteAccount()">Delete My Account</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── SECURITY ────────────────────────────────────────────── -->
+<div class="settings-section" id="sec-security">
+    <div class="sec-hdr">
+        <h2>Security</h2>
+        <p>Manage your password, login sessions and account protection.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><h3>Change Password</h3></div>
+        <div class="card-body">
+            <div class="form-grid cols1" style="max-width:420px;">
+                <div class="form-group">
+                    <label class="form-label">Current Password</label>
+                    <div class="pw-wrap">
+                        <input class="form-input" id="curPass" type="password" placeholder="Current password">
+                        <button class="pw-eye" onclick="togglePw('curPass',this)" type="button">👁</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">New Password</label>
+                    <div class="pw-wrap">
+                        <input class="form-input" id="newPass" type="password" placeholder="Min 6 characters" oninput="checkStrength(this.value)">
+                        <button class="pw-eye" onclick="togglePw('newPass',this)" type="button">👁</button>
+                    </div>
+                    <!-- Strength bar -->
+                    <div style="margin-top:8px;">
+                        <div style="height:5px;background:#e2e8f0;border-radius:99px;overflow:hidden;">
+                            <div id="strengthBar" style="height:100%;border-radius:99px;transition:width .3s,background .3s;width:0%;background:#e2e8f0;"></div>
+                        </div>
+                        <div id="strengthLabel" style="font-size:11px;color:#94a3b8;margin-top:4px;font-weight:600;"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Confirm New Password</label>
+                    <div class="pw-wrap">
+                        <input class="form-input" id="confPass" type="password" placeholder="Repeat new password">
+                        <button class="pw-eye" onclick="togglePw('confPass',this)" type="button">👁</button>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:18px;display:flex;gap:10px;">
+                <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><h3>Login Protection</h3></div>
+        <div class="card-body">
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Two-Factor Authentication</strong>
+                    <span>Adds an extra layer of security via authenticator app</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="tog2FA" onchange="saveSecurity()">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Login Alerts</strong>
+                    <span>Get notified when a new device signs in</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="togLoginAlerts" checked onchange="saveSecurity()">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Trusted Devices Only</strong>
+                    <span>Restrict sign-in to previously verified devices</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="togTrusted" onchange="saveSecurity()">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><h3>Active Sessions</h3></div>
+        <div class="card-body">
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>This Device — Chrome / Windows</strong>
+                    <span>Active now · Cape Town, South Africa</span>
+                </div>
+                <span style="background:#d1fae5;color:#065f46;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;">Current</span>
+            </div>
+            <div style="margin-top:14px;">
+                <button class="btn btn-danger" onclick="showToast('All other sessions terminated.','ok')">Sign Out All Other Devices</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── NOTIFICATIONS ───────────────────────────────────────── -->
+<div class="settings-section" id="sec-notifications">
+    <div class="sec-hdr">
+        <h2>Notifications</h2>
+        <p>Control what you hear about and when.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><h3>Activity Alerts</h3></div>
+        <div class="card-body">
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>New Messages</strong>
+                    <span>When a buyer or seller sends you a message</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="notifMsg" checked onchange="saveNotifications()">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Order Updates</strong>
+                    <span>Shipping, delivery and status changes</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="notifOrders" checked onchange="saveNotifications()">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>New Offers on Your Listings</strong>
+                    <span>When a buyer makes an offer on your product</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="notifOffers" checked onchange="saveNotifications()">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Price Drops</strong>
+                    <span>Items you liked that went on sale</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="notifPrices" onchange="saveNotifications()">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Promotions & Deals</strong>
+                    <span>LinkUP weekly deals and featured listings</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="notifPromos" onchange="saveNotifications()">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Seller Performance Reports</strong>
+                    <span>Monthly summary of your shop's activity</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="notifReports" onchange="saveNotifications()">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── PRIVACY ─────────────────────────────────────────────── -->
+<div class="settings-section" id="sec-privacy">
+    <div class="sec-hdr">
+        <h2>Privacy</h2>
+        <p>Control who can see and interact with your account.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><h3>Visibility</h3></div>
+        <div class="card-body">
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Public Profile</strong>
+                    <span>Allow anyone to view your seller profile and listings</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="privPublic" checked onchange="savePrivacy()">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Show Online Status</strong>
+                    <span>Let others see when you are active</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="privOnline" checked onchange="savePrivacy()">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Show Phone Number</strong>
+                    <span>Display your phone on listings for direct contact</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="privPhone" onchange="savePrivacy()">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><h3>Messaging</h3></div>
+        <div class="card-body">
+            <div class="form-group" style="margin-bottom:14px;">
+                <label class="form-label">Who Can Message You</label>
+                <select class="form-input" id="privMsg" onchange="savePrivacy()">
+                    <option>Everyone</option>
+                    <option>Verified Users Only</option>
+                    <option>Nobody</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Who Can See Your Listings</label>
+                <select class="form-input" id="privListings" onchange="savePrivacy()">
+                    <option>Everyone</option>
+                    <option>Registered Users Only</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── APPEARANCE ──────────────────────────────────────────── -->
+<div class="settings-section" id="sec-appearance">
+    <div class="sec-hdr">
+        <h2>Appearance</h2>
+        <p>Customise how LinkUP looks for you.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><h3>Theme</h3></div>
+        <div class="card-body">
+            <div class="toggle-row">
+                <div class="toggle-info">
+                    <strong>Dark Mode</strong>
+                    <span>Switch to a darker colour scheme</span>
+                </div>
+                <label class="toggle">
+                    <input type="checkbox" id="togDark" onchange="applyDark(this.checked)">
+                    <div class="toggle-track"></div>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><h3>Preferences</h3></div>
+        <div class="card-body">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Language</label>
+                    <select class="form-input" id="prefLang" onchange="saveAppearance()">
+                        <option>English</option>
+                        <option>Afrikaans</option>
+                        <option>Zulu</option>
+                        <option>Xhosa</option>
+                        <option>Sotho</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Currency</label>
+                    <select class="form-input" id="prefCurrency" onchange="saveAppearance()">
+                        <option>R (South African Rand)</option>
+                        <option>$ (US Dollar)</option>
+                        <option>£ (British Pound)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Default Browse Category</label>
+                    <select class="form-input" id="prefCat" onchange="saveAppearance()">
+                        <option>All Products</option>
+                        <option>Electronics</option>
+                        <option>Clothing</option>
+                        <option>Furniture</option>
+                        <option>Vehicles</option>
+                        <option>Beauty</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Default Sort Order</label>
+                    <select class="form-input" id="prefSort" onchange="saveAppearance()">
+                        <option>Newest First</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-top:16px;">
+                <button class="btn btn-primary" onclick="saveAppearance()">Save Preferences</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── PAYMENTS ────────────────────────────────────────────── -->
+<div class="settings-section" id="sec-payments">
+    <div class="sec-hdr">
+        <h2>Payments</h2>
+        <p>Manage your saved payment methods and billing details.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr">
+            <h3>Saved Payment Methods</h3>
+            <button class="btn btn-ghost" style="padding:8px 14px;font-size:13px;" onclick="showToast('Payment method form coming with backend integration.','ok')">+ Add Method</button>
+        </div>
+        <div class="card-body">
+            <div class="payment-card">
+                <div class="payment-card-icon visa">VISA</div>
+                <div class="payment-card-info">
+                    <strong>Visa ending in 4242</strong>
+                    <span>Expires 09/27</span>
+                </div>
+                <span class="payment-default">Default</span>
+            </div>
+            <div class="payment-card">
+                <div class="payment-card-icon mc">●●</div>
+                <div class="payment-card-info">
+                    <strong>Mastercard ending in 1881</strong>
+                    <span>Expires 03/26</span>
+                </div>
+                <button class="btn btn-outline" style="padding:6px 12px;font-size:12px;" onclick="showToast('Set as default payment method.','ok')">Set Default</button>
+            </div>
+            <div class="payment-card">
+                <div class="payment-card-icon eft">EFT</div>
+                <div class="payment-card-info">
+                    <strong>Instant EFT</strong>
+                    <span>Via Ozow — linked to FNB</span>
+                </div>
+                <button class="btn btn-danger" style="padding:6px 12px;font-size:12px;" onclick="showToast('Payment method removed.','fail')">Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><h3>Billing Address</h3></div>
+        <div class="card-body">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Address Line 1</label>
+                    <input class="form-input" id="billAddr1" placeholder="Street address">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Address Line 2</label>
+                    <input class="form-input" id="billAddr2" placeholder="Apartment, suite, etc.">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">City</label>
+                    <input class="form-input" id="billCity" placeholder="Cape Town">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Postal Code</label>
+                    <input class="form-input" id="billPostal" placeholder="8001">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Province</label>
+                    <select class="form-input" id="billProvince">
+                        <option>Western Cape</option>
+                        <option>Gauteng</option>
+                        <option>KwaZulu-Natal</option>
+                        <option>Eastern Cape</option>
+                        <option>Limpopo</option>
+                        <option>Mpumalanga</option>
+                        <option>North West</option>
+                        <option>Free State</option>
+                        <option>Northern Cape</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Country</label>
+                    <input class="form-input" value="South Africa" readonly>
+                </div>
+            </div>
+            <div style="margin-top:16px;">
+                <button class="btn btn-primary" onclick="saveBilling()">Save Billing Address</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── ACTIVITY LOG ────────────────────────────────────────── -->
+<div class="settings-section" id="sec-activity">
+    <div class="sec-hdr">
+        <h2>Activity Log</h2>
+        <p>A record of your recent actions on LinkUP.</p>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr">
+            <h3>Recent Activity</h3>
+            <button class="btn btn-outline" style="padding:7px 14px;font-size:12px;" onclick="clearActivity()">Clear Log</button>
+        </div>
+        <div class="card-body">
+            <div id="activityLog"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ── HELP CENTRE ─────────────────────────────────────────── -->
+<div class="settings-section" id="sec-help">
+    <div class="sec-hdr">
+        <h2>Help Centre</h2>
+        <p>Find answers or get in touch with the LinkUP support team.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:18px;">
+        <div class="card-hdr"><h3>Contact Support</h3></div>
+        <div class="card-body">
+            <div class="form-grid cols1" style="max-width:500px;margin-bottom:16px;">
+                <div class="form-group">
+                    <label class="form-label">Subject</label>
+                    <select class="form-input" id="helpSubject">
+                        <option>Account Issue</option>
+                        <option>Payment Problem</option>
+                        <option>Product / Listing</option>
+                        <option>Order Dispute</option>
+                        <option>Report a User</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Message</label>
+                    <textarea class="form-input" id="helpMessage" rows="4" placeholder="Describe your issue in detail..." style="resize:vertical;height:100px;line-height:1.6;"></textarea>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="submitSupport()">Send Message</button>
+            <button class="btn btn-outline" style="margin-left:10px;" onclick="location.href='chat.html'">Live Chat</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-hdr"><h3>Frequently Asked Questions</h3></div>
+        <div class="card-body">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How do I buy a product on LinkUP?
+                    <span class="faq-chevron">▾</span>
+                </div>
+                <div class="faq-answer">Browse products on the marketplace, click a listing to view it, then click "Add to Cart". Go to your cart, complete the checkout steps — delivery details, payment method, and review — then confirm your order.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How do I list a product for sale?
+                    <span class="faq-chevron">▾</span>
+                </div>
+                <div class="faq-answer">Go to the Sell page from the navigation bar. Fill in your product name, price, category, condition, location and description. Upload up to 6 product photos. Click Publish to make your listing live.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How do promo codes work?
+                    <span class="faq-chevron">▾</span>
+                </div>
+                <div class="faq-answer">When you are on the cart page, enter a valid promo code in the "Promo code" field in the order summary and click Apply. Try LINKUP10 for 10% off, WELCOME20 for 20% off, or SAVE15 for 15% off.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What is the refund policy?
+                    <span class="faq-chevron">▾</span>
+                </div>
+                <div class="faq-answer">If your item is not as described or does not arrive, contact the seller through chat first. If unresolved within 48 hours, open a dispute via the Help Centre and our team will assist within 3 working days.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    How do I report a seller or listing?
+                    <span class="faq-chevron">▾</span>
+                </div>
+                <div class="faq-answer">On any product listing, click the "Report" button at the bottom. Alternatively, submit a support message here with the subject "Report a User" and include the seller's name and listing details.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div><!-- /settings-main -->
+</div><!-- /settings-layout -->
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   TOAST
+════════════════════════════════════════════════════════════ */
+function showToast(msg, type='') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'show ' + type;
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.className = '', 3000);
+}
+
+/* ════════════════════════════════════════════════════════════
+   NAV — switch section
+════════════════════════════════════════════════════════════ */
+function showSection(id, btn) {
+    document.querySelectorAll('.settings-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.sb-item').forEach(b => b.classList.remove('active'));
+
+    document.getElementById('sec-' + id).classList.add('active');
+
+    if (btn) {
+        btn.classList.add('active');
+    } else {
+        // find by matching text content
+        document.querySelectorAll('.sb-item').forEach(b => {
+            if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(id)) b.classList.add('active');
+        });
+    }
+
+    // Load dynamic data for certain sections
+    if (id === 'profile')  loadProfileSection();
+    if (id === 'activity') renderActivityLog();
+}
+
+/* ════════════════════════════════════════════════════════════
+   LOAD USER DATA from localStorage
+════════════════════════════════════════════════════════════ */
+function loadUserData() {
+    const email    = localStorage.getItem('userEmail')    || '';
+    const name     = localStorage.getItem('userName')     || '';
+    const username = localStorage.getItem('userUsername') || '';
+    const phone    = localStorage.getItem('userPhone')    || '';
+    const location = localStorage.getItem('userLocation') || '';
+    const bio      = localStorage.getItem('userBio')      || '';
+    const joined   = localStorage.getItem('userJoined')   || new Date().toLocaleDateString('en-ZA');
+    const pic      = localStorage.getItem('userPic')      || '';
+
+    const displayName = name || (email ? email.split('@')[0] : 'Guest User');
+    const initial     = displayName.charAt(0).toUpperCase() || '?';
+
+    // Sidebar
+    document.getElementById('sbInitial').textContent = initial;
+    document.getElementById('sbName').textContent    = displayName;
+    document.getElementById('sbEmail').textContent   = email || 'Not signed in';
+
+    if (!localStorage.getItem('userJoined')) localStorage.setItem('userJoined', joined);
+
+    // Avatar
+    if (pic) {
+        document.getElementById('sbAvatarImg').src = pic;
+        document.getElementById('sbAvatarImg').style.display = 'block';
+        document.getElementById('heroAvatarImg').src = pic;
+        document.getElementById('heroAvatarImg').style.display = 'block';
+    }
+
+    return { email, name, username, phone, location, bio, initial, displayName, joined, pic };
+}
+
+function loadProfileSection() {
+    const d = loadUserData();
+
+    document.getElementById('heroInitial').textContent  = d.initial;
+    document.getElementById('heroName').textContent     = d.displayName;
+    document.getElementById('heroEmail').textContent    = d.email || 'Not signed in';
+
+    // Stats
+    const cart     = JSON.parse(localStorage.getItem('cart'))     || [];
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+    document.getElementById('statCartItems').textContent = cart.length;
+    document.getElementById('statListings').textContent  = products.length;
+    document.getElementById('statOrders').textContent    = localStorage.getItem('totalOrders') || '0';
+    document.getElementById('memberSince').textContent   = d.joined;
+}
+
+function loadAccount() {
+    const d = loadUserData();
+    const parts = d.name.split(' ');
+    document.getElementById('accFirstName').value = parts[0] || '';
+    document.getElementById('accLastName').value  = parts.slice(1).join(' ') || '';
+    document.getElementById('accUsername').value  = d.username;
+    document.getElementById('accEmail').value     = d.email;
+    document.getElementById('accPhone').value     = d.phone;
+    document.getElementById('accLocation').value  = d.location;
+    document.getElementById('accBio').value       = d.bio;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SAVE FUNCTIONS
+════════════════════════════════════════════════════════════ */
+function saveAccount() {
+    const first    = document.getElementById('accFirstName').value.trim();
+    const last     = document.getElementById('accLastName').value.trim();
+    const username = document.getElementById('accUsername').value.trim();
+    const email    = document.getElementById('accEmail').value.trim();
+    const phone    = document.getElementById('accPhone').value.trim();
+    const location = document.getElementById('accLocation').value.trim();
+    const bio      = document.getElementById('accBio').value.trim();
+
+    if (!first) { showToast('First name cannot be empty.', 'fail'); return; }
+    if (email && !email.includes('@')) { showToast('Please enter a valid email address.', 'fail'); return; }
+
+    localStorage.setItem('userName',     (first + ' ' + last).trim());
+    localStorage.setItem('userUsername', username || first.toLowerCase());
+    localStorage.setItem('userEmail',    email);
+    localStorage.setItem('userPhone',    phone);
+    localStorage.setItem('userLocation', location);
+    localStorage.setItem('userBio',      bio);
+
+    logActivity('Account details updated.', 'blue');
+    loadUserData();
+    loadProfileSection();
+    showToast('Account details saved successfully.', 'ok');
+}
+
+function saveSellerProfile() {
+    const shopName = document.getElementById('shopName').value.trim();
+    const bizType  = document.getElementById('bizType').value;
+    if (shopName) localStorage.setItem('shopName', shopName);
+    localStorage.setItem('bizType', bizType);
+    showToast('Seller profile updated.', 'ok');
+}
+
+function saveBilling() {
+    ['billAddr1','billAddr2','billCity','billPostal','billProvince'].forEach(id => {
+        localStorage.setItem(id, document.getElementById(id).value);
+    });
+    logActivity('Billing address updated.', 'green');
+    showToast('Billing address saved.', 'ok');
+}
+
+function saveNotifications() {
+    const notifs = {
+        msg:     document.getElementById('notifMsg').checked,
+        orders:  document.getElementById('notifOrders').checked,
+        offers:  document.getElementById('notifOffers').checked,
+        prices:  document.getElementById('notifPrices').checked,
+        promos:  document.getElementById('notifPromos').checked,
+        reports: document.getElementById('notifReports').checked,
+    };
+    localStorage.setItem('notifications', JSON.stringify(notifs));
+    showToast('Notification settings saved.', 'ok');
+}
+
+function savePrivacy() {
+    const priv = {
+        public:   document.getElementById('privPublic').checked,
+        online:   document.getElementById('privOnline').checked,
+        phone:    document.getElementById('privPhone').checked,
+        msg:      document.getElementById('privMsg').value,
+        listings: document.getElementById('privListings').value,
+    };
+    localStorage.setItem('privacy', JSON.stringify(priv));
+    showToast('Privacy settings saved.', 'ok');
+}
+
+function saveAppearance() {
+    localStorage.setItem('prefLang',     document.getElementById('prefLang').value);
+    localStorage.setItem('prefCurrency', document.getElementById('prefCurrency').value);
+    localStorage.setItem('prefCat',      document.getElementById('prefCat').value);
+    localStorage.setItem('prefSort',     document.getElementById('prefSort').value);
+    showToast('Appearance preferences saved.', 'ok');
+}
+
+function saveSecurity() {
+    localStorage.setItem('sec2FA',         document.getElementById('tog2FA').checked);
+    localStorage.setItem('secLoginAlerts', document.getElementById('togLoginAlerts').checked);
+    localStorage.setItem('secTrusted',     document.getElementById('togTrusted').checked);
+    showToast('Security settings updated.', 'ok');
+}
+
+/* ════════════════════════════════════════════════════════════
+   PASSWORD
+════════════════════════════════════════════════════════════ */
+function togglePw(id, btn) {
+    const input = document.getElementById(id);
+    const show  = input.type === 'password';
+    input.type  = show ? 'text' : 'password';
+    btn.textContent = show ? '🙈' : '👁';
+}
+
+function checkStrength(val) {
+    const bar   = document.getElementById('strengthBar');
+    const label = document.getElementById('strengthLabel');
+    let score   = 0;
+    if (val.length >= 6)        score++;
+    if (val.length >= 10)       score++;
+    if (/[A-Z]/.test(val))      score++;
+    if (/[0-9]/.test(val))      score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+
+    const levels = [
+        { w:'0%',   bg:'#e2e8f0', txt:'' },
+        { w:'25%',  bg:'#ef4444', txt:'Weak' },
+        { w:'50%',  bg:'#f59e0b', txt:'Fair' },
+        { w:'75%',  bg:'#3b82f6', txt:'Good' },
+        { w:'100%', bg:'#22c55e', txt:'Strong' },
+    ];
+
+    const lvl = val.length === 0 ? levels[0] : levels[Math.min(score, 4)];
+    bar.style.width      = lvl.w;
+    bar.style.background = lvl.bg;
+    label.style.color    = lvl.bg;
+    label.textContent    = lvl.txt;
+}
+
+function changePassword() {
+    const cur  = document.getElementById('curPass').value;
+    const np   = document.getElementById('newPass').value;
+    const conf = document.getElementById('confPass').value;
+
+    if (!cur)        { showToast('Please enter your current password.', 'fail'); return; }
+    if (np.length<6) { showToast('New password must be at least 6 characters.', 'fail'); return; }
+    if (np !== conf) { showToast('Passwords do not match.', 'fail'); return; }
+
+    const stored = localStorage.getItem('userPassword');
+    if (stored && stored !== cur) { showToast('Current password is incorrect.', 'fail'); return; }
+
+    localStorage.setItem('userPassword', np);
+    ['curPass','newPass','confPass'].forEach(id => document.getElementById(id).value = '');
+    logActivity('Password changed.', 'amber');
+    showToast('Password updated successfully.', 'ok');
+}
+
+/* ════════════════════════════════════════════════════════════
+   DARK MODE
+════════════════════════════════════════════════════════════ */
+function applyDark(on) {
+    document.body.classList.toggle('dark-mode', on);
+    localStorage.setItem('darkMode', on ? '1' : '0');
+}
+
+/* ════════════════════════════════════════════════════════════
+   AVATAR UPLOAD
+════════════════════════════════════════════════════════════ */
+function uploadAvatar(input) {
+    if (!input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        const src = e.target.result;
+        localStorage.setItem('userPic', src);
+
+        ['sbAvatarImg','heroAvatarImg'].forEach(id => {
+            const img = document.getElementById(id);
+            img.src = src;
+            img.style.display = 'block';
+        });
+
+        logActivity('Profile photo updated.', 'blue');
+        showToast('Profile photo updated.', 'ok');
+    };
+    reader.readAsDataURL(input.files[0]);
+}
+
+/* ════════════════════════════════════════════════════════════
+   ACTIVITY LOG
+════════════════════════════════════════════════════════════ */
+const ACTIVITY_COLOURS = ['blue','green','amber','red'];
+
+function logActivity(text, colour='blue') {
+    const log  = JSON.parse(localStorage.getItem('activityLog')) || [];
+    const time = new Date().toLocaleString('en-ZA');
+    log.unshift({ text, colour, time });
+    if (log.length > 50) log.pop();
+    localStorage.setItem('activityLog', JSON.stringify(log));
+}
+
+function renderActivityLog() {
+    const log = JSON.parse(localStorage.getItem('activityLog')) || [];
+    const box = document.getElementById('activityLog');
+
+    const defaults = [
+        { text:'Logged into LinkUP',         colour:'blue',  time: new Date().toLocaleString('en-ZA') },
+        { text:'Browsed Electronics',         colour:'green', time: '10 minutes ago' },
+        { text:'Added item to cart',          colour:'blue',  time: '1 hour ago' },
+        { text:'Listed a product for sale',   colour:'amber', time: 'Yesterday' },
+        { text:'Changed account settings',    colour:'green', time: 'Yesterday' },
+    ];
+
+    const items = log.length ? log : defaults;
+
+    box.innerHTML = items.map(item => `
+    <div class="activity-item">
+        <div class="activity-dot ${item.colour}"></div>
+        <div class="activity-text">
+            <strong>${item.text}</strong>
+            <span>${item.time}</span>
+        </div>
+    </div>`).join('');
+}
+
+function clearActivity() {
+    localStorage.removeItem('activityLog');
+    renderActivityLog();
+    showToast('Activity log cleared.', 'ok');
+}
+
+/* ════════════════════════════════════════════════════════════
+   FAQ ACCORDION
+════════════════════════════════════════════════════════════ */
+function toggleFaq(el) {
+    const answer = el.nextElementSibling;
+    const isOpen = el.classList.contains('open');
+
+    // close all
+    document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('open'));
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+
+    if (!isOpen) {
+        el.classList.add('open');
+        answer.classList.add('open');
+    }
+}
+
+/* ════════════════════════════════════════════════════════════
+   SUPPORT
+════════════════════════════════════════════════════════════ */
+function submitSupport() {
+    const subject = document.getElementById('helpSubject').value;
+    const message = document.getElementById('helpMessage').value.trim();
+    if (!message) { showToast('Please describe your issue before submitting.', 'fail'); return; }
+    logActivity('Support ticket submitted: ' + subject, 'amber');
+    document.getElementById('helpMessage').value = '';
+    showToast('Support request sent. We will respond within 24 hours.', 'ok');
+}
+
+/* ════════════════════════════════════════════════════════════
+   DELETE ACCOUNT
+════════════════════════════════════════════════════════════ */
+function deleteAccount() {
+    if (confirm('Are you absolutely sure? This will permanently delete your account and all your data.')) {
+        localStorage.clear();
+        showToast('Account deleted. Redirecting...', 'fail');
+        setTimeout(() => location.href = 'index.html', 1800);
+    }
+}
+
+/* ════════════════════════════════════════════════════════════
+   LOGOUT
+════════════════════════════════════════════════════════════ */
+function logout() {
+    if (confirm('Sign out of your LinkUP account?')) {
+        logActivity('Signed out of LinkUP.', 'amber');
+        localStorage.removeItem('isLoggedIn');
+        showToast('Signed out. See you soon!', 'ok');
+        setTimeout(() => location.href = 'login.html', 1200);
+    }
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESTORE SAVED SETTINGS
+════════════════════════════════════════════════════════════ */
+function restoreSettings() {
+    // Dark mode
+    if (localStorage.getItem('darkMode') === '1') {
+        document.body.classList.add('dark-mode');
+        if (document.getElementById('togDark')) document.getElementById('togDark').checked = true;
+    }
+
+    // Notifications
+    const notifs = JSON.parse(localStorage.getItem('notifications'));
+    if (notifs) {
+        if (document.getElementById('notifMsg'))     document.getElementById('notifMsg').checked     = notifs.msg     ?? true;
+        if (document.getElementById('notifOrders'))  document.getElementById('notifOrders').checked  = notifs.orders  ?? true;
+        if (document.getElementById('notifOffers'))  document.getElementById('notifOffers').checked  = notifs.offers  ?? true;
+        if (document.getElementById('notifPrices'))  document.getElementById('notifPrices').checked  = notifs.prices  ?? false;
+        if (document.getElementById('notifPromos'))  document.getElementById('notifPromos').checked  = notifs.promos  ?? false;
+        if (document.getElementById('notifReports')) document.getElementById('notifReports').checked = notifs.reports ?? false;
+    }
+
+    // Privacy
+    const priv = JSON.parse(localStorage.getItem('privacy'));
+    if (priv) {
+        if (document.getElementById('privPublic')) document.getElementById('privPublic').checked = priv.public ?? true;
+        if (document.getElementById('privOnline')) document.getElementById('privOnline').checked = priv.online ?? true;
+        if (document.getElementById('privPhone'))  document.getElementById('privPhone').checked  = priv.phone  ?? false;
+        if (document.getElementById('privMsg'))    document.getElementById('privMsg').value      = priv.msg    || 'Everyone';
+    }
+
+    // Security
+    if (localStorage.getItem('sec2FA')         === 'true' && document.getElementById('tog2FA'))         document.getElementById('tog2FA').checked         = true;
+    if (localStorage.getItem('secLoginAlerts') !== 'false' && document.getElementById('togLoginAlerts')) document.getElementById('togLoginAlerts').checked = true;
+    if (localStorage.getItem('secTrusted')     === 'true' && document.getElementById('togTrusted'))     document.getElementById('togTrusted').checked     = true;
+
+    // Appearance selects
+    if (localStorage.getItem('prefLang')     && document.getElementById('prefLang'))     document.getElementById('prefLang').value     = localStorage.getItem('prefLang');
+    if (localStorage.getItem('prefCurrency') && document.getElementById('prefCurrency')) document.getElementById('prefCurrency').value = localStorage.getItem('prefCurrency');
+    if (localStorage.getItem('prefCat')      && document.getElementById('prefCat'))      document.getElementById('prefCat').value      = localStorage.getItem('prefCat');
+    if (localStorage.getItem('prefSort')     && document.getElementById('prefSort'))     document.getElementById('prefSort').value     = localStorage.getItem('prefSort');
+
+    // Billing
+    ['billAddr1','billAddr2','billCity','billPostal'].forEach(id => {
+        const val = localStorage.getItem(id);
+        if (val && document.getElementById(id)) document.getElementById(id).value = val;
+    });
+}
+
+/* ════════════════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════════════════ */
+loadUserData();
+loadProfileSection();
+loadAccount();
+restoreSettings();
+logActivity('Visited Settings page.', 'blue');
+</script>
+</body>
+</html>

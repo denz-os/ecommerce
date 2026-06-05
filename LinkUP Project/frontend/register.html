@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account — LinkUP</title>
+<style>
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+    background: #f1f5f9;
+    color: #0f172a;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── FULL PAGE GRID ─────────────────────────────────────────── */
+.auth-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+}
+
+/* ── LEFT — brand panel ─────────────────────────────────────── */
+.brand-panel {
+    background: linear-gradient(155deg, #1877f2 0%, #1360cc 55%, #0d4fa8 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px 52px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative rings */
+.brand-panel::before {
+    content: '';
+    position: absolute;
+    width: 520px; height: 520px;
+    border-radius: 50%;
+    border: 80px solid rgba(255,255,255,.06);
+    top: -180px; right: -180px;
+    pointer-events: none;
+}
+
+.brand-panel::after {
+    content: '';
+    position: absolute;
+    width: 340px; height: 340px;
+    border-radius: 50%;
+    border: 60px solid rgba(255,255,255,.04);
+    bottom: -120px; left: -80px;
+    pointer-events: none;
+}
+
+/* Brand name */
+.bp-logo {
+    font-size: 30px;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: .4px;
+    position: relative; z-index: 1;
+}
+
+/* Centre content */
+.bp-body {
+    position: relative; z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.bp-headline {
+    font-size: clamp(28px, 3.5vw, 42px);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.18;
+    letter-spacing: -.5px;
+    margin-bottom: 18px;
+}
+
+.bp-headline span {
+    color: rgba(255,255,255,.55);
+}
+
+.bp-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,.7);
+    line-height: 1.7;
+    max-width: 360px;
+    margin-bottom: 40px;
+    font-weight: 400;
+}
+
+/* Steps list */
+.bp-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.bp-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.bp-step-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.15);
+    border: 1.5px solid rgba(255,255,255,.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.bp-step-text strong {
+    display: block;
+    font-size: 14px; font-weight: 700;
+    color: #fff; margin-bottom: 2px;
+}
+
+.bp-step-text span {
+    font-size: 12px;
+    color: rgba(255,255,255,.55);
+    line-height: 1.5;
+}
+
+/* Bottom stat strip */
+.bp-stats {
+    display: flex;
+    gap: 28px;
+    position: relative; z-index: 1;
+    padding-top: 28px;
+    border-top: 1px solid rgba(255,255,255,.12);
+}
+
+.bp-stat strong {
+    display: block;
+    font-size: 22px; font-weight: 800;
+    color: #fff; line-height: 1;
+}
+
+.bp-stat span {
+    font-size: 11px;
+    color: rgba(255,255,255,.5);
+    font-weight: 500;
+    letter-spacing: .3px;
+}
+
+/* ── RIGHT — form panel ─────────────────────────────────────── */
+.form-panel {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 48px 52px;
+    overflow-y: auto;
+}
+
+.form-inner {
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Form header */
+.form-hdr { margin-bottom: 26px; }
+
+.form-hdr h1 {
+    font-size: 26px; font-weight: 800;
+    color: #0f172a; margin-bottom: 6px;
+    letter-spacing: -.3px;
+}
+
+.form-hdr p {
+    font-size: 14px; color: #64748b;
+    line-height: 1.6; font-weight: 400;
+}
+
+/* Form groups */
+.f-group {
+    margin-bottom: 16px;
+}
+
+.f-group label {
+    display: block;
+    font-size: 12px; font-weight: 700;
+    color: #475569;
+    text-transform: uppercase; letter-spacing: .45px;
+    margin-bottom: 7px;
+}
+
+.f-input {
+    width: 100%; padding: 13px 15px;
+    border: 1.5px solid #dbe2ea;
+    border-radius: 11px;
+    background: #f8fafc;
+    font-size: 14px; font-family: inherit;
+    color: #0f172a; outline: none;
+    transition: border-color .18s, box-shadow .18s, background .18s;
+}
+
+.f-input:focus {
+    border-color: #1877f2;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(24,119,242,.11);
+}
+
+.f-input.err { border-color: #ef4444; background: #fff5f5; }
+.f-input::placeholder { color: #b0b8c8; }
+
+/* Two-column grid for name row */
+.f-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* Password wrapper */
+.pw-wrap { position: relative; }
+.pw-wrap .f-input { padding-right: 46px; }
+
+.pw-toggle {
+    position: absolute; right: 13px; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none; cursor: pointer;
+    color: #94a3b8; padding: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: color .18s;
+}
+
+.pw-toggle:hover { color: #1877f2; }
+
+.pw-toggle svg {
+    width: 17px; height: 17px;
+    stroke: currentColor; fill: none;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Password strength bar */
+.strength-bar {
+    margin-top: 8px;
+}
+
+.strength-track {
+    height: 4px;
+    background: #e4e9f2;
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.strength-fill {
+    height: 100%;
+    border-radius: 99px;
+    width: 0%;
+    background: #ef4444;
+    transition: width .28s ease, background .28s ease;
+}
+
+.strength-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-top: 5px;
+    transition: color .28s;
+}
+
+/* Error text */
+.f-error {
+    font-size: 12.5px; color: #ef4444;
+    font-weight: 500; min-height: 18px;
+    margin: -8px 0 10px;
+    display: block;
+}
+
+/* Terms row */
+.terms-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 4px 0 20px;
+}
+
+.terms-row input[type=checkbox] {
+    width: 16px; height: 16px;
+    accent-color: #1877f2;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.terms-row span {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.55;
+}
+
+.terms-row a {
+    color: #1877f2;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.terms-row a:hover { color: #1360cc; text-decoration: underline; }
+
+/* Submit button */
+.submit-btn {
+    width: 100%; padding: 14px;
+    border: none; border-radius: 12px;
+    background: #1877f2;
+    color: #fff; font-size: 15px;
+    font-weight: 700; cursor: pointer;
+    font-family: inherit;
+    transition: background .18s, transform .14s, box-shadow .18s;
+    box-shadow: 0 4px 16px rgba(24,119,242,.3);
+    display: flex; align-items: center;
+    justify-content: center; gap: 8px;
+}
+
+.submit-btn:hover { background: #1360cc; transform: translateY(-1px); box-shadow: 0 7px 22px rgba(24,119,242,.35); }
+.submit-btn:active { transform: translateY(0); }
+.submit-btn:disabled { background: #94a3b8; box-shadow: none; cursor: not-allowed; transform: none; }
+
+/* Spinner */
+.spin {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,.35);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spinAnim .6s linear infinite;
+}
+@keyframes spinAnim { to { transform: rotate(360deg); } }
+
+/* Divider */
+.or-divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 22px 0;
+}
+
+.or-divider::before,
+.or-divider::after {
+    content: ''; flex: 1; height: 1px; background: #e4e9f2;
+}
+
+.or-divider span {
+    font-size: 12px; color: #94a3b8;
+    font-weight: 600; white-space: nowrap;
+}
+
+/* Social buttons */
+.social-row { display: flex; gap: 10px; margin-bottom: 24px; }
+
+.social-btn {
+    flex: 1; padding: 11px;
+    border: 1.5px solid #dbe2ea;
+    border-radius: 11px; background: #fff;
+    font-size: 13px; font-weight: 600;
+    color: #475569; cursor: pointer;
+    font-family: inherit;
+    display: flex; align-items: center;
+    justify-content: center; gap: 8px;
+    transition: border-color .18s, background .18s, color .18s;
+}
+
+.social-btn:hover { border-color: #1877f2; color: #1877f2; background: #f8fafc; }
+
+.social-btn svg {
+    width: 16px; height: 16px; flex-shrink: 0;
+}
+
+/* Footer link */
+.form-footer {
+    text-align: center; margin-top: 22px;
+    font-size: 14px; color: #64748b;
+}
+
+.form-footer a {
+    color: #1877f2; font-weight: 700;
+    text-decoration: none;
+    transition: color .18s;
+}
+
+.form-footer a:hover { color: #1360cc; }
+
+/* Avatar upload */
+.avatar-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    background: #f8fafc;
+    border: 1.5px dashed #dbe2ea;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: border-color .18s, background .18s;
+    position: relative;
+}
+
+.avatar-section:hover {
+    border-color: #1877f2;
+    background: #eef4ff;
+}
+
+.avatar-section input[type=file] {
+    position: absolute; inset: 0;
+    opacity: 0; cursor: pointer; width: 100%; height: 100%;
+}
+
+.avatar-circle {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1877f2, #4facfe);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.avatar-circle img {
+    width: 100%; height: 100%; object-fit: cover;
+    position: absolute; inset: 0;
+    border-radius: 50%;
+}
+
+.avatar-text strong {
+    display: block;
+    font-size: 13px; font-weight: 700;
+    color: #1877f2; margin-bottom: 2px;
+}
+
+.avatar-text span {
+    font-size: 12px; color: #94a3b8;
+}
+
+/* Toast */
+#toast {
+    position: fixed; bottom: 24px; right: 24px;
+    background: #0f172a; color: #fff;
+    padding: 13px 20px; border-radius: 12px;
+    font-size: 13px; font-weight: 500;
+    opacity: 0; pointer-events: none;
+    z-index: 10000; transform: translateY(12px);
+    transition: opacity .22s, transform .22s;
+    border-left: 4px solid #1877f2;
+    box-shadow: 0 8px 24px rgba(0,0,0,.18);
+    max-width: 280px;
+}
+#toast.show { opacity: 1; transform: translateY(0); }
+#toast.ok   { border-left-color: #22c55e; }
+#toast.fail { border-left-color: #ef4444; }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .auth-page { grid-template-columns: 1fr; }
+    .brand-panel { display: none; }
+    .form-panel { padding: 40px 24px; min-height: 100vh; }
+}
+
+@media (max-width: 480px) {
+    .form-panel { padding: 32px 18px; }
+    .form-inner { max-width: 100%; }
+    .f-grid-2 { grid-template-columns: 1fr; gap: 0; }
+}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<div class="auth-page">
+
+    <!-- ── LEFT — brand panel ─────────────────────────────── -->
+    <div class="brand-panel">
+
+        <div class="bp-logo">LinkUP Marketplace</div>
+
+        <div class="bp-body">
+            <h2 class="bp-headline">
+                Join over<br>
+                <span>5,000 sellers</span><br>
+                already selling.
+            </h2>
+            <p class="bp-sub">
+                Create your free account in under a minute. Start listing today and reach buyers from Cape Town to Limpopo.
+            </p>
+
+            <div class="bp-steps">
+                <div class="bp-step">
+                    <div class="bp-step-num">1</div>
+                    <div class="bp-step-text">
+                        <strong>Create your account</strong>
+                        <span>Fill in your details — it's quick and completely free</span>
+                    </div>
+                </div>
+                <div class="bp-step">
+                    <div class="bp-step-num">2</div>
+                    <div class="bp-step-text">
+                        <strong>Post your first listing</strong>
+                        <span>Add photos, a description and your asking price</span>
+                    </div>
+                </div>
+                <div class="bp-step">
+                    <div class="bp-step-num">3</div>
+                    <div class="bp-step-text">
+                        <strong>Connect with buyers</strong>
+                        <span>Chat directly and close deals on your own terms</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bp-stats">
+            <div class="bp-stat">
+                <strong>Free</strong>
+                <span>Always</span>
+            </div>
+            <div class="bp-stat">
+                <strong>60 sec</strong>
+                <span>Sign-up</span>
+            </div>
+            <div class="bp-stat">
+                <strong>100+</strong>
+                <span>Listings</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ── RIGHT — form panel ─────────────────────────────── -->
+    <div class="form-panel">
+        <div class="form-inner">
+
+            <div class="form-hdr">
+                <h1>Create your account</h1>
+                <p>Join LinkUP and start buying or selling in minutes.</p>
+            </div>
+
+            <!-- Social sign-up -->
+            <div class="social-row">
+                <button class="social-btn" onclick="socialSignup('Google')">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    Continue with Google
+                </button>
+            </div>
+
+            <div class="or-divider">
+                <span>or sign up with email</span>
+            </div>
+
+            <!-- Avatar upload -->
+            <div class="avatar-section" id="avatarSection" onclick="document.getElementById('avatarFile').click()">
+                <div class="avatar-circle" id="avatarCircle">
+                    <span id="avatarEmoji">👤</span>
+                </div>
+                <div class="avatar-text">
+                    <strong>Upload profile photo</strong>
+                    <span>Optional · JPG, PNG or GIF</span>
+                </div>
+                <input type="file" id="avatarFile" accept="image/*" onchange="previewAvatar(this)" onclick="event.stopPropagation()">
+            </div>
+
+            <!-- Name row -->
+            <div class="f-grid-2">
+                <div class="f-group">
+                    <label>First Name</label>
+                    <input class="f-input" type="text" id="firstName" placeholder="Jane" onkeypress="if(event.key==='Enter')register()">
+                </div>
+                <div class="f-group">
+                    <label>Last Name</label>
+                    <input class="f-input" type="text" id="lastName" placeholder="Smith" onkeypress="if(event.key==='Enter')register()">
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="f-group">
+                <label>Email Address</label>
+                <input class="f-input" type="email" id="regEmail" placeholder="you@example.com" onkeypress="if(event.key==='Enter')register()">
+            </div>
+
+            <!-- Phone -->
+            <div class="f-group">
+                <label>Phone <span style="font-weight:400;text-transform:none;letter-spacing:0;color:#b0b8c8;">(optional)</span></label>
+                <input class="f-input" type="tel" id="phone" placeholder="+27 81 234 5678" onkeypress="if(event.key==='Enter')register()">
+            </div>
+
+            <!-- Password -->
+            <div class="f-group">
+                <label>Password</label>
+                <div class="pw-wrap">
+                    <input class="f-input" type="password" id="regPass" placeholder="Min. 6 characters" oninput="checkStrength(this.value)" onkeypress="if(event.key==='Enter')register()">
+                    <button class="pw-toggle" type="button" onclick="togglePw('regPass', this)" tabindex="-1">
+                        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                </div>
+                <div class="strength-bar">
+                    <div class="strength-track"><div class="strength-fill" id="strengthFill"></div></div>
+                    <div class="strength-label" id="strengthLabel">Enter a password</div>
+                </div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="f-group">
+                <label>Confirm Password</label>
+                <div class="pw-wrap">
+                    <input class="f-input" type="password" id="confirmPass" placeholder="Repeat your password" onkeypress="if(event.key==='Enter')register()">
+                    <button class="pw-toggle" type="button" onclick="togglePw('confirmPass', this)" tabindex="-1">
+                        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <span class="f-error" id="registerError"></span>
+
+            <!-- Terms -->
+            <div class="terms-row">
+                <input type="checkbox" id="agreeTerms">
+                <span>I agree to LinkUP's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></span>
+            </div>
+
+            <button class="submit-btn" id="regBtn" onclick="register()">Create My Account</button>
+
+            <div class="form-footer">
+                Already have an account? <a href="login.html">Sign in</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+/* ── TOAST ───────────────────────────────────────────────────── */
+function showToast(msg, type = '') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'show ' + type;
+    clearTimeout(t._t);
+    t._t = setTimeout(() => t.className = '', 3000);
+}
+
+/* ── AVATAR PREVIEW ──────────────────────────────────────────── */
+function previewAvatar(input) {
+    if (!input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        const circle = document.getElementById('avatarCircle');
+        // Remove old image if present
+        const existing = circle.querySelector('img');
+        if (existing) existing.remove();
+        document.getElementById('avatarEmoji').style.display = 'none';
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        circle.appendChild(img);
+        // Update hint text
+        document.querySelector('.avatar-text strong').textContent = 'Photo selected ✓';
+        document.querySelector('.avatar-text strong').style.color = '#22c55e';
+    };
+    reader.readAsDataURL(input.files[0]);
+}
+
+/* ── PASSWORD TOGGLE ─────────────────────────────────────────── */
+function togglePw(id, btn) {
+    const input = document.getElementById(id);
+    const show  = input.type === 'password';
+    input.type  = show ? 'text' : 'password';
+    btn.querySelector('svg').innerHTML = show
+        ? `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`
+        : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+}
+
+/* ── PASSWORD STRENGTH ───────────────────────────────────────── */
+function checkStrength(val) {
+    const fill  = document.getElementById('strengthFill');
+    const label = document.getElementById('strengthLabel');
+
+    let score = 0;
+    if (val.length >= 6)             score++;
+    if (val.length >= 10)            score++;
+    if (/[A-Z]/.test(val))           score++;
+    if (/[0-9]/.test(val))           score++;
+    if (/[^A-Za-z0-9]/.test(val))    score++;
+
+    const levels = [
+        { w: '0%',   bg: '#e4e9f2', txt: 'Enter a password',  color: '#94a3b8' },
+        { w: '25%',  bg: '#ef4444', txt: 'Weak',              color: '#ef4444' },
+        { w: '50%',  bg: '#f59e0b', txt: 'Fair',              color: '#f59e0b' },
+        { w: '75%',  bg: '#3b82f6', txt: 'Good',              color: '#3b82f6' },
+        { w: '100%', bg: '#22c55e', txt: 'Strong',         color: '#22c55e' },
+    ];
+
+    const lvl = val.length === 0 ? levels[0] : levels[Math.min(score, 4)];
+    fill.style.width      = lvl.w;
+    fill.style.background = lvl.bg;
+    label.style.color     = lvl.color;
+    label.textContent     = lvl.txt;
+}
+
+/* ── SOCIAL SIGN UP ──────────────────────────────────────────── */
+function socialSignup(provider) {
+    showToast(provider + ' sign-up is coming soon.', 'ok');
+}
+
+/* ── CLEAR ERRORS ────────────────────────────────────────────── */
+function clearErrors() {
+    document.getElementById('registerError').textContent = '';
+    document.querySelectorAll('.f-input').forEach(i => i.classList.remove('err'));
+}
+
+/* ── REGISTER ────────────────────────────────────────────────── */
+function register() {
+    const first   = document.getElementById('firstName').value.trim();
+    const last    = document.getElementById('lastName').value.trim();
+    const email   = document.getElementById('regEmail').value.trim();
+    const phone   = document.getElementById('phone').value.trim();
+    const pass    = document.getElementById('regPass').value;
+    const confirm = document.getElementById('confirmPass').value;
+    const agreed  = document.getElementById('agreeTerms').checked;
+    const errEl   = document.getElementById('registerError');
+    const btn     = document.getElementById('regBtn');
+
+    clearErrors();
+
+    // ── Validation (mirrors login page pattern) ──
+    if (!first) {
+        document.getElementById('firstName').classList.add('err');
+        errEl.textContent = 'Please enter your first name.';
+        return;
+    }
+
+    if (!last) {
+        document.getElementById('lastName').classList.add('err');
+        errEl.textContent = 'Please enter your last name.';
+        return;
+    }
+
+    if (!email) {
+        document.getElementById('regEmail').classList.add('err');
+        errEl.textContent = 'Please enter your email address.';
+        return;
+    }
+
+    if (!email.includes('@') || !email.includes('.')) {
+        document.getElementById('regEmail').classList.add('err');
+        errEl.textContent = 'Please enter a valid email address.';
+        return;
+    }
+
+    if (pass.length < 6) {
+        document.getElementById('regPass').classList.add('err');
+        errEl.textContent = 'Password must be at least 6 characters.';
+        return;
+    }
+
+    if (pass !== confirm) {
+        document.getElementById('confirmPass').classList.add('err');
+        errEl.textContent = 'Passwords do not match. Please try again.';
+        return;
+    }
+
+    if (!agreed) {
+        errEl.textContent = 'Please agree to the Terms of Service to continue.';
+        return;
+    }
+
+    // ── Check if email already registered ──
+    const existingEmail = localStorage.getItem('userEmail');
+    if (existingEmail && existingEmail === email) {
+        document.getElementById('regEmail').classList.add('err');
+        errEl.textContent = 'An account with this email already exists.';
+        return;
+    }
+
+    // ── Loading state (same pattern as login) ──
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spin"></div> Creating account...';
+
+    setTimeout(() => {
+        const displayName = first + ' ' + last;
+
+        // ── Persist user data (same keys as login page expects) ──
+        localStorage.setItem('userEmail',    email);
+        localStorage.setItem('userPassword', pass);
+        localStorage.setItem('userName',     displayName);
+        localStorage.setItem('userUsername', email.split('@')[0]);
+        localStorage.setItem('userPhone',    phone);
+        localStorage.setItem('isLoggedIn',   'true');
+
+        // ── Register in users list for admin ──
+        const users = JSON.parse(localStorage.getItem('linkup_users')) || [];
+        users.unshift({
+            id:     users.length + 1,
+            name:   displayName,
+            email:  email,
+            status: 'Active',
+            role:   'Buyer',
+            joined: new Date().toLocaleDateString('en-ZA')
+        });
+        localStorage.setItem('linkup_users', JSON.stringify(users));
+
+        showToast('Account created! Welcome to LinkUP 🎉', 'ok');
+        setTimeout(() => location.href = 'index.html', 900);
+    }, 1100);
+}
+</script>
+</body>
+</html>

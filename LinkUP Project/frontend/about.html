@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>About LinkUP</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<style>
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+body{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background:#f5f7fb;
+  color:#111827;
+}
+
+/* ── MY TOPBAR ── */
+.topbar nav a{
+  margin:0 10px;
+  color:rgb(255, 255, 255);
+  text-decoration:none;
+  font-weight:400;
+}
+
+/* ── THE HERO SLIDER ── */
+.about-hero{
+  position:relative;
+  height:420px;
+  overflow:hidden;
+  border-radius:20px;
+  margin:20px;
+}
+.about-slide{
+  display:none;
+  position:absolute;
+  width:100%; height:100%;
+}
+.about-slide.active{ display:block; }
+.about-slide img{
+  width:100%; height:100%;
+  object-fit:cover;
+  filter:brightness(.65);
+}
+.about-overlay{
+  position:absolute;
+  top:50%; left:6%;
+  transform:translateY(-50%);
+  color:white;
+  max-width:560px;
+}
+.about-overlay h1{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size:46px;
+  font-weight:800;
+  line-height:1.1;
+  margin-bottom:14px;
+}
+.about-overlay p{
+  font-size:17px;
+  opacity:.9;
+  margin-bottom:22px;
+  line-height:1.6;
+}
+.hero-btns{ display:flex; gap:12px; flex-wrap:wrap; }
+.hero-btns button{
+  padding:11px 20px;
+  border:none;
+  border-radius:10px;
+  font-weight:600;
+  cursor:pointer;
+  font-size:14px;
+  transition:.2s;
+}
+.hero-btns .btn-primary{ background:#1877f2; color:white; }
+.hero-btns .btn-outline{
+  background:transparent;
+  color:white;
+  border:2px solid white;
+}
+.hero-btns button:hover{ opacity:.85; transform:translateY(-1px); }
+
+/* slider dots */
+.hero-dots{
+  position:absolute;
+  bottom:18px; left:50%;
+  transform:translateX(-50%);
+  display:flex; gap:8px;
+}
+.hero-dot{
+  width:8px; height:8px;
+  border-radius:50%;
+  background:rgba(255,255,255,.5);
+  cursor:pointer;
+  transition:.3s;
+}
+.hero-dot.active{ background:white; width:24px; border-radius:4px; }
+
+/* ── THE SECTION BASE ── */
+.section{
+  padding:50px 30px;
+}
+.section-label{
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:#1877f2;
+  margin-bottom:10px;
+}
+.section-title{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size:32px;
+  font-weight:800;
+  margin-bottom:12px;
+  color:#111827;
+}
+.section-sub{
+  color:#6b7280;
+  max-width:600px;
+  line-height:1.7;
+  margin-bottom:40px;
+}
+
+/* ── THE MISSION STRIP ── */
+.mission-strip{
+  background:linear-gradient(135deg,#1877f2 0%,#0a4fa8 100%);
+  color:white;
+  padding:48px 40px;
+  margin:0 20px 20px;
+  border-radius:20px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+  align-items:center;
+}
+.mission-strip h2{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size:34px;
+  font-weight:800;
+  line-height:1.2;
+}
+.mission-strip p{
+  opacity:.88;
+  line-height:1.75;
+  font-size:15px;
+}
+@media(max-width:700px){ .mission-strip{ grid-template-columns:1fr; } }
+
+/* ── FUNCTIONALITY ── */
+.steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:24px;
+  counter-reset:step;
+}
+.step-card{
+  background:white;
+  border-radius:16px;
+  padding:28px 24px;
+  box-shadow:0 2px 12px rgba(0,0,0,.06);
+  position:relative;
+  overflow:hidden;
+  transition:.25s;
+}
+.step-card:hover{ transform:translateY(-5px); box-shadow:0 8px 24px rgba(24,119,242,.15); }
+.step-num{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size:56px;
+  font-weight:800;
+  color:#e8f0fe;
+  position:absolute;
+  top:10px; right:16px;
+  line-height:1;
+}
+.step-icon{ font-size:30px; margin-bottom:14px; }
+.step-card h3{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+.step-card p{ color:#6b7280; font-size:14px; line-height:1.6; }
+
+/* ── THE FEATURE CARDS ── */
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:20px;
+}
+.feature-card{
+  background:white;
+  padding:28px 24px;
+  border-radius:16px;
+  box-shadow:0 2px 10px rgba(0,0,0,.07);
+  transition:.25s;
+  border-left:4px solid transparent;
+}
+.feature-card:hover{
+  transform:translateY(-4px);
+  border-left-color:#1877f2;
+  box-shadow:0 8px 24px rgba(24,119,242,.12);
+}
+.feature-icon{
+  width:48px; height:48px;
+  background:#e8f0fe;
+  border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px;
+  margin-bottom:16px;
+}
+.feature-card h3{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+.feature-card p{ color:#6b7280; font-size:14px; line-height:1.6; }
+
+/* ── THE STATS ── */
+.stats-section{
+  background:white;
+  margin:0 20px;
+  border-radius:20px;
+  padding:50px 40px;
+  box-shadow:0 4px 20px rgba(0,0,0,.06);
+}
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:30px;
+  margin-top:40px;
+}
+.stat-item{ text-align:center; }
+.stat-number{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size:42px;
+  font-weight:800;
+  color:#1877f2;
+  display:block;
+  line-height:1;
+  margin-bottom:8px;
+}
+.stat-label{ color:#6b7280; font-size:14px; }
+
+/* ── WHY LINKUP DESIGN ── */
+.why-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+  align-items:center;
+}
+.why-visual{
+  background:linear-gradient(135deg,#e8f0fe,#dbeafe);
+  border-radius:20px;
+  padding:40px;
+  display:flex; flex-direction:column; gap:16px;
+}
+.why-badge{
+  background:white;
+  border-radius:12px;
+  padding:16px 20px;
+  display:flex; align-items:center; gap:14px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  transition:.2s;
+}
+.why-badge:hover{ transform:translateX(6px); }
+.why-badge-icon{ font-size:24px; }
+.why-badge-text strong{ display:block; font-size:14px; font-weight:600; }
+.why-badge-text span{ font-size:12px; color:#6b7280; }
+.why-points{ list-style:none; display:flex; flex-direction:column; gap:16px; }
+.why-points li{
+  display:flex; gap:12px;
+  align-items:flex-start;
+  font-size:15px;
+  color:#374151;
+  line-height:1.6;
+}
+.why-check{
+  width:24px; height:24px;
+  background:#1877f2;
+  border-radius:50%;
+  color:white;
+  font-size:13px;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+  margin-top:2px;
+}
+@media(max-width:700px){ .why-grid{ grid-template-columns:1fr; } }
+
+/* ── THE CATEGORIES ── */
+.cat-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:16px;
+}
+.cat-card{
+  background:white;
+  border-radius:16px;
+  padding:24px 16px;
+  text-align:center;
+  cursor:pointer;
+  transition:.25s;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.cat-card:hover{
+  background:#1877f2;
+  color:white;
+  transform:translateY(-4px);
+  box-shadow:0 8px 24px rgba(24,119,242,.25);
+}
+.cat-card:hover .cat-sub{ color:rgba(255,255,255,.7); }
+.cat-emoji{ font-size:32px; margin-bottom:10px; }
+.cat-name{ font-weight:700; font-size:14px; margin-bottom:4px; }
+.cat-sub{ font-size:12px; color:#9ca3af; transition:.25s; }
+
+/* ── THE TRUST BADGES ── */
+.trust-bar{
+  background:#676767;
+  color:white;
+  padding:30px 40px;
+  margin:0 20px;
+  border-radius:20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:24px;
+  text-align:center;
+}
+.trust-item .t-icon{ font-size:28px; margin-bottom:8px; }
+.trust-item .t-title{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight:700;
+  font-size:15px;
+  margin-bottom:4px;
+}
+.trust-item .t-sub{ font-size:12px; color:#9ca3af; }
+
+/* ── TESTIMONIALS ── */
+.testimonials-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+.testi-card{
+  background:white;
+  border-radius:16px;
+  padding:28px;
+  box-shadow:0 2px 10px rgba(0,0,0,.07);
+  position:relative;
+}
+.testi-card::before{
+  content:'"';
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size:80px;
+  color:#e8f0fe;
+  position:absolute;
+  top:10px; left:20px;
+  line-height:1;
+}
+.testi-text{
+  font-size:14px;
+  color:#374151;
+  line-height:1.7;
+  margin-bottom:20px;
+  margin-top:20px;
+}
+.testi-author{ display:flex; align-items:center; gap:12px; }
+.testi-avatar{
+  width:42px; height:42px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#1877f2,#42a5f5);
+  display:flex; align-items:center; justify-content:center;
+  color:white;
+  font-weight:700;
+  font-size:16px;
+}
+.testi-name{ font-weight:600; font-size:14px; }
+.testi-role{ font-size:12px; color:#9ca3af; }
+.stars{ color:#f59e0b; font-size:13px; margin-bottom:4px; }
+
+/* ── FAQ ── */
+.faq-list{ max-width:700px; display:flex; flex-direction:column; gap:12px; }
+.faq-item{
+  background:white;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+.faq-q{
+  padding:20px 24px;
+  font-weight:600;
+  cursor:pointer;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  user-select:none;
+  font-size:15px;
+  transition:.2s;
+}
+.faq-q:hover{ color:#1877f2; }
+.faq-arrow{ transition:.3s; font-size:18px; color:#1877f2; }
+.faq-item.open .faq-arrow{ transform:rotate(180deg); }
+.faq-a{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .4s ease, padding .3s;
+  padding:0 24px;
+  color:#6b7280;
+  font-size:14px;
+  line-height:1.7;
+}
+.faq-item.open .faq-a{
+  max-height:200px;
+  padding:0 24px 20px;
+}
+
+/* ── CTA FINAL ── */
+.final-cta{
+  background:linear-gradient(135deg,#68afff 0%,#b1d0fa 100%);
+  color:rgb(255, 255, 255);
+  padding:60px 40px;
+  margin:30px 20px;
+  border-radius:24px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.final-cta::before{
+  content:'';
+  position:absolute;
+  width:400px; height:400px;
+  background:radial-gradient(circle,rgba(24,119,242,.3),transparent 70%);
+  top:-100px; right:-100px;
+  border-radius:50%;
+}
+.final-cta h2{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size:36px;
+  font-weight:800;
+  margin-bottom:14px;
+  position:relative;
+}
+.final-cta p{
+  opacity:.8;
+  font-size:16px;
+  margin-bottom:30px;
+  max-width:500px;
+  margin-left:auto; margin-right:auto;
+  line-height:1.6;
+  position:relative;
+}
+.cta-btns{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; position:relative; }
+.cta-btns .btn-white{
+  padding:13px 28px;
+  background:white;
+  color:#1877f2;
+  border:none;
+  border-radius:12px;
+  font-weight:700;
+  cursor:pointer;
+  font-size:15px;
+  transition:.2s;
+}
+.cta-btns .btn-outline-white{
+  padding:13px 28px;
+  background:transparent;
+  color:white;
+  border:2px solid rgba(255,255,255,.4);
+  border-radius:12px;
+  font-weight:600;
+  cursor:pointer;
+  font-size:15px;
+  transition:.2s;
+}
+.cta-btns button:hover{ transform:translateY(-2px); opacity:.9; }
+
+/* ── COUNTER ANIMATION ── */
+@keyframes countUp{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
+.stat-number{ animation:countUp .6s ease forwards; }
+
+</style>
+</head>
+<body>
+
+<!-- ── MY TOPBAR ── -->
+<header class="topbar">
+  <a href="index.html" class="brand">
+    <svg width="148" height="40" viewBox="0 0 148 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Left circle -->
+      <circle cx="14" cy="20" r="9" stroke="white" stroke-width="2.5" fill="none"/>
+      <!-- Right circle overlapping -->
+      <circle cx="28" cy="20" r="9" stroke="white" stroke-width="2.5" fill="none"/>
+      <!-- Upward arrow rising from overlap -->
+      <line x1="21" y1="17" x2="21" y2="7" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <polyline points="17,11 21,6 25,11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <!-- Wordmark -->
+      <text x="44" y="26" font-family="Poppins, Segoe UI, Arial, sans-serif"
+            font-size="20" font-weight="800" fill="white" letter-spacing="0.4">
+        Link<tspan fill="rgba(255,255,255,0.55)">UP</tspan>
+      </text>
+    </svg>
+  </a>
+  <nav class="nav-right">
+    <a href="index.html">Home</a>
+    <a href="products.html">Browse</a>
+    <a href="sell.html">Sell</a>
+    <a href="chat.html">Chat</a>
+    <a href="cart.html">Cart 🛒</a>
+    <a href="settings.html">Settings</a>
+    <a href="about.html" class="active">About</a>
+  </nav>
+</header>
+
+<!-- ── HERO SLIDER ── -->
+<div class="about-hero">
+
+  <div class="about-slide active">
+    <img src="https://images.unsplash.com/photo-1580060839134-75a5edca2e99?q=80&w=2071&auto=format&fit=crop">
+    <div class="about-overlay">
+      <h1>Welcome to LinkUP</h1>
+      <p>South Africa's local marketplace — buy, sell and connect with people right in your community.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="location.href='products.html'">Start Browsing</button>
+        <button class="btn-outline" onclick="location.href='sell.html'">Sell an Item</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-slide">
+    <img src="https://images.unsplash.com/photo-1692689383052-9fbf3d1c0969?q=80&w=2071&auto=format&fit=crop">
+    <div class="about-overlay">
+      <h1>Everything In One Place</h1>
+      <p>Electronics, fashion, furniture, vehicles and more — all from local sellers near you.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="location.href='products.html'">Explore Marketplace</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-slide">
+    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f">
+    <div class="about-overlay">
+      <h1>Chat & Connect Instantly</h1>
+      <p>Talk directly with buyers and sellers — no middlemen, no delays.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="location.href='chat.html'">Open Chat</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-dots">
+    <div class="hero-dot active" onclick="goToSlide(0)"></div>
+    <div class="hero-dot" onclick="goToSlide(1)"></div>
+    <div class="hero-dot" onclick="goToSlide(2)"></div>
+  </div>
+</div>
+
+<!-- ── MISSION STRIP ── -->
+<div class="mission-strip">
+  <div>
+    <h2>Built for Local.<br>Built for People.</h2>
+  </div>
+  <div>
+    <p>LinkUP was created with one goal: make local trade simple, safe, and social. Whether you're clearing out a room, finding a bargain, or growing a small business — this is your platform. No big corporations. No hidden fees. Just real people trading in their communities.</p>
+  </div>
+</div>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="section">
+  <div class="section-label">Simple Process</div>
+  <h2 class="section-title">How LinkUP Works</h2>
+  <p class="section-sub">Get started in minutes. Whether you're buying or selling, the process is quick and easy.</p>
+
+  <div class="steps">
+
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-icon"></div>
+      <h3>Create Your Account</h3>
+      <p>Sign up for free in seconds. Set up your profile and you're ready to go.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-icon"></div>
+      <h3>Browse or List</h3>
+      <p>Search thousands of local products — or create your own listing with photos and a price.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-icon"></div>
+      <h3>Chat Directly</h3>
+      <p>Message the buyer or seller instantly. Negotiate, ask questions and agree on a deal.</p>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-icon"></div>
+      <h3>Buy and Sell</h3>
+      <p>Complete the deal and leave a review. Build your reputation in the community.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── STATISTICS ── -->
+<div class="stats-section">
+  <div class="section-label">By the Numbers</div>
+  <h2 class="section-title">The LinkUP Community</h2>
+  <div class="stats-grid">
+    <div class="stat-item">
+      <span class="stat-number" data-target="100">0</span>
+      <div class="stat-label">Products Listed</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" data-target="50">0</span>
+      <div class="stat-label">Active Users</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" data-target="30">0</span>
+      <div class="stat-label">Daily New Listings</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" data-target="9">0</span>
+      <div class="stat-label">Provinces Covered</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number" data-target="98">0</span>
+      <div class="stat-label">% Satisfaction Rate</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURES ── -->
+<section class="section">
+  <div class="section-label">Platform Features</div>
+  <h2 class="section-title">Everything You Need</h2>
+  <p class="section-sub">LinkUP gives you all the tools to trade confidently and easily.</p>
+
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <h3>Smart Shopping</h3>
+      <p>Browse thousands of local listings with filters for category, price, and location.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Easy Selling</h3>
+      <p>Create a listing in under 2 minutes. Add photos, set your price, and reach buyers fast.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Live Chat</h3>
+      <p>Connect instantly with any buyer or seller on the platform. No third-party apps needed.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Save Favourites</h3>
+      <p>Like products you love and revisit them anytime from your personal wishlist.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Local Discovery</h3>
+      <p>Find deals from sellers in your city or explore listings from across South Africa.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Seller Ratings</h3>
+      <p>Rate and review after every trade. Build trust and shop with confidence.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>Deal Alerts</h3>
+      <p>Get notified when new items matching your interests are listed near you.</p>
+    </div>
+
+    
+
+  </div>
+</section>
+
+<!-- ── WHY LINKUP ── -->
+<section class="section" style="padding-top:10px;">
+  <div class="section-label">Our Difference</div>
+  <h2 class="section-title">Why Choose LinkUP?</h2>
+  <p class="section-sub">We're not just another marketplace. We're building something local, human and community-first.</p>
+
+  <div class="why-grid">
+    <div class="why-visual">
+      <div class="why-badge">
+        <div class="why-badge-icon"></div>
+        <div class="why-badge-text">
+          <strong>100% South African</strong>
+          <span>Built for local communities</span>
+        </div>
+      </div>
+      <div class="why-badge">
+        <div class="why-badge-icon"></div>
+        <div class="why-badge-text">
+          <strong>Fast & Easy Listings</strong>
+          <span>Sell in under 2 minutes</span>
+        </div>
+      </div>
+      <div class="why-badge">
+        <div class="why-badge-icon"></div>
+        <div class="why-badge-text">
+          <strong>Free to Use</strong>
+          <span>No listing fees, no commissions</span>
+        </div>
+      </div>
+      <div class="why-badge">
+        <div class="why-badge-icon"></div>
+        <div class="why-badge-text">
+          <strong>Community Trust</strong>
+          <span>Ratings and verified profiles</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <ul class="why-points">
+        <li>
+          <div class="why-check">✓</div>
+          <span><strong>Local-first approach</strong> — every trade supports someone in your community rather than a faceless corporation.</span>
+        </li>
+        <li>
+          <div class="why-check">✓</div>
+          <span><strong>No hidden fees</strong> — listing is completely free. You keep everything you earn from your sales.</span>
+        </li>
+        <li>
+          <div class="why-check">✓</div>
+          <span><strong>Direct communication</strong> — chat with sellers or buyers instantly without going through a call centre.</span>
+        </li>
+        <li>
+          <div class="why-check">✓</div>
+          <span><strong>Built for all South Africans</strong> — designed to be simple and fast on any device, even on data-light connections.</span>
+        </li>
+        <li>
+          <div class="why-check">✓</div>
+          <span><strong>Grow your small business</strong> — LinkUP is perfect for side hustles, informal traders and small businesses to reach more buyers.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── TRUST BAR ── -->
+<div class="trust-bar">
+  <div class="trust-item">
+    <div class="t-icon"></div>
+    <div class="t-title">Secure Platform</div>
+    <div class="t-sub">Your data is always protected</div>
+  </div>
+  <div class="trust-item">
+    <div class="t-icon"></div>
+    <div class="t-title">Verified Sellers</div>
+    <div class="t-sub">Profiles reviewed by community</div>
+  </div>
+  <div class="trust-item">
+    <div class="t-icon"></div>
+    <div class="t-title">Support Available</div>
+    <div class="t-sub">Help when you need it</div>
+  </div>
+  <div class="trust-item">
+    <div class="t-icon"></div>
+    <div class="t-title">Nationwide</div>
+    <div class="t-sub">All 9 provinces covered</div>
+  </div>
+</div>
+
+<!-- ── CATEGORIES ── -->
+<section class="section">
+  <div class="section-label">Explore</div>
+  <h2 class="section-title">Popular Categories</h2>
+  <p class="section-sub">Whatever you're looking for, you'll find it on LinkUP.</p>
+
+  <div class="cat-grid">
+    <div class="cat-card" onclick="location.href='products.html'">
+      <div class="cat-emoji"></div>
+      <div class="cat-name">Electronics</div>
+      <div class="cat-sub">Phones, laptops & more</div>
+    </div>
+    <div class="cat-card" onclick="location.href='products.html'">
+      <div class="cat-emoji"></div>
+      <div class="cat-name">Clothing</div>
+      <div class="cat-sub">Fashion for everyone</div>
+    </div>
+    <div class="cat-card" onclick="location.href='products.html'">
+      <div class="cat-emoji"></div>
+      <div class="cat-name">Furniture</div>
+      <div class="cat-sub">Home & living</div>
+    </div>
+    <div class="cat-card" onclick="location.href='products.html'">
+      <div class="cat-emoji"></div>
+      <div class="cat-name">Vehicles</div>
+      <div class="cat-sub">Cars, bikes & parts</div>
+    </div>
+    <div class="cat-card" onclick="location.href='products.html'">
+      <div class="cat-emoji"></div>
+      <div class="cat-name">Beauty</div>
+      <div class="cat-sub">Skincare & cosmetics</div>
+    </div>
+    <div class="cat-card" onclick="location.href='products.html'">
+      <div class="cat-emoji"></div>
+      <div class="cat-name">Sports</div>
+      <div class="cat-sub">Gear & equipment</div>
+    </div>
+    <div class="cat-card" onclick="location.href='products.html'">
+      <div class="cat-emoji"></div>
+      <div class="cat-name">Books</div>
+      <div class="cat-sub">Textbooks & novels</div>
+    </div>
+    <div class="cat-card" onclick="location.href='products.html'">
+      <div class="cat-emoji"></div>
+      <div class="cat-name">Property</div>
+      <div class="cat-sub">Rent & buy spaces</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="section" style="padding-top:10px;">
+  <div class="section-label">Community Voices</div>
+  <h2 class="section-title">What People Are Saying</h2>
+  <p class="section-sub">Real users, real trades, real experiences.</p>
+
+  <div class="testimonials-grid">
+
+    <div class="testi-card">
+      <div class="testi-text">I sold my old laptop within 3 hours of listing it. The chat feature made it so easy to negotiate. Definitely my go-to now for buying and selling locally.</div>
+      <div class="testi-author">
+        <div class="testi-avatar">T</div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="testi-name">Thandeka M.</div>
+          <div class="testi-role">Seller — Johannesburg</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-text">Found exactly what I needed at half the price of the shops. The seller was legit and I could check their rating before buying. LinkUP is a game changer.</div>
+      <div class="testi-author">
+        <div class="testi-avatar">K</div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="testi-name">Keegan V.</div>
+          <div class="testi-role">Buyer — Cape Town</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-text">I run a small clothing business and LinkUP has helped me reach way more customers without spending anything on advertising. The listings are super easy to set up.</div>
+      <div class="testi-author">
+        <div class="testi-avatar">A</div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="testi-name">Amahle D.</div>
+          <div class="testi-role">Small Business — Durban</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="section" style="padding-top:10px;">
+  <div class="section-label">Got Questions?</div>
+  <h2 class="section-title">Frequently Asked Questions</h2>
+  <br>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Is LinkUP free to use?
+        <span class="faq-arrow">⌄</span>
+      </div>
+      <div class="faq-a">Yes! Creating an account, browsing listings and even listing your own items is completely free. There are no hidden fees or commissions taken from your sales.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How do I know if a seller is trustworthy?
+        <span class="faq-arrow">⌄</span>
+      </div>
+      <div class="faq-a">Every seller on LinkUP has a public profile with ratings and reviews from previous buyers. You can also view their listing history and chat with them before committing to anything.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Can I sell as a small business or informal trader?
+        <span class="faq-arrow">⌄</span>
+      </div>
+      <div class="faq-a">Absolutely! LinkUP is perfect for small businesses, side hustles and informal traders. You can create multiple listings and reach customers across your city or even nationwide.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How does payment and delivery work?
+        <span class="faq-arrow">⌄</span>
+      </div>
+      <div class="faq-a">Payment and delivery are arranged directly between the buyer and seller via our chat feature. This keeps things flexible — cash, EFT, or meet-up arrangements are all up to you.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What if I have a problem with a listing or user?
+        <span class="faq-arrow">⌄</span>
+      </div>
+      <div class="faq-a">You can flag any listing or user directly from the platform. Our moderation team reviews reports and takes action to keep the community safe and trustworthy.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FINAL CTA ── -->
+<div class="final-cta">
+  <h2>Ready to Start Exploring?</h2>
+  <p>Join thousands of South Africans already buying, selling and connecting on LinkUP every single day.</p>
+  <div class="cta-btns">
+    <button class="btn-white" onclick="location.href='login.html'">Create Free Account</button>
+    <button class="btn-outline-white" onclick="location.href='products.html'">Browse Listings</button>
+  </div>
+</div>
+
+<br><br>
+
+<script>
+/* ── HERO SLIDER ── */
+let idx = 0;
+const slides = document.querySelectorAll('.about-slide');
+const dots = document.querySelectorAll('.hero-dot');
+
+function goToSlide(n){
+  slides[idx].classList.remove('active');
+  dots[idx].classList.remove('active');
+  idx = n;
+  slides[idx].classList.add('active');
+  dots[idx].classList.add('active');
+}
+
+setInterval(()=> goToSlide((idx+1) % slides.length), 4500);
+
+/* ── FAQ TOGGLE ── */
+function toggleFaq(el){
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=> i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+
+/* ── ANIMATED COUNTERS ── */
+function animateCounter(el){
+  const target = parseInt(el.dataset.target);
+  const duration = 1800;
+  const step = target / (duration / 16);
+  let current = 0;
+  const timer = setInterval(()=>{
+    current = Math.min(current + step, target);
+    if(target >= 1000){
+      el.textContent = (current >= 1000 ? (current/1000).toFixed(1)+'K+' : Math.floor(current));
+    } else if(el.dataset.target === '98'){
+      el.textContent = Math.floor(current)+'%';
+    } else {
+      el.textContent = Math.floor(current)+'+';
+    }
+    if(current >= target) clearInterval(timer);
+  }, 16);
+}
+
+/* trigger counters when visible */
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      animateCounter(e.target);
+      observer.unobserve(e.target);
+    }
+  });
+},{threshold:0.5});
+
+document.querySelectorAll('.stat-number').forEach(el=> observer.observe(el));
+</script>
+
+</body>
+</html>
