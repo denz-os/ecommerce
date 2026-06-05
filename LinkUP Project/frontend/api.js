@@ -200,6 +200,39 @@ const api = (() => {
         return true;
     }
 
-    return { auth, products, cart, messages, showToast, requireLogin, isLoggedIn };
+    // ═══════════════════════════════════════════════════════════
+    // ADMIN
+    // ═══════════════════════════════════════════════════════════
+    const admin = {
+        async stats() {
+            return await request("GET", "/api/admin/stats");
+        },
+        async users() {
+            return await request("GET", "/api/admin/users");
+        },
+        async banUser(id) {
+            return await request("PUT", `/api/admin/users/${id}/ban`);
+        },
+        async setRole(id, role) {
+            return await request("PUT", `/api/admin/users/${id}/role`, { role });
+        },
+        async deleteUser(id) {
+            return await request("DELETE", `/api/admin/users/${id}`);
+        },
+        async products() {
+            return await request("GET", "/api/admin/products");
+        },
+        async deleteProduct(id) {
+            return await request("DELETE", `/api/admin/products/${id}`);
+        },
+        async seed(email, password, username, secretKey) {
+            return await request("POST", "/api/admin/seed", {
+                email, password, username,
+                secret_key: secretKey,
+            });
+        },
+    };
+
+    return { auth, products, cart, messages, admin, showToast, requireLogin, isLoggedIn };
 
 })();

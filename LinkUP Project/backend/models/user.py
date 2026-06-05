@@ -2,10 +2,6 @@
 models/user.py
 ──────────────
 Pydantic schemas for User.
-  - UserCreate   : what the client sends on register
-  - UserLogin    : what the client sends on login
-  - UserOut      : what the API returns (no password)
-  - UserInDB     : the full document stored in MongoDB
 """
 
 from pydantic import BaseModel, EmailStr, Field
@@ -30,9 +26,10 @@ class UserOut(BaseModel):
     username: Optional[str] = None
     profile_pic: Optional[str] = None
     created_at: datetime
+    role: str = "user"
+    is_banned: bool = False
 
     class Config:
-        # allow reading from mongo _id field
         populate_by_name = True
 
 
@@ -42,6 +39,8 @@ class UserInDB(BaseModel):
     password_hash: str
     profile_pic: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
+    role: str = "user"
+    is_banned: bool = False
 
 
 class TokenResponse(BaseModel):
