@@ -54,8 +54,8 @@ Navigate to `/admin-login.html`. Default credentials:
 
 | Email | Password |
 |---|---|
-| admin@linkup.com | Admin@2025 |
-| denzel@linkup.com | Denzel@2025 |
+| `admin@linkup.com` | `Admin@2025` |
+| `denzel@linkup.com` | `Denzel@2025` |
 
 ## Notes
 
