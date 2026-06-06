@@ -1,10 +1,77 @@
-# LinkUP Backend — Setup Guide
+# LinkUP
 
-**Stack:** Python · FastAPI · MongoDB · Docker
+A peer-to-peer marketplace demo built as a school project. Users can register, list products for sale, browse listings, manage a cart, and message sellers. Admins have a separate portal to manage users and permissions.
+
+**Live demo:** [boisterous-biscotti-ebb824.netlify.app](https://boisterous-biscotti-ebb824.netlify.app)
 
 ---
 
-## Folder structure
+## Features
+
+- User registration and login
+- Seller permissions (admin-granted)
+- Product listings with image upload
+- Shopping cart
+- Buyer–seller messaging
+- Admin portal with user management (ban, role changes)
+
+## Tech Stack
+
+| Layer    | Tech                                      |
+|----------|-------------------------------------------|
+| Frontend | HTML, CSS, JavaScript (localStorage)      |
+| Backend  | FastAPI, Python                           |
+| Database | MongoDB (Motor async driver)              |
+| Auth     | JWT (python-jose), bcrypt (passlib)       |
+| Images   | Pillow (resize on upload), aiofiles       |
+| Deploy   | Netlify (frontend)                        |
+
+## Project Structure
+
+```
+LinkUP Project/
+├── frontend/          # Static HTML/CSS/JS pages
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── products.html
+│   ├── cart.html
+│   ├── messages.html
+│   ├── admin-login.html
+│   └── admin.html
+└── backend/
+    ├── main.py
+    ├── config/        # Database connection
+    ├── models/        # Pydantic models (user, product, cart, message)
+    ├── routes/        # API endpoints (auth, products, cart, messages)
+    ├── middleware/    # JWT auth middleware
+    └── requirements.txt
+```
+
+## Admin Access
+
+Navigate to `/admin-login.html`. Default credentials:
+
+| Email | Password |
+|---|---|
+| admin@linkup.com | Admin@2025 |
+| denzel@linkup.com | Denzel@2025 |
+
+## Notes
+
+This is a school demo project. The frontend uses `localStorage` for state rather than a live backend connection — data resets when browser storage is cleared.
+
+---
+
+Built by Denzel Chingodza
+
+---
+
+## Backend Setup (for local development)
+
+**Stack:** Python · FastAPI · MongoDB · Docker
+
+### Folder structure
 
 ```
 linkup-backend/
