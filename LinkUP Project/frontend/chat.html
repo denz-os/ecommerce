@@ -726,32 +726,47 @@ a { text-decoration: none; color: inherit; }
 
 <input type="file" id="imgInput" accept="image/*" onchange="handleImageUpload(this)">
 
+<!-- Mobile nav overlay -->
+<div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">&#x2715;</button>
+  <a href="index.html">🏠 Home</a>
+  <a href="products.html">🔍 Browse</a>
+  <a href="sell.html">➕ Sell</a>
+  <a href="cart.html">🛒 Cart</a>
+  <a href="chat.html" class="active">💬 Chat</a>
+  <a href="account.html">👤 Account</a>
+  <a href="about.html">ℹ️ About</a>
+  <a href="login.html" class="mobile-login">Sign In</a>
+</nav>
+
 <!-- ══════════════════════════════ TOPBAR ══════════════════════ -->
 <header class="topbar">
   <a href="index.html" class="brand">
     <svg width="148" height="40" viewBox="0 0 148 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Left circle -->
       <circle cx="14" cy="20" r="9" stroke="white" stroke-width="2.5" fill="none"/>
-      <!-- Right circle overlapping -->
       <circle cx="28" cy="20" r="9" stroke="white" stroke-width="2.5" fill="none"/>
-      <!-- Upward arrow rising from overlap -->
       <line x1="21" y1="17" x2="21" y2="7" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
       <polyline points="17,11 21,6 25,11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <!-- Wordmark -->
       <text x="44" y="26" font-family="Poppins, Segoe UI, Arial, sans-serif"
             font-size="20" font-weight="800" fill="white" letter-spacing="0.4">
         Link<tspan fill="rgba(255,255,255,0.55)">UP</tspan>
       </text>
     </svg>
   </a>
-    <nav class="topbar-nav">
-        <a href="index.html">Home</a>
-        <a href="products.html">Browse</a>
-        <a href="sell.html">Sell</a>
-        <a href="cart.html">Cart</a>
-        <a href="chat.html" class="active">Messages</a>
-        <a href="settings.html">Settings</a>
-    </nav>
+  <nav class="nav-right">
+    <a href="index.html">Home</a>
+    <a href="products.html">Browse</a>
+    <a href="sell.html">Sell</a>
+    <a href="cart.html" class="cart-link">🛒 Cart <span id="cartCount" class="cart-count">0</span></a>
+    <a href="chat.html" class="active">Chat</a>
+    <a href="account.html">Account</a>
+    <a href="about.html">About</a>
+    <a href="login.html" class="login-link">Sign In</a>
+  </nav>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
 <!-- ══════════════════════════════ SHELL ═══════════════════════ -->
@@ -1290,6 +1305,26 @@ document.addEventListener('click', e => {
         tray.classList.remove('open');
     }
 });
+
+// Cart count
+(function(){ const el = document.getElementById('cartCount'); if(el) el.textContent = (JSON.parse(localStorage.getItem('cart'))||[]).length; })();
+
+// Mobile nav
+function toggleMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    const ov  = document.getElementById('mobileOverlay');
+    const btn = document.getElementById('hamburger');
+    const open = nav.classList.toggle('open');
+    ov.classList.toggle('open', open);
+    btn.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeMobileNav() {
+    document.getElementById('mobileNav').classList.remove('open');
+    document.getElementById('mobileOverlay').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+}
 </script>
 </body>
 </html>

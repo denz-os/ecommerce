@@ -182,87 +182,128 @@ input[type=range] {
 .section-hdr h2 { margin:0; font-size:22px; font-weight:800; color:#111827; }
 .section-hdr a { font-size:13px; font-weight:600; color:#1877f2; cursor:pointer; }
 
+/* ── ACTIVE FILTER CHIPS ────────────────────────────────────── */
+.active-filters { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; align-items:center; }
+.filter-chip { display:flex; align-items:center; gap:5px; background:#eef4ff; color:#1877f2; border:1px solid #c7d7fe; border-radius:20px; padding:5px 11px; font-size:12.5px; font-weight:600; white-space:nowrap; }
+.filter-chip button { background:none; border:none; color:#1877f2; cursor:pointer; padding:0; font-size:15px; line-height:1; font-weight:700; margin-left:2px; }
+.clear-all-chips { background:none; border:1.5px solid #fecaca; color:#ef4444; border-radius:20px; padding:5px 12px; font-size:12.5px; font-weight:600; cursor:pointer; font-family:inherit; transition:all .18s; white-space:nowrap; }
+.clear-all-chips:hover { background:#fff5f5; transform:none; }
+
+/* ── DEALS STRIP ────────────────────────────────────────────── */
+.deals-wrap { margin-bottom:28px; }
+.deals-wrap-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+.deals-wrap-hdr h2 { margin:0; font-size:19px; font-weight:800; color:#111827; display:flex; align-items:center; gap:8px; }
+.deals-wrap-hdr a { font-size:13px; font-weight:600; color:#1877f2; cursor:pointer; text-decoration:none; }
+.deals-strip { display:flex; gap:14px; overflow-x:auto; padding:4px 0 12px; scrollbar-width:thin; scrollbar-color:#e2e8f0 transparent; }
+.deals-strip::-webkit-scrollbar { height:4px; }
+.deals-strip::-webkit-scrollbar-thumb { background:#e2e8f0; border-radius:4px; }
+.deal-card { flex-shrink:0; width:156px; background:#fff; border-radius:13px; overflow:hidden; border:1px solid #edf1f7; cursor:pointer; transition:transform .2s, box-shadow .2s; }
+.deal-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(24,119,242,.12); border-color:#c7d7fe; }
+.deal-card img { width:100%; height:108px; object-fit:cover; display:block; }
+.deal-card-body { padding:9px 11px; }
+.deal-badge { font-size:9px; font-weight:800; background:linear-gradient(135deg,#ff3b30,#ff6b35); color:#fff; padding:2px 7px; border-radius:20px; display:inline-block; margin-bottom:4px; letter-spacing:.3px; }
+.deal-card-name { font-size:12px; font-weight:700; color:#111827; margin:0 0 3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.deal-card-price { font-size:15px; font-weight:800; color:#1877f2; }
+
 /* ── PRODUCT GRID ───────────────────────────────────────────── */
 .grid {
     display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(210px, 1fr));
-    gap:18px;
+    grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+    gap:16px;
 }
 
 /* ── PRODUCT CARD ───────────────────────────────────────────── */
 .product {
-    background:#fff; border-radius:18px; overflow:hidden;
+    background:#fff; border-radius:14px; overflow:hidden;
     border:1px solid #edf1f7; position:relative;
     display:flex; flex-direction:column;
-    transition:transform .25s ease, box-shadow .25s ease;
+    transition:all .22s ease; cursor:pointer;
 }
-.product:hover { transform:translateY(-5px); box-shadow:0 12px 32px rgba(0,0,0,.1); }
-.product:hover img { transform:scale(1.05); }
+.product:hover { transform:translateY(-4px); box-shadow:0 14px 36px rgba(24,119,242,.11); border-color:#c7d7fe; }
 
-.product img { width:100%; height:180px; object-fit:cover; display:block; transition:transform .4s ease; }
+.product-img-wrap { position:relative; overflow:hidden; }
+.product img { width:100%; height:200px; object-fit:cover; display:block; transition:transform .4s ease; }
+.product:hover img { transform:scale(1.04); }
 
 /* Badges */
-.deal { position:absolute; top:12px; left:12px; background:#ff3b30; color:#fff; padding:5px 10px; border-radius:30px; font-size:11px; font-weight:700; letter-spacing:.3px; }
-.badge-new { position:absolute; top:12px; left:12px; background:#22c55e; color:#fff; padding:5px 10px; border-radius:30px; font-size:11px; font-weight:700; }
+.deal-badge-card { position:absolute; top:10px; left:10px; background:linear-gradient(135deg,#ff3b30,#ff6b35); color:#fff; padding:4px 9px; border-radius:20px; font-size:10px; font-weight:800; letter-spacing:.4px; }
+.badge-new { position:absolute; top:10px; left:10px; background:linear-gradient(135deg,#22c55e,#16a34a); color:#fff; padding:4px 9px; border-radius:20px; font-size:10px; font-weight:800; }
 
 /* Wishlist heart */
 .wish-btn {
-    position:absolute; top:12px; right:12px;
-    width:34px; height:34px; border-radius:50%;
-    background:rgba(255,255,255,.92); border:none;
+    position:absolute; top:10px; right:10px;
+    width:32px; height:32px; border-radius:50%;
+    background:rgba(255,255,255,.95); border:none;
     display:flex; align-items:center; justify-content:center;
-    font-size:15px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.1);
-    transition:transform .2s, background .18s; backdrop-filter:blur(4px);
-    padding:0; color:#94a3b8;
+    font-size:14px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.12);
+    transition:transform .2s, color .18s; padding:0; color:#94a3b8;
 }
-.wish-btn:hover { transform:scale(1.15); background:#fff; color:#ef4444; }
-.wish-btn.liked { color:#ef4444; background:#fff; }
+.wish-btn:hover { transform:scale(1.15); color:#ef4444; }
+.wish-btn.liked { color:#ef4444; }
 
-.product-content { padding:15px; display:flex; flex-direction:column; flex:1; }
+.product-content { padding:13px 14px; display:flex; flex-direction:column; flex:1; gap:3px; }
+.product-cat { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:#1877f2; }
+.product h3 { margin:2px 0 4px; font-size:14.5px; font-weight:700; color:#111827; line-height:1.3; }
+.product-desc { color:#6b7280; font-size:12px; line-height:1.5; margin:0; flex:1; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 
-.product-cat { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#1877f2; margin-bottom:5px; }
+.product-footer { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:10px; }
+.price { font-size:18px; font-weight:800; color:#1877f2; white-space:nowrap; }
 
-.product h3 { margin:0 0 6px; font-size:16px; font-weight:700; color:#111827; line-height:1.3; }
-
-.product-desc { color:#64748b; font-size:12.5px; line-height:1.5; margin-bottom:12px; flex:1; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-
-.price { font-size:22px; font-weight:800; color:#1877f2; margin-bottom:12px; }
-
-.product-ui { display:flex; gap:8px; }
-
-.product-ui button {
-    flex:1; border:none; padding:10px; border-radius:10px;
-    cursor:pointer; font-weight:700; font-size:13px; font-family:inherit;
-    transition:background .18s, transform .15s;
+.product-ui { display:flex; gap:6px; }
+.btn-cart {
+    display:flex; align-items:center; gap:5px;
+    background:#1877f2; color:#fff; border:none;
+    padding:8px 11px; border-radius:8px; cursor:pointer;
+    font-size:12px; font-weight:700; font-family:inherit;
+    transition:background .18s, transform .14s; white-space:nowrap;
 }
-
-.product-ui button:first-child { background:#1877f2; color:#fff; }
-.product-ui button:first-child:hover { background:#1360cc; transform:translateY(-1px); }
-.product-ui button:last-child { background:#eef4ff; color:#1877f2; }
-.product-ui button:last-child:hover { background:#dbeafe; transform:translateY(-1px); }
+.btn-cart:hover { background:#1360cc; transform:translateY(-1px); }
+.btn-view {
+    background:#eef4ff; color:#1877f2; border:none;
+    padding:8px 11px; border-radius:8px; cursor:pointer;
+    font-size:12px; font-weight:700; font-family:inherit;
+    transition:background .18s, transform .14s; white-space:nowrap;
+}
+.btn-view:hover { background:#dbeafe; transform:translateY(-1px); }
 
 /* Stars */
-.stars { margin-top:10px; display:flex; gap:2px; }
-.stars span { color:#d1d5db; cursor:pointer; font-size:16px; transition:color .15s; }
-.stars span.active { color:gold; }
+.stars { margin-top:8px; display:flex; gap:2px; }
+.stars span { color:#d1d5db; cursor:pointer; font-size:14px; transition:color .15s; }
+.stars span.active { color:#fbbf24; }
 .stars span:hover { color:#fbbf24; }
 
 /* ── LIST VIEW ──────────────────────────────────────────────── */
-.grid.list-view { grid-template-columns:1fr; gap:12px; }
-
-.grid.list-view .product { flex-direction:row; border-radius:14px; }
-.grid.list-view .product img { width:180px; height:140px; flex-shrink:0; border-radius:14px 0 0 14px; }
+.grid.list-view { grid-template-columns:1fr; gap:10px; }
+.grid.list-view .product { flex-direction:row; border-radius:12px; }
+.grid.list-view .product-img-wrap { width:170px; flex-shrink:0; }
+.grid.list-view .product img { width:170px; height:130px; border-radius:12px 0 0 12px; }
 .grid.list-view .product:hover img { transform:scale(1.03); }
-.grid.list-view .deal,
+.grid.list-view .deal-badge-card,
 .grid.list-view .badge-new,
-.grid.list-view .wish-btn { top:10px; }
-.grid.list-view .product-content { padding:16px 18px; flex-direction:row; flex-wrap:wrap; align-items:center; gap:12px; }
+.grid.list-view .wish-btn { top:8px; }
+.grid.list-view .product-content { padding:14px 16px; flex-direction:row; flex-wrap:wrap; align-items:center; gap:10px; }
 .grid.list-view .product-content > * { flex-shrink:0; }
-.grid.list-view .product h3 { font-size:17px; width:100%; }
+.grid.list-view .product h3 { font-size:16px; width:100%; margin-bottom:2px; }
 .grid.list-view .product-desc { display:block; -webkit-line-clamp:unset; width:100%; }
-.grid.list-view .price { font-size:24px; }
-.grid.list-view .product-ui { margin-left:auto; min-width:220px; }
+.grid.list-view .price { font-size:20px; }
+.grid.list-view .product-footer { margin-top:0; }
+.grid.list-view .product-ui { margin-left:auto; }
 .grid.list-view .stars { margin-top:0; }
+
+/* ── PRICE RANGE INPUTS ─────────────────────────────────────── */
+.price-inputs { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+.price-input-group label { font-size:11px; font-weight:600; color:#64748b; display:block; margin-bottom:4px; text-transform:uppercase; letter-spacing:.4px; }
+.price-input-group input { width:100%; padding:9px 10px; border-radius:8px; border:1.5px solid #dbe1ea; font-size:13px; font-family:inherit; box-sizing:border-box; outline:none; transition:border-color .18s; }
+.price-input-group input:focus { border-color:#1877f2; box-shadow:0 0 0 2px rgba(24,119,242,.1); }
+
+/* ── SIDEBAR TOGGLE (deals-only) ────────────────────────────── */
+.sidebar-toggle-row { display:flex; justify-content:space-between; align-items:center; }
+.mini-toggle { position:relative; display:inline-block; width:38px; height:21px; flex-shrink:0; }
+.mini-toggle input { opacity:0; width:0; height:0; position:absolute; }
+.mini-toggle-track { position:absolute; cursor:pointer; inset:0; background:#e2e8f0; border-radius:21px; transition:background .2s; }
+.mini-toggle-track::before { content:""; position:absolute; width:15px; height:15px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:transform .2s; box-shadow:0 1px 4px rgba(0,0,0,.15); }
+.mini-toggle input:checked + .mini-toggle-track { background:#1877f2; }
+.mini-toggle input:checked + .mini-toggle-track::before { transform:translateX(17px); }
 
 /* ── MID SLIDER ─────────────────────────────────────────────── */
 .mid-slider { margin:36px 0; border-radius:22px; overflow:hidden; position:relative; }
@@ -324,14 +365,18 @@ input[type=range] {
     .topbar { height:auto; padding:12px 16px; flex-direction:column; gap:10px; }
     .topbar nav { flex-wrap:wrap; justify-content:center; gap:4px; }
     .topbar nav a { font-size:13px; padding:6px 10px; }
-    .grid { grid-template-columns:repeat(auto-fill, minmax(160px,1fr)); gap:14px; }
+    .grid { grid-template-columns:repeat(auto-fill, minmax(156px,1fr)); gap:12px; }
+    .product img { height:160px; }
     .grid.list-view .product { flex-direction:column; }
-    .grid.list-view .product img { width:100%; height:180px; border-radius:18px 18px 0 0; }
-    .grid.list-view .product-ui { margin-left:0; min-width:auto; }
-    .mid-slide img { height:220px; }
-    .mid-overlay h2 { font-size:24px; }
+    .grid.list-view .product-img-wrap { width:100%; }
+    .grid.list-view .product img { width:100%; height:160px; border-radius:14px 14px 0 0; }
+    .grid.list-view .product-footer { flex-wrap:wrap; }
+    .grid.list-view .product-ui { margin-left:0; }
+    .mid-slide img { height:200px; }
+    .mid-overlay h2 { font-size:22px; }
     .toolbar { flex-direction:column; align-items:flex-start; }
     .main-content { padding:14px; }
+    .price-inputs { grid-template-columns:1fr 1fr; }
 }
 </style>
 </head>
@@ -341,6 +386,20 @@ input[type=range] {
 <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
 <!-- ══ TOPBAR ══════════════════════════════════════════════ -->
+<!-- Mobile nav overlay -->
+<div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">&#x2715;</button>
+  <a href="index.html">🏠 Home</a>
+  <a href="products.html">🔍 Browse</a>
+  <a href="sell.html">➕ Sell</a>
+  <a href="cart.html">🛒 Cart</a>
+  <a href="chat.html">💬 Chat</a>
+  <a href="account.html">👤 Account</a>
+  <a href="about.html">ℹ️ About</a>
+  <a href="login.html" class="mobile-login">Sign In</a>
+</nav>
+
 <header class="topbar">
   <a href="index.html" class="brand">
     <svg width="148" height="40" viewBox="0 0 148 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -358,15 +417,17 @@ input[type=range] {
       </text>
     </svg>
   </a>
-  <nav>
-    <a onclick="location.href='index.html'">Home</a>
-    <a class="active" onclick="location.href='products.html'">Browse</a>
-    <a onclick="location.href='sell.html'">Sell</a>
-    <a onclick="location.href='chat.html'">Chat</a>
-    <a onclick="location.href='settings.html'">Settings</a>
-    <a onclick="location.href='cart.html'" class="nav-cart">Cart 🛒 <span id="cartCount" class="cart-count">0</span></a>
-    <a onclick="location.href='login.html'">Login</a>
+  <nav class="nav-right">
+    <a href="index.html">Home</a>
+    <a href="products.html" class="active">Browse</a>
+    <a href="sell.html">Sell</a>
+    <a href="cart.html" class="nav-cart">🛒 Cart <span id="cartCount" class="cart-count">0</span></a>
+    <a href="chat.html">Chat</a>
+    <a href="account.html">Account</a>
+    <a href="about.html">About</a>
+    <a href="login.html" class="login-link">Sign In</a>
   </nav>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
 </header>
 
 <!-- Mobile FAB -->
@@ -376,7 +437,7 @@ input[type=range] {
 <div class="marketplace-layout">
 
   <!-- ══ SIDEBAR ══════════════════════════════════════════ -->
-  <aside class="sidebar hidden" id="sidebar">
+  <aside class="sidebar" id="sidebar">
 
     <h2>Filters</h2>
 
@@ -422,37 +483,66 @@ input[type=range] {
         <strong id="priceVal">R120,000</strong>
       </div>
       <input type="range" id="priceRange" min="0" max="120000" value="120000" step="500" oninput="updatePrice(this.value)">
+      <div class="price-inputs">
+        <div class="price-input-group">
+          <label>Min (R)</label>
+          <input type="number" id="minPriceInput" placeholder="0" min="0" oninput="applyFilters()">
+        </div>
+        <div class="price-input-group">
+          <label>Max (R)</label>
+          <input type="number" id="maxPriceInput" placeholder="120000" min="0" oninput="applyFilters()">
+        </div>
+      </div>
     </div>
 
     <!-- CONDITION -->
     <div class="sidebar-section">
       <h3>Condition</h3>
       <div class="check-list">
-        <label class="check-item"><input type="checkbox" checked> Brand New</label>
-        <label class="check-item"><input type="checkbox" checked> Used</label>
-        <label class="check-item"><input type="checkbox" checked> Refurbished</label>
+        <label class="check-item"><input type="checkbox" id="cond-new" checked onchange="applyFilters()"> Brand New</label>
+        <label class="check-item"><input type="checkbox" id="cond-used" checked onchange="applyFilters()"> Used</label>
+        <label class="check-item"><input type="checkbox" id="cond-refurb" checked onchange="applyFilters()"> Refurbished</label>
+        <label class="check-item"><input type="checkbox" id="cond-likenew" checked onchange="applyFilters()"> Like New</label>
       </div>
     </div>
 
     <!-- DELIVERY -->
     <div class="sidebar-section">
-      <h3>Delivery</h3>
+      <h3>Delivery Options</h3>
       <div class="check-list">
-        <label class="check-item"><input type="checkbox">Free Delivery</label>
-        <label class="check-item"><input type="checkbox">Same Day</label>
-        <label class="check-item"><input type="checkbox">Pickup</label>
+        <label class="check-item"><input type="checkbox" id="del-free" onchange="applyFilters()"> Free Delivery</label>
+        <label class="check-item"><input type="checkbox" id="del-same" onchange="applyFilters()"> Same Day</label>
+        <label class="check-item"><input type="checkbox" id="del-pickup" onchange="applyFilters()"> Pickup Available</label>
       </div>
     </div>
 
-    <!-- RATINGS -->
+    <!-- LOCATION -->
     <div class="sidebar-section">
-      <h3>Min Rating</h3>
-      <select onchange="applyFilters()" id="ratingFilter" style="width:100%;padding:11px;border-radius:10px;border:1.5px solid #dbe1ea;font-family:inherit;font-size:13px;">
-        <option value="0">All Ratings</option>
-        <option value="3">*** & Up</option>
-        <option value="4">**** & Up</option>
-        <option value="5">****** Only</option>
+      <h3>Location</h3>
+      <select id="locationFilter" onchange="applyFilters()">
+        <option value="all">All Provinces</option>
+        <option value="gauteng">Gauteng</option>
+        <option value="western cape">Western Cape</option>
+        <option value="kwazulu-natal">KwaZulu-Natal</option>
+        <option value="eastern cape">Eastern Cape</option>
+        <option value="limpopo">Limpopo</option>
+        <option value="mpumalanga">Mpumalanga</option>
+        <option value="north west">North West</option>
+        <option value="free state">Free State</option>
+        <option value="northern cape">Northern Cape</option>
       </select>
+    </div>
+
+    <!-- DEALS ONLY -->
+    <div class="sidebar-section">
+      <div class="sidebar-toggle-row">
+        <h3 style="margin:0;">Deals Only</h3>
+        <label class="mini-toggle">
+          <input type="checkbox" id="dealsOnly" onchange="applyFilters()">
+          <span class="mini-toggle-track"></span>
+        </label>
+      </div>
+      <p style="font-size:12px;color:#94a3b8;margin:6px 0 0;">Show products under R1,000</p>
     </div>
 
     <button class="filter-btn" onclick="applyFilters(); if(window.innerWidth<=1000) closeSidebar()">Apply Filters</button>
@@ -488,15 +578,20 @@ input[type=range] {
       </div>
     </div>
 
-    <!-- DEALS -->
-    <div class="section-hdr">
-      <h2>Today's Deals</h2>
-      <a onclick="clearFilters()">View all</a>
-    </div>
-    <div class="grid" id="deals"></div>
+    <!-- ACTIVE FILTER CHIPS -->
+    <div class="active-filters" id="activeFilters" style="display:none;"></div>
 
-    <!-- MID SLIDER -->
-    <div class="mid-slider">
+    <!-- DEALS STRIP (hidden when filters are active) -->
+    <div class="deals-wrap" id="dealsWrap">
+      <div class="deals-wrap-hdr">
+        <h2>Today's Deals</h2>
+        <a onclick="document.getElementById('dealsOnly').checked=true;applyFilters()">View all deals</a>
+      </div>
+      <div class="deals-strip" id="deals"></div>
+    </div>
+
+    <!-- MID BANNER (hidden when filters are active) -->
+    <div class="mid-slider" id="midBanner">
       <div class="mid-slide active">
         <img src="https://images.unsplash.com/photo-1712668401428-df42b8bd93fc?w=1400&auto=format&fit=crop" alt="Sell">
         <div class="mid-overlay">
@@ -517,9 +612,9 @@ input[type=range] {
       </div>
     </div>
 
-    <!-- ALL PRODUCTS -->
-    <div class="section-hdr" style="margin-top:10px;">
-      <h2>Explore Marketplace</h2>
+    <!-- PRODUCTS SECTION -->
+    <div class="section-hdr" id="productsSectionHdr">
+      <h2 id="productsSectionTitle">Explore Marketplace</h2>
     </div>
     <div class="grid" id="productList"></div>
 
@@ -619,6 +714,30 @@ const products = [
 ];
 
 /* ═══════════════════════════════════════════════════════════
+   ADMIN PRODUCT SYNC
+   If an admin has removed or suspended products via admin.html,
+   respect that here. Falls back to the hardcoded array if no
+   admin data exists yet.
+═══════════════════════════════════════════════════════════ */
+function getActiveProducts() {
+    const adminProds = JSON.parse(localStorage.getItem('admin_products'));
+    if (!adminProds || !adminProds.length) return products;
+    return adminProds
+        .filter(p => p.status !== 'Suspended')
+        .map(p => {
+            // Try to match a hardcoded product to inherit its full description & images
+            const match = products.find(hp => hp.name.toLowerCase() === (p.name || '').toLowerCase());
+            return {
+                name:        p.name,
+                price:       Number(p.price),
+                category:    p.category,
+                description: p.description || (match ? match.description : p.name),
+                images:      match ? match.images : [p.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop']
+            };
+        });
+}
+
+/* ═══════════════════════════════════════════════════════════
    STATE
 ═══════════════════════════════════════════════════════════ */
 let currentCat  = 'all';
@@ -641,11 +760,34 @@ function showToast(msg) {
    CART
 ═══════════════════════════════════════════════════════════ */
 function addToCart(p) {
+    if (localStorage.getItem('isGuest') === 'true') { showGuestPrompt(); return; }
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart.push(p);
     localStorage.setItem('cart', JSON.stringify(cart));
     updateCartCount();
     showToast(p.name + ' added to cart 🛒');
+}
+
+function showGuestPrompt() {
+    let modal = document.getElementById('guestModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'guestModal';
+        modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:9999;';
+        modal.innerHTML = `
+          <div style="background:#fff;border-radius:20px;padding:36px 32px;max-width:380px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.2);">
+            <div style="width:64px;height:64px;border-radius:50%;background:#eff6ff;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;">🔒</div>
+            <h3 style="font-size:20px;font-weight:800;color:#111827;margin:0 0 10px;">Sign in to continue</h3>
+            <p style="font-size:14px;color:#6b7280;line-height:1.6;margin:0 0 24px;">You're browsing as a guest. Create a free account or sign in to buy, sell, and manage your orders on LinkUP.</p>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <a href="login.html" style="background:#1877f2;color:#fff;border-radius:12px;padding:13px;font-weight:700;font-size:14px;text-decoration:none;display:block;">Sign In</a>
+              <a href="register.html" style="background:#f0f7ff;color:#1877f2;border-radius:12px;padding:13px;font-weight:700;font-size:14px;text-decoration:none;display:block;border:1.5px solid #1877f2;">Create Free Account</a>
+              <button onclick="document.getElementById('guestModal').remove()" style="background:none;border:none;color:#94a3b8;font-size:13px;cursor:pointer;padding:6px;">Continue Browsing</button>
+            </div>
+          </div>`;
+        document.body.appendChild(modal);
+        modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+    }
 }
 
 function updateCartCount() {
@@ -662,32 +804,42 @@ const catLabels = { all:'All',electronics:'Electronics',clothing:'Clothing',furn
 function buildCard(p, idx) {
     const isLiked  = likedItems.has(p.name);
     const isDeal   = p.price < 1000;
-    const badge    = isDeal ? '<div class="deal">DEAL</div>' : (p.price < 2000 ? '<div class="badge-new">NEW</div>' : '');
-    const catLabel = catLabels[p.category] || p.category;
+    const isNew    = !isDeal && p.price < 2000;
+    const badge    = isDeal  ? '<div class="deal-badge-card">🔥 DEAL</div>'
+                  : isNew    ? '<div class="badge-new">✨ NEW</div>'
+                  : '';
+    const catLabel = catLabels[p.category] || p.category || '';
     const safeP    = JSON.stringify(p).replace(/'/g,"&#39;");
+    const safeName = p.name.replace(/'/g,"&#39;");
+    const img      = (p.images && p.images[0]) || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop';
 
     return `
     <div class="product" data-idx="${idx}">
-        <img src="${p.images[0]}" alt="${p.name}" loading="lazy">
+      <div class="product-img-wrap">
+        <img src="${img}" alt="${p.name}" loading="lazy">
         ${badge}
-        <button class="wish-btn ${isLiked?'liked':''}" onclick="toggleWish(this,'${p.name}')">${isLiked?'♥':'♡'}</button>
-        <div class="product-content">
-            <p class="product-cat">${catLabel}</p>
-            <h3>${p.name}</h3>
-            <p class="product-desc">${p.description}</p>
-            <p class="price">R${p.price.toLocaleString()}</p>
-            <div class="product-ui">
-                <button onclick='addToCart(${safeP})'>Add to Cart</button>
-                <button onclick="viewProduct('${p.name.replace(/'/g,"&#39;")}')">View</button>
-            </div>
-            <div class="stars" data-rating="0">
-                <span onclick="rate(this,1)">★</span>
-                <span onclick="rate(this,2)">★</span>
-                <span onclick="rate(this,3)">★</span>
-                <span onclick="rate(this,4)">★</span>
-                <span onclick="rate(this,5)">★</span>
-            </div>
+        <button class="wish-btn ${isLiked?'liked':''}" onclick="toggleWish(this,'${safeName}')">${isLiked?'♥':'♡'}</button>
+      </div>
+      <div class="product-content">
+        <p class="product-cat">${catLabel}</p>
+        <h3>${p.name}</h3>
+        <p class="product-desc">${p.description || ''}</p>
+        <div class="product-footer">
+          <span class="price">R${p.price.toLocaleString()}</span>
+          <div class="product-ui">
+            <button class="btn-cart" onclick='addToCart(${safeP})'>
+              <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+              Add
+            </button>
+            <button class="btn-view" onclick="viewProduct('${safeName}')">View</button>
+          </div>
         </div>
+        <div class="stars" data-rating="0">
+          <span onclick="rate(this,1)">★</span><span onclick="rate(this,2)">★</span>
+          <span onclick="rate(this,3)">★</span><span onclick="rate(this,4)">★</span>
+          <span onclick="rate(this,5)">★</span>
+        </div>
+      </div>
     </div>`;
 }
 
@@ -709,14 +861,51 @@ function renderGrid(list, targetId) {
    FILTERS
 ═══════════════════════════════════════════════════════════ */
 function applyFilters() {
-    const search = (document.getElementById('searchInput').value || '').toLowerCase();
-    const sort   = document.getElementById('sortSelect').value;
+    const search     = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+    const sort       = document.getElementById('sortSelect').value;
+    const minPriceIn = Number(document.getElementById('minPriceInput').value) || 0;
+    const maxPriceIn = Number(document.getElementById('maxPriceInput').value) || maxPrice;
+    const location   = (document.getElementById('locationFilter').value || 'all').toLowerCase();
+    const dealsOnly  = document.getElementById('dealsOnly').checked;
 
-    let filtered = products.filter(p => {
-        const matchCat   = currentCat === 'all' || p.category === currentCat;
-        const matchPrice = p.price <= maxPrice;
-        const matchName  = p.name.toLowerCase().includes(search) || p.description.toLowerCase().includes(search);
-        return matchCat && matchPrice && matchName;
+    // Condition — if ALL are checked treat as no filter; only restrict if some are unchecked
+    const condNew    = document.getElementById('cond-new').checked;
+    const condUsed   = document.getElementById('cond-used').checked;
+    const condRefurb = document.getElementById('cond-refurb').checked;
+    const condLike   = document.getElementById('cond-likenew').checked;
+    const allConds   = condNew && condUsed && condRefurb && condLike;
+    const selectedConds = [];
+    if (condNew)    selectedConds.push('brand new', 'new');
+    if (condUsed)   selectedConds.push('used');
+    if (condRefurb) selectedConds.push('refurbished');
+    if (condLike)   selectedConds.push('like new');
+
+    // Delivery — only apply if at least one is ticked (opt-in)
+    const delFree   = document.getElementById('del-free').checked;
+    const delSame   = document.getElementById('del-same').checked;
+    const delPickup = document.getElementById('del-pickup').checked;
+    const anyDelFilter = delFree || delSame || delPickup;
+
+    let filtered = getActiveProducts().filter(p => {
+        const matchCat     = currentCat === 'all' || p.category === currentCat;
+        const matchSearch  = !search || p.name.toLowerCase().includes(search) || (p.description||'').toLowerCase().includes(search);
+        const matchMin     = p.price >= minPriceIn;
+        const matchMax     = p.price <= Math.max(maxPriceIn, minPriceIn);
+        const matchSlider  = p.price <= maxPrice;
+        const matchDeals   = !dealsOnly || p.price < 1000;
+        const matchLoc     = location === 'all' || !p.location || p.location.toLowerCase().includes(location);
+
+        // Condition: if product has no condition field, it matches all
+        const matchCond = allConds || !p.condition || selectedConds.some(c => (p.condition||'').toLowerCase().includes(c));
+
+        // Delivery: only filter when product has a delivery field AND user opted in
+        const matchDel = !anyDelFilter || !p.delivery || (
+            (delFree   && (p.delivery||'').toLowerCase().includes('free'))  ||
+            (delSame   && (p.delivery||'').toLowerCase().includes('same'))  ||
+            (delPickup && (p.delivery||'').toLowerCase().includes('pickup'))
+        );
+
+        return matchCat && matchSearch && matchMin && matchMax && matchSlider && matchDeals && matchLoc && matchCond && matchDel;
     });
 
     // Sort
@@ -727,18 +916,57 @@ function applyFilters() {
 
     renderGrid(filtered, 'productList');
 
-    // Update count
+    // Result count
     document.getElementById('resultCount').innerHTML = `<strong>${filtered.length}</strong> product${filtered.length!==1?'s':''}`;
 
-    // Category badge
+    // Category badge (legacy — keep for compat)
     const badge = document.getElementById('catBadge');
-    if (currentCat !== 'all') {
-        badge.style.display = 'flex';
-        document.getElementById('catBadgeText').textContent = catLabels[currentCat] || currentCat;
-    } else {
-        badge.style.display = 'none';
+    if (badge) {
+        if (currentCat !== 'all') { badge.style.display = 'flex'; document.getElementById('catBadgeText').textContent = catLabels[currentCat] || currentCat; }
+        else { badge.style.display = 'none'; }
     }
+
+    // Determine if any filter is active (besides defaults)
+    const filtersActive = search || currentCat !== 'all' || minPriceIn > 0 || maxPriceIn < 120000 || maxPrice < 120000 || dealsOnly || location !== 'all' || anyDelFilter || !allConds;
+
+    // Hide deals strip + mid banner when filtering so results are immediately visible
+    const dealsWrap = document.getElementById('dealsWrap');
+    const midBanner = document.getElementById('midBanner');
+    if (dealsWrap) dealsWrap.style.display = filtersActive ? 'none' : '';
+    if (midBanner) midBanner.style.display = filtersActive ? 'none' : '';
+
+    // Update section title
+    const titleEl = document.getElementById('productsSectionTitle');
+    if (titleEl) titleEl.textContent = filtersActive ? `Search Results` : 'Explore Marketplace';
+
+    // Build active filter chips
+    buildFilterChips({ search, minPriceIn, maxPriceIn, location, dealsOnly, allConds, anyDelFilter, filtersActive });
 }
+
+function buildFilterChips({ search, minPriceIn, maxPriceIn, location, dealsOnly, allConds, anyDelFilter, filtersActive }) {
+    const container = document.getElementById('activeFilters');
+    if (!container) return;
+    if (!filtersActive) { container.style.display = 'none'; return; }
+
+    const chips = [];
+    if (currentCat !== 'all') chips.push({ label: '📂 ' + (catLabels[currentCat] || currentCat), clear: () => clearCat() });
+    if (search) chips.push({ label: '🔍 "' + search + '"', clear: () => { document.getElementById('searchInput').value=''; applyFilters(); } });
+    if (minPriceIn > 0) chips.push({ label: 'Min R' + minPriceIn.toLocaleString(), clear: () => { document.getElementById('minPriceInput').value=''; applyFilters(); } });
+    if (maxPriceIn < 120000 && maxPriceIn > 0) chips.push({ label: 'Max R' + maxPriceIn.toLocaleString(), clear: () => { document.getElementById('maxPriceInput').value=''; applyFilters(); } });
+    if (maxPrice < 120000) chips.push({ label: 'Under R' + maxPrice.toLocaleString(), clear: () => { document.getElementById('priceRange').value=120000; maxPrice=120000; document.getElementById('priceVal').textContent='R120,000'; applyFilters(); } });
+    if (dealsOnly) chips.push({ label: '🔥 Deals Only', clear: () => { document.getElementById('dealsOnly').checked=false; applyFilters(); } });
+    if (location !== 'all') chips.push({ label: '📍 ' + location.replace(/\b\w/g, c=>c.toUpperCase()), clear: () => { document.getElementById('locationFilter').value='all'; applyFilters(); } });
+    if (!allConds) chips.push({ label: '🏷 Condition filter', clear: () => { ['cond-new','cond-used','cond-refurb','cond-likenew'].forEach(id=>document.getElementById(id).checked=true); applyFilters(); } });
+    if (anyDelFilter) chips.push({ label: '🚚 Delivery filter', clear: () => { ['del-free','del-same','del-pickup'].forEach(id=>document.getElementById(id).checked=false); applyFilters(); } });
+
+    container.style.display = 'flex';
+    container.innerHTML = chips.map((c,i) => `<span class="filter-chip">${c.label} <button onclick="chipClear(${i})">×</button></span>`).join('') +
+        `<button class="clear-all-chips" onclick="clearFilters()">Clear All</button>`;
+    // Attach clear functions
+    window._chipClears = chips.map(c => c.clear);
+}
+
+function chipClear(i) { if (window._chipClears && window._chipClears[i]) window._chipClears[i](); }
 
 function selectCat(el) {
     document.querySelectorAll('.cat-item').forEach(c => c.classList.remove('active'));
@@ -764,24 +992,59 @@ function updatePrice(val) {
 }
 
 function clearFilters() {
-    document.getElementById('searchInput').value = '';
-    document.getElementById('sortSelect').value  = 'default';
-    document.getElementById('priceRange').value  = 120000;
+    document.getElementById('searchInput').value   = '';
+    document.getElementById('sortSelect').value    = 'default';
+    document.getElementById('priceRange').value    = 120000;
     document.getElementById('priceVal').textContent = 'R120,000';
-    maxPrice    = 120000;
-    currentCat  = 'all';
+    document.getElementById('minPriceInput').value = '';
+    document.getElementById('maxPriceInput').value = '';
+    document.getElementById('locationFilter').value = 'all';
+    document.getElementById('dealsOnly').checked   = false;
+    ['cond-new','cond-used','cond-refurb','cond-likenew'].forEach(id => document.getElementById(id).checked = true);
+    ['del-free','del-same','del-pickup'].forEach(id => document.getElementById(id).checked = false);
+    maxPrice   = 120000;
+    currentCat = 'all';
     document.querySelectorAll('.cat-item').forEach(c => c.classList.remove('active'));
     document.querySelector('[data-cat="all"]').classList.add('active');
     applyFilters();
 }
 
 /* ═══════════════════════════════════════════════════════════
+   DEALS STRIP
+═══════════════════════════════════════════════════════════ */
+function renderDeals() {
+    const allProds  = getActiveProducts();
+    const dealProds = allProds.filter(p => p.price < 1000).slice(0, 12);
+    const container = document.getElementById('deals');
+    if (!container) return;
+    if (!dealProds.length) {
+        const wrap = document.getElementById('dealsWrap');
+        if (wrap) wrap.style.display = 'none';
+        return;
+    }
+    container.innerHTML = dealProds.map(p => {
+        const img  = (p.images && p.images[0]) || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&auto=format&fit=crop';
+        const safeP = JSON.stringify(p).replace(/'/g,"&#39;");
+        return `
+        <div class="deal-card" onclick='addToCart(${safeP})'>
+          <img src="${img}" alt="${p.name}" loading="lazy">
+          <div class="deal-card-body">
+            <span class="deal-badge">DEAL</span>
+            <p class="deal-card-name">${p.name}</p>
+            <p class="deal-card-price">R${p.price.toLocaleString()}</p>
+          </div>
+        </div>`;
+    }).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════
    CAT COUNTS
 ═══════════════════════════════════════════════════════════ */
 function buildCatCounts() {
-    const cats = ['all','electronics','clothing','furniture','vehicles','beauty','education'];
+    const active = getActiveProducts();
+    const cats   = ['all','electronics','clothing','furniture','vehicles','beauty','education'];
     cats.forEach(cat => {
-        const count = cat === 'all' ? products.length : products.filter(p=>p.category===cat).length;
+        const count = cat === 'all' ? active.length : active.filter(p=>p.category===cat).length;
         const el = document.getElementById('count-'+cat);
         if (el) el.textContent = count;
     });
@@ -793,15 +1056,12 @@ function buildCatCounts() {
 function setView(v) {
     currentView = v;
     const grid = document.getElementById('productList');
-    const dealsGrid = document.getElementById('deals');
     if (v === 'list') {
         grid.classList.add('list-view');
-        dealsGrid.classList.add('list-view');
         document.getElementById('listBtn').classList.add('active');
         document.getElementById('gridBtn').classList.remove('active');
     } else {
         grid.classList.remove('list-view');
-        dealsGrid.classList.remove('list-view');
         document.getElementById('gridBtn').classList.add('active');
         document.getElementById('listBtn').classList.remove('active');
     }
@@ -885,9 +1145,29 @@ function readURLParams() {
 /* ═══════════════════════════════════════════════════════════
    INIT
 ═══════════════════════════════════════════════════════════ */
+// Suspension guard
+(function checkSuspension() {
+    if (localStorage.getItem('isLoggedIn') !== 'true') return;
+    const email = (localStorage.getItem('userEmail') || '').toLowerCase();
+    if (!email) return;
+    const users = JSON.parse(localStorage.getItem('linkup_users')) || [];
+    const me = users.find(u => u.email && u.email.toLowerCase() === email);
+    if (me && me.status === 'Banned') {
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.setItem('suspendedNotice', '1');
+        location.href = 'login.html';
+    }
+})();
+
+// On mobile, sidebar starts hidden; on desktop it's always visible
+if (window.innerWidth <= 1000) {
+    document.getElementById('sidebar').classList.add('hidden');
+}
+
 readURLParams();
 buildCatCounts();
 updateCartCount();
+renderDeals();
 applyFilters();
 
 // Deals row — products under R2000

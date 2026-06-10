@@ -1151,6 +1151,20 @@ textarea.f-input {
 </div>
 
 <!-- ══════════════════════════ TOPBAR ══════════════════════ -->
+<!-- Mobile nav overlay -->
+<div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">&#x2715;</button>
+  <a href="index.html">🏠 Home</a>
+  <a href="products.html">🔍 Browse</a>
+  <a href="sell.html">➕ Sell</a>
+  <a href="cart.html">🛒 Cart</a>
+  <a href="chat.html">💬 Chat</a>
+  <a href="account.html">👤 Account</a>
+  <a href="about.html">ℹ️ About</a>
+  <a href="login.html" class="mobile-login">Sign In</a>
+</nav>
+
 <header class="topbar">
   <a href="index.html" class="brand">
     <svg width="158" height="44" viewBox="0 0 158 44" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1165,12 +1179,13 @@ textarea.f-input {
     <a href="index.html">Home</a>
     <a href="products.html">Browse</a>
     <a href="sell.html">Sell</a>
+    <a href="cart.html" class="cart-link">🛒 Cart <span id="cartCount" class="cart-count">0</span></a>
     <a href="chat.html">Chat</a>
+    <a href="account.html" class="active">Account</a>
     <a href="about.html">About</a>
-    <a href="settings.html">Settings</a>
-    <a href="cart.html" class="cart-link">Cart <span id="cartCount" class="cart-count">0</span></a>
-    <a href="account.html" class="login-link active">My Account</a>
+    <a href="login.html" class="login-link">Sign In</a>
   </nav>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
 </header>
 
 <!-- ══════════════════════════ MAIN ════════════════════════ -->
@@ -1277,7 +1292,7 @@ textarea.f-input {
               <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
             </div>
             <div class="qs-info">
-              <strong id="ovListings">3</strong>
+              <strong id="ovListings">0</strong>
               <span>Active Listings</span>
             </div>
           </div>
@@ -1286,7 +1301,7 @@ textarea.f-input {
               <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
             <div class="qs-info">
-              <strong id="ovSold">2</strong>
+              <strong id="ovSold">0</strong>
               <span>Items Sold</span>
             </div>
           </div>
@@ -1295,7 +1310,7 @@ textarea.f-input {
               <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
             </div>
             <div class="qs-info">
-              <strong id="ovOrders">4</strong>
+              <strong id="ovOrders">0</strong>
               <span>Total Orders</span>
             </div>
           </div>
@@ -1304,7 +1319,7 @@ textarea.f-input {
               <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </div>
             <div class="qs-info">
-              <strong id="ovSaved">5</strong>
+              <strong id="ovSaved">0</strong>
               <span>Saved Items</span>
             </div>
           </div>
@@ -1318,48 +1333,7 @@ textarea.f-input {
             </div>
           </div>
           <div class="card-body" style="padding-top:8px;padding-bottom:8px;">
-            <ul class="activity-list" id="activityList">
-              <li class="activity-item">
-                <div class="activity-dot blue">
-                  <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
-                </div>
-                <div class="activity-text">
-                  <strong>You listed iPhone 11 for R6,000</strong>
-                  <span>Product listed on LinkUP marketplace</span>
-                </div>
-                <span class="activity-time">2 days ago</span>
-              </li>
-              <li class="activity-item">
-                <div class="activity-dot green">
-                  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                </div>
-                <div class="activity-text">
-                  <strong>Jordan Sneakers sold for R1,500</strong>
-                  <span>Transaction completed successfully</span>
-                </div>
-                <span class="activity-time">5 days ago</span>
-              </li>
-              <li class="activity-item">
-                <div class="activity-dot orange">
-                  <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                </div>
-                <div class="activity-text">
-                  <strong>Order placed for Headphones — R1,200</strong>
-                  <span>Order is being processed</span>
-                </div>
-                <span class="activity-time">1 week ago</span>
-              </li>
-              <li class="activity-item">
-                <div class="activity-dot blue">
-                  <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                </div>
-                <div class="activity-text">
-                  <strong>MacBook Pro M1 saved to your list</strong>
-                  <span>Item added to saved products</span>
-                </div>
-                <span class="activity-time">1 week ago</span>
-              </li>
-            </ul>
+            <ul class="activity-list" id="activityList"></ul>
           </div>
         </div>
 
@@ -1427,73 +1401,11 @@ textarea.f-input {
           </div>
           <div class="card-body">
             <div class="listings-grid" id="listingsGrid">
-
-              <div class="listing-card">
-                <div class="listing-img">
-                  <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&auto=format&fit=crop" alt="iPhone 11">
-                  <span class="listing-status status-active">Active</span>
-                </div>
-                <div class="listing-body">
-                  <h4>iPhone 11</h4>
-                  <div class="listing-price">R6,000</div>
-                  <div class="listing-meta">
-                    <span>Listed 2 days ago</span>
-                    <span>12 views</span>
-                  </div>
-                  <div class="listing-actions">
-                    <button onclick="showToast('Listing editor coming soon.','ok')">Edit</button>
-                    <button class="primary" onclick="location.href='products.html'">View</button>
-                    <button class="danger" onclick="confirmDelete('listing','iPhone 11')">Delete</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="listing-card">
-                <div class="listing-img">
-                  <img src="https://images.unsplash.com/photo-1587202372616-b43abea06c2a?w=400&auto=format&fit=crop" alt="Gaming PC">
-                  <span class="listing-status status-active">Active</span>
-                </div>
-                <div class="listing-body">
-                  <h4>Gaming PC</h4>
-                  <div class="listing-price">R12,000</div>
-                  <div class="listing-meta">
-                    <span>Listed 5 days ago</span>
-                    <span>34 views</span>
-                  </div>
-                  <div class="listing-actions">
-                    <button onclick="showToast('Listing editor coming soon.','ok')">Edit</button>
-                    <button class="primary" onclick="location.href='products.html'">View</button>
-                    <button class="danger" onclick="confirmDelete('listing','Gaming PC')">Delete</button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="listing-card">
-                <div class="listing-img">
-                  <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&auto=format&fit=crop" alt="Smart Watch">
-                  <span class="listing-status status-pending">Pending</span>
-                </div>
-                <div class="listing-body">
-                  <h4>Smart Watch</h4>
-                  <div class="listing-price">R2,200</div>
-                  <div class="listing-meta">
-                    <span>Listed 1 week ago</span>
-                    <span>8 views</span>
-                  </div>
-                  <div class="listing-actions">
-                    <button onclick="showToast('Listing editor coming soon.','ok')">Edit</button>
-                    <button class="primary" onclick="location.href='products.html'">View</button>
-                    <button class="danger" onclick="confirmDelete('listing','Smart Watch')">Delete</button>
-                  </div>
-                </div>
-              </div>
-
               <a href="sell.html" class="listing-add-card">
                 <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 <span>Add New Listing</span>
                 <small>Start selling today</small>
               </a>
-
             </div>
           </div>
         </div>
@@ -1519,68 +1431,7 @@ textarea.f-input {
                   <th>Action</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <div class="order-product">
-                      <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&auto=format&fit=crop" alt="Headphones">
-                      <div>
-                        <strong>Headphones</strong>
-                        <span>Wireless, Deep Bass</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>15 May 2025</td>
-                  <td><strong>R1,200</strong></td>
-                  <td><span class="order-status shipped">Shipped</span></td>
-                  <td><button class="btn btn-secondary" style="padding:7px 14px;font-size:12px;" onclick="showToast('Tracking details coming soon.','ok')">Track</button></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="order-product">
-                      <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=200&auto=format&fit=crop" alt="MacBook Pro">
-                      <div>
-                        <strong>MacBook Pro M1</strong>
-                        <span>Apple Laptop</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>10 May 2025</td>
-                  <td><strong>R10,000</strong></td>
-                  <td><span class="order-status delivered">Delivered</span></td>
-                  <td><button class="btn btn-secondary" style="padding:7px 14px;font-size:12px;" onclick="showToast('Receipt downloaded.','ok')">Receipt</button></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="order-product">
-                      <img src="https://images.unsplash.com/photo-1552346154-21d32810aba3?w=200&auto=format&fit=crop" alt="Sneakers">
-                      <div>
-                        <strong>Jordan Sneakers</strong>
-                        <span>Streetwear Footwear</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>02 May 2025</td>
-                  <td><strong>R1,500</strong></td>
-                  <td><span class="order-status delivered">Delivered</span></td>
-                  <td><button class="btn btn-secondary" style="padding:7px 14px;font-size:12px;" onclick="showToast('Receipt downloaded.','ok')">Receipt</button></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="order-product">
-                      <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=200&auto=format&fit=crop" alt="PlayStation 5">
-                      <div>
-                        <strong>PlayStation 5</strong>
-                        <span>Gaming Console</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td>28 Apr 2025</td>
-                  <td><strong>R14,000</strong></td>
-                  <td><span class="order-status cancelled">Cancelled</span></td>
-                  <td><button class="btn btn-secondary" style="padding:7px 14px;font-size:12px;" onclick="showToast('Refund info sent to your email.','ok')">Refund</button></td>
-                </tr>
-              </tbody>
+              <tbody id="ordersBody"></tbody>
             </table>
           </div>
         </div>
@@ -1596,59 +1447,7 @@ textarea.f-input {
             </div>
           </div>
           <div class="card-body">
-            <div class="saved-grid" id="savedGrid">
-
-              <div class="saved-card">
-                <button class="unsave-btn" onclick="unsaveItem(this)" title="Remove">&#x2715;</button>
-                <img src="https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&auto=format&fit=crop" alt="MacBook Pro">
-                <div class="saved-card-body">
-                  <h4>MacBook Pro M1</h4>
-                  <p class="price">R10,000</p>
-                  <button onclick="addToCart('MacBook Pro M1', 10000, 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400', 'Powerful Apple laptop.')">Add to Cart</button>
-                </div>
-              </div>
-
-              <div class="saved-card">
-                <button class="unsave-btn" onclick="unsaveItem(this)" title="Remove">&#x2715;</button>
-                <img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?w=400&auto=format&fit=crop" alt="Samsung TV">
-                <div class="saved-card-body">
-                  <h4>Samsung TV 65"</h4>
-                  <p class="price">R9,500</p>
-                  <button onclick="addToCart('Samsung TV', 9500, 'https://images.unsplash.com/photo-1593784991095-a205069470b6?w=400', 'Smart 4K TV.')">Add to Cart</button>
-                </div>
-              </div>
-
-              <div class="saved-card">
-                <button class="unsave-btn" onclick="unsaveItem(this)" title="Remove">&#x2715;</button>
-                <img src="https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=400&auto=format&fit=crop" alt="AirPods Pro">
-                <div class="saved-card-body">
-                  <h4>AirPods Pro</h4>
-                  <p class="price">R3,500</p>
-                  <button onclick="addToCart('AirPods Pro', 3500, 'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=400', 'ANC earbuds.')">Add to Cart</button>
-                </div>
-              </div>
-
-              <div class="saved-card">
-                <button class="unsave-btn" onclick="unsaveItem(this)" title="Remove">&#x2715;</button>
-                <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&auto=format&fit=crop" alt="Designer Handbag">
-                <div class="saved-card-body">
-                  <h4>Designer Handbag</h4>
-                  <p class="price">R2,400</p>
-                  <button onclick="addToCart('Designer Handbag', 2400, 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400', 'Luxury handbag.')">Add to Cart</button>
-                </div>
-              </div>
-
-              <div class="saved-card">
-                <button class="unsave-btn" onclick="unsaveItem(this)" title="Remove">&#x2715;</button>
-                <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&auto=format&fit=crop" alt="Sofa Set">
-                <div class="saved-card-body">
-                  <h4>Sofa Set</h4>
-                  <p class="price">R4,500</p>
-                  <button onclick="addToCart('Sofa Set', 4500, 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400', 'Modern sofa set.')">Add to Cart</button>
-                </div>
-              </div>
-
-            </div>
+            <div class="saved-grid" id="savedGrid"></div>
           </div>
         </div>
       </div>
@@ -1994,6 +1793,204 @@ function unsaveItem(btn) {
     }, 300);
 }
 
+/* ── Load Account Data from localStorage ──────────────────── */
+function loadAccountData() {
+    const email = (localStorage.getItem('userEmail') || '').toLowerCase();
+
+    // My listings: from admin_products where seller matches
+    const allProducts = JSON.parse(localStorage.getItem('admin_products')) || [];
+    const myListings  = allProducts.filter(p => p.seller && p.seller.toLowerCase() === email);
+
+    // My orders: from linkup_orders where buyer matches
+    const allOrders = JSON.parse(localStorage.getItem('linkup_orders')) || [];
+    const myOrders  = allOrders.filter(o => o.buyer && o.buyer.toLowerCase() === email);
+
+    // My saved: from linkup_saved where user matches
+    const allSaved = JSON.parse(localStorage.getItem('linkup_saved')) || [];
+    const mySaved  = allSaved.filter(s => s.user && s.user.toLowerCase() === email);
+
+    // ── Quick Stats ──────────────────────────────────────────
+    const activeListings = myListings.filter(p => p.status === 'Active').length;
+    const soldItems      = myListings.filter(p => p.status === 'Sold').length;
+    document.getElementById('ovListings').textContent = activeListings;
+    document.getElementById('ovSold').textContent     = soldItems;
+    document.getElementById('ovOrders').textContent   = myOrders.length;
+    document.getElementById('ovSaved').textContent    = mySaved.length;
+
+    // ── Activity Feed ────────────────────────────────────────
+    const actList = document.getElementById('activityList');
+    const items = [];
+    myListings.slice(0, 3).forEach(p => {
+        items.push({
+            dot: 'blue',
+            icon: '<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/>',
+            title: 'You listed ' + p.name + ' for R' + Number(p.price).toLocaleString(),
+            sub:   'Product listed on LinkUP marketplace',
+            time:  timeAgo(p.listedAt)
+        });
+    });
+    myOrders.slice(0, 2).forEach(o => {
+        items.push({
+            dot: 'orange',
+            icon: '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>',
+            title: 'Order placed for ' + o.name + ' — R' + Number(o.price).toLocaleString(),
+            sub:   'Order received',
+            time:  timeAgo(o.orderedAt)
+        });
+    });
+    if (items.length === 0) {
+        actList.innerHTML = '<li style="padding:24px 0;text-align:center;color:#94a3b8;font-size:14px;">No recent activity yet — start by listing or buying something!</li>';
+    } else {
+        actList.innerHTML = items.map(item => `
+            <li class="activity-item">
+              <div class="activity-dot ${item.dot}">
+                <svg viewBox="0 0 24 24">${item.icon}</svg>
+              </div>
+              <div class="activity-text">
+                <strong>${escHtml(item.title)}</strong>
+                <span>${escHtml(item.sub)}</span>
+              </div>
+              <span class="activity-time">${escHtml(item.time)}</span>
+            </li>`).join('');
+    }
+
+    // ── My Listings ──────────────────────────────────────────
+    const grid    = document.getElementById('listingsGrid');
+    const addCard = grid.querySelector('.listing-add-card');
+    // Remove any previously rendered listing cards (keep the add card)
+    grid.querySelectorAll('.listing-card').forEach(c => c.remove());
+    if (myListings.length === 0) {
+        // Show a gentle empty-state message before the add card
+        const empty = document.createElement('p');
+        empty.style.cssText = 'color:#94a3b8;font-size:14px;grid-column:1/-1;padding:8px 0 16px;';
+        empty.textContent = "You haven't listed anything yet.";
+        grid.insertBefore(empty, addCard);
+    } else {
+        myListings.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'listing-card';
+            const statusClass = p.status === 'Active' ? 'status-active' : p.status === 'Sold' ? 'status-sold' : 'status-pending';
+            const img = p.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&auto=format&fit=crop';
+            card.innerHTML = `
+              <div class="listing-img">
+                <img src="${escHtml(img)}" alt="${escHtml(p.name)}" style="width:100%;height:160px;object-fit:cover;">
+                <span class="listing-status ${statusClass}">${escHtml(p.status || 'Active')}</span>
+              </div>
+              <div class="listing-body">
+                <h4>${escHtml(p.name)}</h4>
+                <div class="listing-price">R${Number(p.price).toLocaleString()}</div>
+                <div class="listing-meta">
+                  <span>${timeAgo(p.listedAt)}</span>
+                  <span>${escHtml(p.category || '')}</span>
+                </div>
+                <div class="listing-actions">
+                  <button class="primary" onclick="location.href='products.html'">View</button>
+                  <button class="danger" onclick="deleteMyListing('${escHtml(p.name)}')">Delete</button>
+                </div>
+              </div>`;
+            grid.insertBefore(card, addCard);
+        });
+    }
+
+    // ── My Orders ────────────────────────────────────────────
+    const tbody = document.getElementById('ordersBody');
+    if (myOrders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:32px;color:#94a3b8;font-size:14px;">No orders yet — browse the marketplace to start shopping!</td></tr>`;
+    } else {
+        tbody.innerHTML = myOrders.map(o => `
+            <tr>
+              <td>
+                <div class="order-product">
+                  <img src="${escHtml(o.image || '')}" alt="${escHtml(o.name)}" onerror="this.style.display='none'">
+                  <div><strong>${escHtml(o.name)}</strong><span>${escHtml(o.category || '')}</span></div>
+                </div>
+              </td>
+              <td>${escHtml(formatDate(o.orderedAt))}</td>
+              <td><strong>R${Number(o.price).toLocaleString()}</strong></td>
+              <td><span class="order-status ${escHtml((o.status || 'pending').toLowerCase())}">${escHtml(o.status || 'Pending')}</span></td>
+              <td><button class="btn btn-secondary" style="padding:7px 14px;font-size:12px;" onclick="showToast('Tracking details coming soon.','ok')">Track</button></td>
+            </tr>`).join('');
+    }
+
+    // ── Saved Items ──────────────────────────────────────────
+    const savedGrid = document.getElementById('savedGrid');
+    if (mySaved.length === 0) {
+        savedGrid.innerHTML = `<p style="color:#94a3b8;font-size:14px;grid-column:1/-1;padding:8px 0;">No saved items yet — browse the marketplace and save things you like!</p>`;
+    } else {
+        savedGrid.innerHTML = mySaved.map(s => `
+            <div class="saved-card" data-name="${escHtml(s.name)}">
+              <button class="unsave-btn" onclick="unsaveItem(this)" title="Remove">&#x2715;</button>
+              <img src="${escHtml(s.image || '')}" alt="${escHtml(s.name)}">
+              <div class="saved-card-body">
+                <h4>${escHtml(s.name)}</h4>
+                <p class="price">R${Number(s.price).toLocaleString()}</p>
+                <button onclick="addToCart('${escHtml(s.name)}', ${Number(s.price)}, '${escHtml(s.image || '')}', '${escHtml(s.description || s.name)}')">Add to Cart</button>
+              </div>
+            </div>`).join('');
+    }
+}
+
+function escHtml(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function timeAgo(ts) {
+    if (!ts) return '';
+    const diff = Date.now() - new Date(ts).getTime();
+    const m = Math.floor(diff / 60000);
+    if (m < 1)   return 'just now';
+    if (m < 60)  return m + ' min ago';
+    const h = Math.floor(m / 60);
+    if (h < 24)  return h + ' hr ago';
+    const d = Math.floor(h / 24);
+    if (d < 7)   return d + ' day' + (d > 1 ? 's' : '') + ' ago';
+    const w = Math.floor(d / 7);
+    if (w < 5)   return w + ' week' + (w > 1 ? 's' : '') + ' ago';
+    return formatDate(ts);
+}
+
+function formatDate(ts) {
+    if (!ts) return '—';
+    return new Date(ts).toLocaleDateString('en-ZA', { day:'numeric', month:'short', year:'numeric' });
+}
+
+function deleteMyListing(name) {
+    openModal('Delete ' + name + '?', 'This listing will be permanently removed.', () => {
+        // Remove from admin_products
+        let ap = JSON.parse(localStorage.getItem('admin_products')) || [];
+        ap = ap.filter(p => p.name !== name);
+        localStorage.setItem('admin_products', JSON.stringify(ap));
+        // Remove from seller's own products
+        let sp = JSON.parse(localStorage.getItem('products')) || [];
+        sp = sp.filter(p => p.name !== name);
+        localStorage.setItem('products', JSON.stringify(sp));
+        showToast(name + ' removed.', 'ok');
+        loadAccountData();
+    });
+}
+
+/* ── Override unsaveItem to also persist to localStorage ──── */
+function unsaveItem(btn) {
+    const card  = btn.closest('.saved-card');
+    const name  = card.dataset.name;
+    const email = (localStorage.getItem('userEmail') || '').toLowerCase();
+    card.style.transition = 'opacity .3s, transform .3s';
+    card.style.opacity    = '0';
+    card.style.transform  = 'scale(.92)';
+    setTimeout(() => {
+        card.remove();
+        let saved = JSON.parse(localStorage.getItem('linkup_saved')) || [];
+        saved     = saved.filter(s => !(s.user && s.user.toLowerCase() === email && s.name === name));
+        localStorage.setItem('linkup_saved', JSON.stringify(saved));
+        const remaining = saved.filter(s => s.user && s.user.toLowerCase() === email).length;
+        document.getElementById('ovSaved').textContent = remaining;
+        if (remaining === 0) {
+            document.getElementById('savedGrid').innerHTML = `<p style="color:#94a3b8;font-size:14px;grid-column:1/-1;padding:8px 0;">No saved items yet — browse the marketplace and save things you like!</p>`;
+        }
+        showToast('Item removed from saved list.', 'ok');
+    }, 300);
+}
+
 /* ── Confirm Modal ─────────────────────────────────────────── */
 function openModal(title, desc, onConfirm) {
     document.getElementById('modalTitle').textContent = title;
@@ -2044,6 +2041,16 @@ function checkAuth() {
     if (loggedIn !== 'true') {
         showToast('Please sign in to view your account.', 'fail');
         setTimeout(() => location.href = 'login.html', 1200);
+        return;
+    }
+    // Suspension guard
+    const email = (localStorage.getItem('userEmail') || '').toLowerCase();
+    const users = JSON.parse(localStorage.getItem('linkup_users')) || [];
+    const me = users.find(u => u.email && u.email.toLowerCase() === email);
+    if (me && me.status === 'Banned') {
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.setItem('suspendedNotice', '1');
+        location.href = 'login.html';
     }
 }
 
@@ -2051,12 +2058,26 @@ function checkAuth() {
 checkAuth();
 loadProfile();
 updateCartCount();
+loadAccountData();
 
-// Sync stat numbers
-document.getElementById('statListings').textContent = '3';
-document.getElementById('statSold').textContent     = '2';
-document.getElementById('statOrders').textContent   = '4';
-document.getElementById('statSaved').textContent    = '5';
+// Sync profile-hero stat numbers from real data
+(function syncProfileStats() {
+    const email = (localStorage.getItem('userEmail') || '').toLowerCase();
+    const allProducts = JSON.parse(localStorage.getItem('admin_products')) || [];
+    const myListings  = allProducts.filter(p => p.seller && p.seller.toLowerCase() === email);
+    const allOrders   = JSON.parse(localStorage.getItem('linkup_orders')) || [];
+    const myOrders    = allOrders.filter(o => o.buyer && o.buyer.toLowerCase() === email);
+    const allSaved    = JSON.parse(localStorage.getItem('linkup_saved')) || [];
+    const mySaved     = allSaved.filter(s => s.user && s.user.toLowerCase() === email);
+    const slEl = document.getElementById('statListings');
+    const ssEl = document.getElementById('statSold');
+    const soEl = document.getElementById('statOrders');
+    const svEl = document.getElementById('statSaved');
+    if (slEl) slEl.textContent = myListings.filter(p => p.status === 'Active').length;
+    if (ssEl) ssEl.textContent = myListings.filter(p => p.status === 'Sold').length;
+    if (soEl) soEl.textContent = myOrders.length;
+    if (svEl) svEl.textContent = mySaved.length;
+})();
 </script>
 </body>
 </html>

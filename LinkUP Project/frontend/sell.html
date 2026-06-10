@@ -152,6 +152,20 @@ body { margin:0; font-family:'Poppins','Segoe UI',Arial,sans-serif; background:#
 <div id="toast"></div>
 
 <!-- TOPBAR -->
+<!-- Mobile nav overlay -->
+<div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">&#x2715;</button>
+  <a href="index.html">🏠 Home</a>
+  <a href="products.html">🔍 Browse</a>
+  <a href="sell.html">➕ Sell</a>
+  <a href="cart.html">🛒 Cart</a>
+  <a href="chat.html">💬 Chat</a>
+  <a href="account.html">👤 Account</a>
+  <a href="about.html">ℹ️ About</a>
+  <a href="login.html" class="mobile-login">Sign In</a>
+</nav>
+
 <header class="topbar">
   <a href="index.html" class="brand">
     <svg width="148" height="40" viewBox="0 0 148 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -172,11 +186,14 @@ body { margin:0; font-family:'Poppins','Segoe UI',Arial,sans-serif; background:#
   <nav class="nav-right">
     <a href="index.html">Home</a>
     <a href="products.html">Browse</a>
+    <a href="sell.html" class="active">Sell</a>
+    <a href="cart.html" class="cart-link">🛒 Cart <span id="cartCount" class="cart-count">0</span></a>
     <a href="chat.html">Chat</a>
-    <a href="cart.html">🛒 Cart</a>
-    <a href="settings.html">Settings</a>
-    <a href="login.html">Login</a>
+    <a href="account.html">Account</a>
+    <a href="about.html">About</a>
+    <a href="login.html" class="login-link">Sign In</a>
   </nav>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
 </header>
 
 <div class="marketplace-layout">
@@ -399,7 +416,7 @@ function renderPreview() {
 }
 
 /* ── SUBMIT ───────────────────────────────────────────────── */
-function isLoggedIn() { return localStorage.getItem('userEmail'); }
+function isLoggedIn() { return localStorage.getItem('userEmail') && localStorage.getItem('isGuest') !== 'true'; }
 
 function submitProduct() {
     if (!isLoggedIn()) {
@@ -429,14 +446,34 @@ function submitProduct() {
     const images = selectedFiles.map(f => URL.createObjectURL(f));
 
     setTimeout(() => {
-        const products = JSON.parse(localStorage.getItem('products')) || [];
-        products.unshift({ name, price: Number(price), desc, category, location, condition, delivery, images, listedAt: new Date().toLocaleDateString('en-ZA') });
-        localStorage.setItem('products', JSON.stringify(products));
+        // ── Save to seller's own listing store ─────────────────
+        const myProds = JSON.parse(localStorage.getItem('products')) || [];
+        const newProd = { name, price: Number(price), desc, category, location, condition, delivery, images, listedAt: new Date().toLocaleDateString('en-ZA'), seller: localStorage.getItem('userName') || localStorage.getItem('userEmail') || 'Anonymous' };
+        myProds.unshift(newProd);
+        localStorage.setItem('products', JSON.stringify(myProds));
+
+        // ── Also push into admin_products so it appears on
+        //    the marketplace (products.html) and in the admin panel ──
+        const adminProds = JSON.parse(localStorage.getItem('admin_products')) || [];
+        adminProds.unshift({
+            name,
+            price: Number(price),
+            category,
+            image: images[0] || '',
+            description: desc,
+            status: 'Active',
+            seller: newProd.seller,
+            condition,
+            location,
+            delivery,
+            listedAt: newProd.listedAt
+        });
+        localStorage.setItem('admin_products', JSON.stringify(adminProds));
 
         btn.disabled = false;
         btn.textContent = '🚀 Publish Listing';
 
-        showToast(name + ' listed successfully! 🎉', 'success');
+        showToast(name + ' is now live on the marketplace! 🎉', 'success');
 
         // Reset form
         document.getElementById('prodName').value = '';
@@ -479,12 +516,49 @@ function deleteListing(i) {
     const name = products[i].name;
     products.splice(i, 1);
     localStorage.setItem('products', JSON.stringify(products));
+
+    // Also remove from admin_products so it disappears from marketplace
+    const adminProds = JSON.parse(localStorage.getItem('admin_products')) || [];
+    const ai = adminProds.findIndex(p => p.name === name);
+    if (ai !== -1) { adminProds.splice(ai, 1); localStorage.setItem('admin_products', JSON.stringify(adminProds)); }
+
     renderMyListings();
-    showToast(name + ' removed.', 'error');
+    showToast(name + ' removed from marketplace.', 'error');
+}
+
+/* ── CART COUNT ───────────────────────────────────────────── */
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const el = document.getElementById('cartCount');
+    if (el) el.textContent = cart.length;
+}
+
+/* ── MOBILE NAV ───────────────────────────────────────────── */
+function toggleMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    const overlay = document.getElementById('mobileOverlay');
+    const btn = document.getElementById('hamburger');
+    const open = nav.classList.toggle('open');
+    overlay.classList.toggle('open', open);
+    btn.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeMobileNav() {
+    document.getElementById('mobileNav').classList.remove('open');
+    document.getElementById('mobileOverlay').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
 }
 
 /* ── INIT ─────────────────────────────────────────────────── */
-renderMyListings();
+// Guest guard — redirect guests to login with a message
+if (localStorage.getItem('isGuest') === 'true' || !localStorage.getItem('userEmail')) {
+    localStorage.setItem('guestRedirectMsg', 'You need an account to sell on LinkUP. Sign in or create a free account to start listing.');
+    location.href = 'login.html';
+} else {
+    renderMyListings();
+    updateCartCount();
+}
 </script>
 </body>
 </html>

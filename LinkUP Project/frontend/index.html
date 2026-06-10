@@ -903,6 +903,22 @@ body {
   </div>
 </div>
 
+<!-- Mobile nav overlay -->
+<div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+
+<!-- Mobile slide-in nav -->
+<nav class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">&#x2715;</button>
+  <a href="index.html" class="active">🏠 Home</a>
+  <a href="products.html">🔍 Browse</a>
+  <a href="sell.html">➕ Sell</a>
+  <a href="cart.html">🛒 Cart</a>
+  <a href="chat.html">💬 Chat</a>
+  <a href="account.html">👤 Account</a>
+  <a href="about.html">ℹ️ About</a>
+  <a href="login.html" class="mobile-login">Sign In</a>
+</nav>
+
 <!-- ══════════════════════════════════ TOPBAR ══════════════ -->
 <header class="topbar">
   <a href="index.html" class="brand">
@@ -925,11 +941,15 @@ body {
     <a href="cart.html" class="cart-link">
       🛒 Cart <span id="cartCount" class="cart-count">0</span>
     </a>
-     <a href="chat.html">Chat</a>
-    <a href="settings.html">Settings</a>
+    <a href="chat.html">Chat</a>
+    <a href="account.html">Account</a>
     <a href="about.html">About</a>
     <a href="login.html" class="login-link">Sign In</a>
   </nav>
+
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
 <!-- ══════════════════════════════════ HERO ════════════════ -->
@@ -958,11 +978,11 @@ body {
 
 <!-- ══════════════════════════════════ TRUST STRIP ════════ -->
 <div class="trust-strip">
-  <div class="trust-item"><span class="trust-icon"></span> Secure Transactions</div>
-  <div class="trust-item"><span class="trust-icon"></span> Direct Messaging</div>
-  <div class="trust-item"><span class="trust-icon"></span> 100+ Listings</div>
-  <div class="trust-item"><span class="trust-icon"></span> South Africa's Marketplace</div>
-  <div class="trust-item"><span class="trust-icon"></span> Free to Join</div>
+  <div class="trust-item"><span class="trust-icon">🔒</span> Secure Payments via PayFast</div>
+  <div class="trust-item"><span class="trust-icon">💬</span> Direct Seller Messaging</div>
+  <div class="trust-item"><span class="trust-icon">📦</span> 100+ Active Listings</div>
+  <div class="trust-item"><span class="trust-icon">🇿🇦</span> South Africa's Marketplace</div>
+  <div class="trust-item"><span class="trust-icon">✅</span> Free to Join</div>
 </div>
 
 <!-- ══════════════════════════════════ CATEGORY PILLS ═════ -->
@@ -1461,8 +1481,66 @@ function subscribeNews() {
     document.getElementById('newsletterEmail').value = '';
 }
 
+/* ── Suspension guard ──────────────────────────────────────────
+   If the currently-logged-in user has been suspended by admin,
+   sign them out and send them to login with a message.
+─────────────────────────────────────────────────────────────── */
+(function checkSuspension() {
+    if (localStorage.getItem('isLoggedIn') !== 'true') return;
+    const email = (localStorage.getItem('userEmail') || '').toLowerCase();
+    if (!email) return;
+    const users = JSON.parse(localStorage.getItem('linkup_users')) || [];
+    const me = users.find(u => u.email && u.email.toLowerCase() === email);
+    if (me && me.status === 'Banned') {
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.setItem('suspendedNotice', '1');
+        location.href = 'login.html';
+    }
+})();
+
 /* ── Init ──────────────────────────────────────────────────── */
 updateCartCount();
+
+/* ── Admin product visibility ──────────────────────────────
+   If admin has suspended or removed products via admin.html,
+   hide those product cards on the homepage.
+─────────────────────────────────────────────────────────── */
+(function applyAdminVisibility() {
+    const adminProds = JSON.parse(localStorage.getItem('admin_products'));
+    if (!adminProds || !adminProds.length) return;
+    const hiddenNames = new Set(
+        adminProds.filter(p => p.status === 'Suspended').map(p => p.name.toLowerCase())
+    );
+    // Names present in CATALOGUE but not in admin_products were removed
+    const adminNames = new Set(adminProds.map(p => p.name.toLowerCase()));
+    document.querySelectorAll('.product').forEach(card => {
+        const btn = card.querySelector('[onclick^="addToCart"]');
+        if (!btn) return;
+        const m = btn.getAttribute('onclick').match(/addToCart\('([^']+)'/);
+        if (!m) return;
+        const name = m[1].toLowerCase();
+        if (hiddenNames.has(name) || !adminNames.has(name)) {
+            card.style.display = 'none';
+        }
+    });
+})();
+
+/* ── Mobile Nav ────────────────────────────────────────────── */
+function toggleMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    const overlay = document.getElementById('mobileOverlay');
+    const btn = document.getElementById('hamburger');
+    const open = nav.classList.toggle('open');
+    overlay.classList.toggle('open', open);
+    btn.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeMobileNav() {
+    document.getElementById('mobileNav').classList.remove('open');
+    document.getElementById('mobileOverlay').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+}
 </script>
 </body>
 </html>

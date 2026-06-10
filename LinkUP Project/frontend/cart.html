@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cart — LinkUP</title>
 <link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 <style>
 
 /* ─────────────────────────────────────────────
@@ -769,34 +770,19 @@ input, select { font-family: inherit; }
 
 .f-hint { font-size: 11px; color: var(--light); margin-top: 4px; }
 
-/* Payment method grid */
-.pay-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 9px; margin-bottom: 20px; }
-
-.pay-tile {
-    border: 1.5px solid var(--border);
-    border-radius: 11px; padding: 13px 6px;
-    text-align: center; cursor: pointer;
-    font-size: 11px; font-weight: 700;
-    color: var(--muted); background: #f8fafc;
-    transition: border-color .18s, background .18s, color .18s;
-    display: flex; flex-direction: column;
-    align-items: center; gap: 6px;
+/* PayFast option tiles */
+.payfast-option {
+    border: 2px solid var(--border);
+    border-radius: 13px; padding: 14px 16px;
+    cursor: pointer;
+    background: #f8fafc;
+    transition: border-color .18s, background .18s;
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 12px;
 }
 
-.pay-tile:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
-.pay-tile.selected { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
-
-.pay-logo {
-    width: 36px; height: 24px; border-radius: 5px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 9px; font-weight: 800;
-}
-
-.pay-logo.visa  { background: #1a1f71; color: #fff; font-size: 11px; }
-.pay-logo.mc    { background: #eb001b; color: #fff; }
-.pay-logo.eft   { background: #059669; color: #fff; }
-.pay-logo.cod   { background: #374151; color: #fff; font-size: 8px; }
-.pay-logo.apple { background: #000; color: #fff; }
+.payfast-option:hover { border-color: var(--blue); background: var(--blue-light); }
+.payfast-option.selected { border-color: var(--blue); background: var(--blue-light); box-shadow: 0 0 0 3px rgba(24,119,242,.1); }
 
 /* Step nav buttons */
 .step-nav { display: flex; gap: 10px; margin-top: 22px; }
@@ -1016,18 +1002,28 @@ input, select { font-family: inherit; }
     </div>
 </div>
 
+<!-- Mobile nav overlay -->
+<div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">&#x2715;</button>
+  <a href="index.html">🏠 Home</a>
+  <a href="products.html">🔍 Browse</a>
+  <a href="sell.html">➕ Sell</a>
+  <a href="cart.html" class="active">🛒 Cart</a>
+  <a href="chat.html">💬 Chat</a>
+  <a href="account.html">👤 Account</a>
+  <a href="about.html">ℹ️ About</a>
+  <a href="login.html" class="mobile-login">Sign In</a>
+</nav>
+
 <!-- ════════ THE TOPBAR════════════════ -->
 <header class="topbar">
   <a href="index.html" class="brand">
     <svg width="148" height="40" viewBox="0 0 148 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Left circle -->
       <circle cx="14" cy="20" r="9" stroke="white" stroke-width="2.5" fill="none"/>
-      <!-- Right circle overlapping -->
       <circle cx="28" cy="20" r="9" stroke="white" stroke-width="2.5" fill="none"/>
-      <!-- Upward arrow rising from overlap -->
       <line x1="21" y1="17" x2="21" y2="7" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
       <polyline points="17,11 21,6 25,11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <!-- Wordmark -->
       <text x="44" y="26" font-family="Poppins, Segoe UI, Arial, sans-serif"
             font-size="20" font-weight="800" fill="white" letter-spacing="0.4">
         Link<tspan fill="rgba(255,255,255,0.55)">UP</tspan>
@@ -1035,21 +1031,25 @@ input, select { font-family: inherit; }
     </svg>
   </a>
 
-    <nav class="topbar-nav">
-        <a href="index.html">Home</a>
-        <a href="products.html">Browse</a>
-        <a href="sell.html">Sell</a>
-        <a href="chat.html">Chat</a>
-        <a href="settings.html">Settings</a>
-        <a href="cart.html" class="active">Cart</a>
-        <a href="products.html" class="nav-cta">Continue Shopping</a>
-    </nav>
+  <nav class="topbar-nav">
+    <a href="index.html">Home</a>
+    <a href="products.html">Browse</a>
+    <a href="sell.html">Sell</a>
+    <a href="chat.html">Chat</a>
+    <a href="account.html">Account</a>
+    <a href="cart.html" class="active">Cart</a>
+    <a href="products.html" class="nav-cta">Continue Shopping</a>
+  </nav>
 
-    <!-- Logged-in user pill -->
-    <div class="topbar-user" onclick="location.href='settings.html'" id="topbarUser" style="display:none;">
-        <div class="topbar-avatar" id="topbarAvatar">?</div>
-        <span class="topbar-user-name" id="topbarName">User</span>
-    </div>
+  <!-- Logged-in user pill (desktop) -->
+  <div class="topbar-user" onclick="location.href='account.html'" id="topbarUser" style="display:none;">
+    <div class="topbar-avatar" id="topbarAvatar">?</div>
+    <span class="topbar-user-name" id="topbarName">User</span>
+  </div>
+
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
 <!-- ══════════════════════ USER WELCOME BANNER ════════════════ -->
@@ -1161,57 +1161,45 @@ input, select { font-family: inherit; }
             <div class="step-panel" id="sp2">
                 <div class="f-label" style="margin-bottom:12px;">Select payment method</div>
 
-                <div class="pay-grid">
-                    <div class="pay-tile selected" onclick="choosePay(this,'card')">
-                        <div class="pay-logo visa">VISA</div>
-                        Card
+                <!-- PayFast (recommended) -->
+                <div class="payfast-option selected" id="pfTile" onclick="choosePay(this,'payfast')">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="background:#00a5e1;color:#fff;font-size:11px;font-weight:800;padding:6px 10px;border-radius:7px;letter-spacing:.5px;">PAY<span style="color:#ffd200;">FAST</span></div>
+                        <div>
+                            <div style="font-size:14px;font-weight:700;color:#0f172a;">PayFast <span style="background:#dcfce7;color:#16a34a;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;margin-left:4px;">Recommended</span></div>
+                            <div style="font-size:12px;color:#64748b;margin-top:1px;">Visa · Mastercard · Instant EFT · Mobicred</div>
+                        </div>
                     </div>
-                    <div class="pay-tile" onclick="choosePay(this,'eft')">
-                        <div class="pay-logo eft">EFT</div>
-                        Instant EFT
-                    </div>
-                    <div class="pay-tile" onclick="choosePay(this,'cod')">
-                        <div class="pay-logo cod">COD</div>
-                        Cash on Delivery
-                    </div>
-                    <div class="pay-tile" onclick="choosePay(this,'apple')">
-                        <div class="pay-logo apple">AP</div>
-                        Apple Pay
-                    </div>
-                    <div class="pay-tile" onclick="choosePay(this,'google')">
-                        <div class="pay-logo mc" style="background:#4285f4;">G</div>
-                        Google Pay
-                    </div>
+                    <div style="font-size:11px;color:#1877f2;font-weight:600;">Secure gateway ›</div>
                 </div>
 
-                <!-- Card fields -->
-                <div id="cardFields">
-                    <div class="field-grid one">
-                        <div class="field-group f-full">
-                            <label class="f-label">Card Number</label>
-                            <input class="f-input" id="card-num" placeholder="1234  5678  9012  3456" maxlength="19" oninput="fmtCard(this)">
-                            <div class="f-hint">Visa and Mastercard accepted</div>
-                        </div>
-                    </div>
-                    <div class="field-grid">
-                        <div class="field-group">
-                            <label class="f-label">Expiry Date</label>
-                            <input class="f-input" id="card-exp" placeholder="MM / YY" maxlength="7" oninput="fmtExp(this)">
-                        </div>
-                        <div class="field-group">
-                            <label class="f-label">CVV</label>
-                            <input class="f-input" id="card-cvv" type="password" placeholder="3 or 4 digits" maxlength="4">
-                        </div>
-                    </div>
-                    <div class="field-grid one">
-                        <div class="field-group f-full">
-                            <label class="f-label">Name on Card</label>
-                            <input class="f-input" id="card-name" placeholder="As printed on card">
+                <div class="payfast-option" id="codTile" onclick="choosePay(this,'cod')" style="margin-top:10px;">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div style="background:#374151;color:#fff;font-size:10px;font-weight:800;padding:6px 8px;border-radius:7px;">COD</div>
+                        <div>
+                            <div style="font-size:14px;font-weight:700;color:#0f172a;">Cash on Delivery</div>
+                            <div style="font-size:12px;color:#64748b;margin-top:1px;">Pay when you receive your order</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="step-nav">
+                <!-- PayFast sandbox info box -->
+                <div id="payfastInfo" style="margin-top:16px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:11px;padding:14px 16px;">
+                    <div style="font-size:12px;font-weight:700;color:#0369a1;margin-bottom:8px;">🔒 PayFast Sandbox — Test Mode</div>
+                    <div style="font-size:12px;color:#0369a1;line-height:1.7;">
+                        Use these test card details on the PayFast page:<br>
+                        <strong>Card:</strong> 4000 0000 0000 0002 &nbsp;|&nbsp; <strong>Expiry:</strong> 12/29 &nbsp;|&nbsp; <strong>CVV:</strong> 123<br>
+                        <strong>OTP:</strong> any 6-digit number
+                    </div>
+                </div>
+
+                <div id="codInfo" style="display:none;margin-top:16px;background:#fefce8;border:1px solid #fde68a;border-radius:11px;padding:14px 16px;">
+                    <div style="font-size:12px;color:#92400e;line-height:1.7;">
+                        💵 Pay the driver cash when your order arrives. Our couriers accept exact amounts only.
+                    </div>
+                </div>
+
+                <div class="step-nav" style="margin-top:20px;">
                     <button class="s-btn-back" onclick="goToStep(1)">Back</button>
                     <button class="s-btn-next" onclick="nextStep(2)">Review Order</button>
                 </div>
@@ -1223,13 +1211,28 @@ input, select { font-family: inherit; }
 
                 <div class="secure-banner">
                     <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    Your payment is end-to-end encrypted. Card details are never stored on our servers.
+                    Your payment is processed securely via PayFast. Card details are never stored on our servers.
                 </div>
 
-                <button class="pay-now-btn" id="payNowBtn" onclick="processPayment()">
-                    <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    Complete Payment
-                </button>
+                <!-- PayFast pay button -->
+                <div id="payfastPaySection">
+                    <button class="pay-now-btn" id="payNowBtn" onclick="processPayment()" style="background:linear-gradient(135deg,#00a5e1,#0074b7);">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        Pay via PayFast
+                    </button>
+                    <div style="text-align:center;font-size:11px;color:#94a3b8;margin-top:8px;">You will be redirected to PayFast's secure checkout page</div>
+                </div>
+
+                <!-- COD confirm button -->
+                <div id="codPaySection" style="display:none;">
+                    <button class="pay-now-btn" id="payNowBtnCod" onclick="processCOD()" style="background:linear-gradient(135deg,#374151,#1f2937);">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        Confirm COD Order
+                    </button>
+                </div>
+
+                <!-- Hidden PayFast form -->
+                <form id="payfastForm" action="https://sandbox.payfast.co.za/eng/process" method="POST" style="display:none;"></form>
 
                 <div class="step-nav" style="margin-top:12px;">
                     <button class="s-btn-back" onclick="goToStep(2)">Edit Payment</button>
@@ -1326,7 +1329,7 @@ let cart      = JSON.parse(localStorage.getItem('cart'))       || [];
 let savedList = JSON.parse(localStorage.getItem('savedLater')) || [];
 let discount  = 0;        // percent
 let curStep   = 1;
-let payMethod = 'card';
+let payMethod = 'payfast';
 
 const FREE_THRESHOLD = 1000;
 const PROMOS = { 'LINKUP10': 10, 'WELCOME20': 20, 'SAVE15': 15 };
@@ -1673,9 +1676,34 @@ function applyPromo() {
 ══════════════════════════════════════════════════════ */
 function openCheckout() {
     if (!cart.length) { toast('Your cart is empty.', 'fail'); return; }
+    if (localStorage.getItem('isGuest') === 'true') {
+        showGuestPrompt();
+        return;
+    }
     const panel = document.getElementById('checkoutPanel');
     panel.classList.add('open');
     panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function showGuestPrompt() {
+    let modal = document.getElementById('guestModal');
+    if (modal) return;
+    modal = document.createElement('div');
+    modal.id = 'guestModal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:9999;';
+    modal.innerHTML = `
+      <div style="background:#fff;border-radius:20px;padding:36px 32px;max-width:380px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.2);">
+        <div style="width:64px;height:64px;border-radius:50%;background:#eff6ff;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:28px;">🔒</div>
+        <h3 style="font-size:20px;font-weight:800;color:#111827;margin:0 0 10px;">Sign in to checkout</h3>
+        <p style="font-size:14px;color:#6b7280;line-height:1.6;margin:0 0 24px;">You're browsing as a guest. Create a free account or sign in to complete your purchase on LinkUP.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="login.html" style="background:#1877f2;color:#fff;border-radius:12px;padding:13px;font-weight:700;font-size:14px;text-decoration:none;display:block;">Sign In</a>
+          <a href="register.html" style="background:#f0f7ff;color:#1877f2;border-radius:12px;padding:13px;font-weight:700;font-size:14px;text-decoration:none;display:block;border:1.5px solid #1877f2;">Create Free Account</a>
+          <button onclick="document.getElementById('guestModal').remove()" style="background:none;border:none;color:#94a3b8;font-size:13px;cursor:pointer;padding:6px;">Continue Browsing</button>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
 }
 
 function goToStep(n) {
@@ -1696,18 +1724,12 @@ function nextStep(from) {
         if (!ok) { showStepErr('Please fill in all delivery details.', 1); return; }
         curStep = 2;
     } else if (from === 2) {
-        if (payMethod === 'card') {
-            const cf = ['card-num','card-exp','card-cvv','card-name'];
-            let ok = true;
-            cf.forEach(id => {
-                const el = document.getElementById(id);
-                if (!el.value.trim()) { el.classList.add('err'); ok = false; }
-                else el.classList.remove('err');
-            });
-            if (!ok) { showStepErr('Please complete your card details.', 2); return; }
-        }
         buildReview();
         curStep = 3;
+        // Show the correct pay button
+        const isPF = payMethod === 'payfast';
+        document.getElementById('payfastPaySection').style.display = isPF  ? 'block' : 'none';
+        document.getElementById('codPaySection').style.display     = !isPF ? 'block' : 'none';
     }
     syncStepUI();
     document.getElementById('checkoutPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1739,24 +1761,11 @@ function showStepErr(msg, step) {
    PAYMENT METHOD
 ══════════════════════════════════════════════════════ */
 function choosePay(el, method) {
-    document.querySelectorAll('.pay-tile').forEach(t => t.classList.remove('selected'));
+    document.querySelectorAll('.payfast-option').forEach(t => t.classList.remove('selected'));
     el.classList.add('selected');
     payMethod = method;
-    document.getElementById('cardFields').style.display = method === 'card' ? 'block' : 'none';
-}
-
-/* ══════════════════════════════════════════════════════
-   CARD FORMAT HELPERS
-══════════════════════════════════════════════════════ */
-function fmtCard(input) {
-    let v = input.value.replace(/\D/g,'').substring(0,16);
-    input.value = v.replace(/(.{4})/g,'$1  ').trim();
-}
-
-function fmtExp(input) {
-    let v = input.value.replace(/\D/g,'').substring(0,4);
-    if (v.length >= 3) v = v.slice(0,2) + ' / ' + v.slice(2);
-    input.value = v;
+    document.getElementById('payfastInfo').style.display = method === 'payfast' ? 'block' : 'none';
+    document.getElementById('codInfo').style.display     = method === 'cod'     ? 'block' : 'none';
 }
 
 /* ══════════════════════════════════════════════════════
@@ -1770,7 +1779,7 @@ function buildReview() {
     const qty    = cart.reduce((s,i) => s + (i.qty||1), 0);
     const dAmt   = sub * discount / 100;
     const total  = sub - dAmt;
-    const method = payMethod === 'card' ? 'Credit / Debit Card' : payMethod.toUpperCase();
+    const method = payMethod === 'payfast' ? 'PayFast (Card / EFT / Mobicred)' : 'Cash on Delivery';
     const deliv  = sub >= FREE_THRESHOLD ? 'Free' : 'R99';
 
     document.getElementById('reviewBox').innerHTML = `
@@ -1784,37 +1793,100 @@ function buildReview() {
 }
 
 /* ══════════════════════════════════════════════════════
-   PROCESS PAYMENT
+   PAYFAST PAYMENT
 ══════════════════════════════════════════════════════ */
 function processPayment() {
     if (!cart.length) { toast('Your cart is empty.', 'fail'); return; }
 
     const btn = document.getElementById('payNowBtn');
     btn.disabled = true;
-    btn.innerHTML = '<div class="spin"></div> Processing payment...';
+    btn.innerHTML = '<div class="spin"></div> Redirecting to PayFast...';
+
+    const sub       = cart.reduce((s,i) => s + Number(i.price)*(i.qty||1), 0);
+    const dAmt      = sub * discount / 100;
+    const total     = (sub - dAmt).toFixed(2);
+    const orderId   = 'LU-' + Date.now().toString().slice(-6);
+    const firstName = (document.getElementById('del-name').value.trim().split(' ')[0]) || 'Customer';
+    const lastName  = (document.getElementById('del-name').value.trim().split(' ').slice(1).join(' ')) || '';
+    const email     = document.getElementById('del-email').value.trim() || 'test@example.com';
+
+    // PayFast sandbox credentials
+    const MERCHANT_ID  = '10000100';
+    const MERCHANT_KEY = '46f0cd694581a';
+    const PASSPHRASE   = 'jt7NOE43FZPn';
+
+    // Build the data object (order matters for signature)
+    const data = {
+        merchant_id:   MERCHANT_ID,
+        merchant_key:  MERCHANT_KEY,
+        return_url:    (window.location.protocol === 'file:' ? 'https://boisterous-biscotti-ebb824.netlify.app' : window.location.origin) + '/index.html',
+        cancel_url:    (window.location.protocol === 'file:' ? 'https://boisterous-biscotti-ebb824.netlify.app' : window.location.origin) + '/cart.html',
+        name_first:    firstName,
+        name_last:     lastName || '-',
+        email_address: email,
+        m_payment_id:  orderId,
+        amount:        total,
+        item_name:     'LinkUP Order ' + orderId,
+        item_description: cart.map(i => i.name).join(', ').substring(0, 255),
+    };
+
+    // Generate MD5 signature
+    const pfStr = Object.entries(data)
+        .map(([k,v]) => k + '=' + encodeURIComponent(String(v).trim()).replace(/%20/g,'+'))
+        .join('&') + '&passphrase=' + encodeURIComponent(PASSPHRASE);
+    data.signature = CryptoJS.MD5(pfStr).toString();
+
+    // Build the hidden form and submit
+    const form = document.getElementById('payfastForm');
+    form.innerHTML = '';
+    Object.entries(data).forEach(([k,v]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden'; input.name = k; input.value = v;
+        form.appendChild(input);
+    });
+
+    // Save pending order to localStorage so we can retrieve it on return
+    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+    orders.unshift({ id: orderId, items: cart.length, total: sub, date: new Date().toLocaleDateString('en-ZA'), status: 'pending' });
+    localStorage.setItem('orders', JSON.stringify(orders));
+    localStorage.setItem('totalOrders', orders.length);
+    localStorage.setItem('pendingOrder', orderId);
+    // Save individual items to linkup_orders for account page
+    saveOrdersToAccount(cart, orderId, 'Pending');
+    cart = []; save();
+
+    setTimeout(() => form.submit(), 400);
+}
+
+/* ══════════════════════════════════════════════════════
+   COD ORDER (no gateway redirect)
+══════════════════════════════════════════════════════ */
+function processCOD() {
+    if (!cart.length) { toast('Your cart is empty.', 'fail'); return; }
+
+    const btn = document.getElementById('payNowBtnCod');
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spin"></div> Confirming order...';
 
     setTimeout(() => {
         const orderId = 'LU-' + Date.now().toString().slice(-6);
         document.getElementById('orderIdTag').textContent = 'Order #' + orderId;
 
-        // Save order history
-        const sub   = cart.reduce((s,i) => s + Number(i.price)*(i.qty||1), 0);
+        const sub    = cart.reduce((s,i) => s + Number(i.price)*(i.qty||1), 0);
         const orders = JSON.parse(localStorage.getItem('orders')) || [];
-        orders.unshift({ id: orderId, items: cart.length, total: sub, date: new Date().toLocaleDateString('en-ZA') });
+        orders.unshift({ id: orderId, items: cart.length, total: sub, date: new Date().toLocaleDateString('en-ZA'), status: 'cod' });
         localStorage.setItem('orders', JSON.stringify(orders));
         localStorage.setItem('totalOrders', orders.length);
-
-        // Clear
+        // Save individual items to linkup_orders for account page
+        saveOrdersToAccount(cart, orderId, 'Pending');
         cart = []; save();
-        discount = 0;
-        curStep  = 1;
-        syncStepUI();
+        discount = 0; curStep = 1; syncStepUI();
 
         btn.disabled = false;
-        btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Complete Payment';
+        btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Confirm COD Order';
 
         document.getElementById('successModal').classList.add('show');
-    }, 1900);
+    }, 1200);
 }
 
 function closeSuccess() {
@@ -1832,9 +1904,61 @@ function show(id){ document.getElementById(id).style.display = 'block'; }
 function hide(id){ document.getElementById(id).style.display = 'none'; }
 function cap(s)  { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
 
+function saveOrdersToAccount(items, orderId, status) {
+    const buyer = localStorage.getItem('userEmail') || '';
+    const linkupOrders = JSON.parse(localStorage.getItem('linkup_orders')) || [];
+    items.forEach(item => {
+        linkupOrders.unshift({
+            orderId,
+            buyer,
+            name:        item.name,
+            price:       Number(item.price) * (item.qty || 1),
+            image:       (item.images && item.images[0]) || item.image || '',
+            category:    item.category || '',
+            description: item.description || item.name,
+            orderedAt:   new Date().toISOString(),
+            status
+        });
+    });
+    localStorage.setItem('linkup_orders', JSON.stringify(linkupOrders));
+}
+
+/* ══════════════════════════════════════════════════════
+   MOBILE NAV
+══════════════════════════════════════════════════════ */
+function toggleMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    const overlay = document.getElementById('mobileOverlay');
+    const btn = document.getElementById('hamburger');
+    const open = nav.classList.toggle('open');
+    overlay.classList.toggle('open', open);
+    btn.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeMobileNav() {
+    document.getElementById('mobileNav').classList.remove('open');
+    document.getElementById('mobileOverlay').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
 /* ══════════════════════════════════════════════════════
    INIT
 ══════════════════════════════════════════════════════ */
+// Suspension guard
+(function checkSuspension() {
+    if (localStorage.getItem('isLoggedIn') !== 'true') return;
+    const email = (localStorage.getItem('userEmail') || '').toLowerCase();
+    if (!email) return;
+    const users = JSON.parse(localStorage.getItem('linkup_users')) || [];
+    const me = users.find(u => u.email && u.email.toLowerCase() === email);
+    if (me && me.status === 'Banned') {
+        localStorage.setItem('isLoggedIn', 'false');
+        localStorage.setItem('suspendedNotice', '1');
+        location.href = 'login.html';
+    }
+})();
+
 loadUser();
 renderCart();
 </script>

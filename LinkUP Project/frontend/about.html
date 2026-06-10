@@ -484,6 +484,20 @@ body{
 <body>
 
 <!-- ── MY TOPBAR ── -->
+<!-- Mobile nav overlay -->
+<div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">&#x2715;</button>
+  <a href="index.html">🏠 Home</a>
+  <a href="products.html">🔍 Browse</a>
+  <a href="sell.html">➕ Sell</a>
+  <a href="cart.html">🛒 Cart</a>
+  <a href="chat.html">💬 Chat</a>
+  <a href="account.html">👤 Account</a>
+  <a href="about.html">ℹ️ About</a>
+  <a href="login.html" class="mobile-login">Sign In</a>
+</nav>
+
 <header class="topbar">
   <a href="index.html" class="brand">
     <svg width="148" height="40" viewBox="0 0 148 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -505,11 +519,13 @@ body{
     <a href="index.html">Home</a>
     <a href="products.html">Browse</a>
     <a href="sell.html">Sell</a>
+    <a href="cart.html" class="cart-link">🛒 Cart <span id="cartCount" class="cart-count">0</span></a>
     <a href="chat.html">Chat</a>
-    <a href="cart.html">Cart 🛒</a>
-    <a href="settings.html">Settings</a>
+    <a href="account.html">Account</a>
     <a href="about.html" class="active">About</a>
+    <a href="login.html" class="login-link">Sign In</a>
   </nav>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu"><span></span><span></span><span></span></button>
 </header>
 
 <!-- ── HERO SLIDER ── -->
@@ -917,6 +933,77 @@ body{
   </div>
 </section>
 
+<!-- ── DEVELOPER SECTION ── -->
+<section class="section" style="padding-top:20px;padding-bottom:10px;">
+  <div class="section-label">The Person Behind the Project</div>
+  <h2 class="section-title">Meet the Developer</h2>
+  <p class="section-sub">LinkUP was designed, built and deployed as a school demo project — a fully functional South African e-commerce marketplace, complete with payment integration, admin controls, real-time chat and mobile-first design.</p>
+
+  <div style="display:grid;grid-template-columns:320px 1fr;gap:32px;align-items:start;max-width:960px;">
+
+    <!-- Profile card -->
+    <div style="background:#fff;border-radius:20px;padding:32px 28px;box-shadow:0 4px 20px rgba(0,0,0,.08);text-align:center;">
+      <div style="width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#1877f2,#0d4fa8);display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:800;color:#fff;margin:0 auto 18px;font-family:'Poppins',sans-serif;letter-spacing:-1px;">DC</div>
+      <h3 style="font-size:22px;font-weight:800;color:#111827;margin:0 0 4px;font-family:'Poppins',sans-serif;">Denzel Chingodza</h3>
+      <p style="color:#1877f2;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:0 0 16px;">Full-Stack Developer</p>
+      <div style="background:#f0f7ff;border-radius:12px;padding:12px 16px;margin-bottom:18px;text-align:left;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:#374151;">
+          <span style="font-size:16px;">📧</span>
+          <a href="mailto:denzel.chingodza@icloud.com" style="color:#1877f2;font-weight:600;text-decoration:none;">denzel.chingodza@icloud.com</a>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+        <span style="background:#e8f0fe;color:#1877f2;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600;">HTML/CSS</span>
+        <span style="background:#e8f0fe;color:#1877f2;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600;">JavaScript</span>
+        <span style="background:#e8f0fe;color:#1877f2;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600;">Python</span>
+        <span style="background:#e8f0fe;color:#1877f2;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600;">FastAPI</span>
+        <span style="background:#e8f0fe;color:#1877f2;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600;">MongoDB</span>
+        <span style="background:#e8f0fe;color:#1877f2;padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600;">REST APIs</span>
+      </div>
+    </div>
+
+    <!-- Project detail -->
+    <div>
+      <h3 style="font-size:19px;font-weight:800;color:#111827;margin:0 0 14px;font-family:'Poppins',sans-serif;">About This Project</h3>
+      <p style="color:#6b7280;font-size:14px;line-height:1.8;margin-bottom:18px;">LinkUP is a fully functional e-commerce marketplace built as a school project, demonstrating real-world web development skills from frontend UI to backend API design. Every part of the platform — from the product catalogue and shopping cart to the admin panel and payment gateway — was individually designed and coded by Denzel.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+        <div style="background:#f8fafc;border-radius:14px;padding:18px;border-left:4px solid #1877f2;">
+          <div style="font-size:20px;margin-bottom:6px;">🛒</div>
+          <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:4px;">Full Shopping Flow</div>
+          <div style="font-size:12px;color:#6b7280;">Browse, cart, PayFast checkout & order tracking</div>
+        </div>
+        <div style="background:#f8fafc;border-radius:14px;padding:18px;border-left:4px solid #10b981;">
+          <div style="font-size:20px;margin-bottom:6px;">🔐</div>
+          <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:4px;">Admin Console</div>
+          <div style="font-size:12px;color:#6b7280;">User & product management with suspension controls</div>
+        </div>
+        <div style="background:#f8fafc;border-radius:14px;padding:18px;border-left:4px solid #f59e0b;">
+          <div style="font-size:20px;margin-bottom:6px;">💬</div>
+          <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:4px;">Live Messaging</div>
+          <div style="font-size:12px;color:#6b7280;">Real-time buyer–seller chat with emoji support</div>
+        </div>
+        <div style="background:#f8fafc;border-radius:14px;padding:18px;border-left:4px solid #8b5cf6;">
+          <div style="font-size:20px;margin-bottom:6px;">📱</div>
+          <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:4px;">Mobile-First Design</div>
+          <div style="font-size:12px;color:#6b7280;">Responsive across all screen sizes with hamburger nav</div>
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#1877f2,#0d4fa8);border-radius:14px;padding:20px 24px;color:#fff;">
+        <p style="font-size:13px;line-height:1.7;opacity:.92;margin:0;">"This project was built to show that a demo application can still function like a real product — with genuine payment integration, role-based access control, and a polished user experience from end to end."</p>
+        <p style="font-size:12px;font-weight:700;margin-top:12px;opacity:.75;letter-spacing:.5px;">— DENZEL CHINGODZA, DEVELOPER</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+<style>
+@media(max-width:700px){
+  section .section > div[style*="grid-template-columns:320px"]{grid-template-columns:1fr!important;}
+}
+</style>
+
 <!-- ── FINAL CTA ── -->
 <div class="final-cta">
   <h2>Ready to Start Exploring?</h2>
@@ -930,6 +1017,31 @@ body{
 <br><br>
 
 <script>
+/* ── CART COUNT ── */
+function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const el = document.getElementById('cartCount');
+    if (el) el.textContent = cart.length;
+}
+updateCartCount();
+
+/* ── MOBILE NAV ── */
+function toggleMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    const overlay = document.getElementById('mobileOverlay');
+    const btn = document.getElementById('hamburger');
+    const open = nav.classList.toggle('open');
+    overlay.classList.toggle('open', open);
+    btn.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeMobileNav() {
+    document.getElementById('mobileNav').classList.remove('open');
+    document.getElementById('mobileOverlay').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
 /* ── HERO SLIDER ── */
 let idx = 0;
 const slides = document.querySelectorAll('.about-slide');

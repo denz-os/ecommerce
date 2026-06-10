@@ -1020,6 +1020,20 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
+<!-- Mobile nav -->
+<div class="mobile-nav-overlay" id="mobileOverlay" onclick="closeMobileNav()"></div>
+<nav class="mobile-nav" id="mobileNav">
+  <button class="mobile-nav-close" onclick="closeMobileNav()">&#x2715;</button>
+  <a href="index.html">🏠 Home</a>
+  <a href="products.html">🔍 Browse</a>
+  <a href="sell.html">➕ Sell</a>
+  <a href="cart.html">🛒 Cart</a>
+  <a href="chat.html">💬 Chat</a>
+  <a href="account.html">👤 Account</a>
+  <a href="about.html">ℹ️ About</a>
+  <a href="login.html" class="mobile-login">Sign In</a>
+</nav>
+
 <!-- ══════════════════════════ TOPBAR ══════════════════════ -->
 <header class="topbar">
   <a href="index.html" class="brand">
@@ -1035,11 +1049,15 @@ a { text-decoration: none; color: inherit; }
     <a href="index.html">Home</a>
     <a href="products.html">Browse</a>
     <a href="sell.html">Sell</a>
+    <a href="cart.html" class="cart-link">🛒 Cart <span id="cartCount" class="cart-count">0</span></a>
     <a href="chat.html">Chat</a>
+    <a href="account.html">Account</a>
     <a href="about.html">About</a>
-    <a href="cart.html" class="cart-link">Cart <span id="cartCount" class="cart-count">0</span></a>
     <a href="login.html" class="login-link">Sign In</a>
   </nav>
+  <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </header>
 
 <!-- Breadcrumb -->
@@ -2110,6 +2128,23 @@ function sendMessage() {
     closeChatModal();
     document.getElementById('chatMessage').value = '';
     showToast('Message sent to ' + currentProduct.seller.name + '.', 'ok');
+}
+
+/* ── Mobile Nav ────────────────────────────────────────────── */
+function toggleMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    const overlay = document.getElementById('mobileOverlay');
+    const btn = document.getElementById('hamburger');
+    const open = nav.classList.toggle('open');
+    overlay.classList.toggle('open', open);
+    btn.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeMobileNav() {
+    document.getElementById('mobileNav').classList.remove('open');
+    document.getElementById('mobileOverlay').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
 }
 
 /* ── Init ──────────────────────────────────────────────────── */

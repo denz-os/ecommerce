@@ -1453,6 +1453,10 @@ select.form-input { cursor: pointer; }
       <button class="tb-icon-btn" title="Refresh data" onclick="initAll()">
         <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
       </button>
+      <button class="tb-icon-btn" title="View Storefront as Guest" onclick="viewStorefront()" style="display:flex;align-items:center;gap:6px;padding:0 12px;font-size:12px;font-weight:700;color:var(--blue);border:1.5px solid var(--blue-mid);border-radius:8px;height:36px;background:var(--blue-mid);">
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        View Store
+      </button>
       <div class="tb-avatar" id="tbAvatar" onclick="nav('settings',document.querySelector('[onclick*=settings]'))">A</div>
     </div>
   </header>
@@ -2073,6 +2077,14 @@ const CATALOGUE = [
 /* ═══════════════════════════════════════════════════════
    TOAST
 ═══════════════════════════════════════════════════════ */
+function viewStorefront() {
+    localStorage.setItem('isGuest', 'true');
+    localStorage.setItem('isLoggedIn', 'false');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
+    window.open('index.html', '_blank');
+}
+
 function showToast(msg, type = '') {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -2284,8 +2296,10 @@ function renderProducts(list) {
 
     // List view
     const tbody = document.getElementById('productTableBody');
-    tbody.innerHTML = list.length ? list.map((p, i) => `
-        <tr>
+    tbody.innerHTML = list.length ? list.map((p, i) => {
+        const isSuspended = p.status === 'Suspended';
+        return `
+        <tr style="${isSuspended ? 'opacity:.6;' : ''}">
             <td style="color:var(--light);font-size:12px;font-family:'Inter',sans-serif;">${i+1}</td>
             <td>
                 <div class="prod-cell">
@@ -2298,32 +2312,37 @@ function renderProducts(list) {
             </td>
             <td><span class="badge badge-buyer" style="text-transform:capitalize;">${p.category}</span></td>
             <td style="font-weight:700;color:var(--blue);font-family:'Inter',sans-serif;">R${Number(p.price).toLocaleString()}</td>
-            <td><span class="badge badge-active">${p.status || 'Active'}</span></td>
+            <td><span class="badge ${isSuspended ? 'badge-banned' : 'badge-active'}">${p.status || 'Active'}</span></td>
             <td>
-                <div style="display:flex;gap:6px;">
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
                     <button class="btn btn-outline btn-sm" onclick="location.href='product.html?id=${i+1}'">View</button>
+                    <button class="btn btn-outline btn-sm" onclick="suspendProduct(${i})">${isSuspended ? 'Reinstate' : 'Suspend'}</button>
                     <button class="btn btn-danger btn-sm" onclick="deleteProduct(${i})">Remove</button>
                 </div>
             </td>
-        </tr>`).join('') : '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--light);">No products found</td></tr>';
+        </tr>`;}).join('') : '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--light);">No products found</td></tr>';
 
     // Grid view
     const grid = document.getElementById('productCardGrid');
-    grid.innerHTML = list.map((p, i) => `
-        <div class="admin-product-card">
+    grid.innerHTML = list.map((p, i) => {
+        const isSuspended = p.status === 'Suspended';
+        return `
+        <div class="admin-product-card" style="${isSuspended ? 'opacity:.55;' : ''}">
             <img src="${getProductImage(p)}" alt="${p.name}" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&auto=format&fit=crop'">
             <div class="admin-product-body">
                 <h4>${p.name}</h4>
                 <div class="admin-product-price">R${Number(p.price).toLocaleString()}</div>
-                <div class="admin-product-footer">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
                     <span class="badge badge-blue" style="text-transform:capitalize;font-size:10px;">${p.category}</span>
-                    <div style="display:flex;gap:5px;">
-                        <button class="btn btn-outline btn-sm" onclick="location.href='product.html?id=${i+1}'" style="padding:4px 10px;font-size:11px;">View</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteProduct(${i})" style="padding:4px 10px;font-size:11px;">Remove</button>
-                    </div>
+                    <span class="badge ${isSuspended ? 'badge-banned' : 'badge-active'}" style="font-size:10px;">${p.status || 'Active'}</span>
+                </div>
+                <div style="display:flex;gap:5px;flex-wrap:wrap;">
+                    <button class="btn btn-outline btn-sm" onclick="location.href='product.html?id=${i+1}'" style="padding:4px 8px;font-size:11px;">View</button>
+                    <button class="btn btn-outline btn-sm" onclick="suspendProduct(${i})" style="padding:4px 8px;font-size:11px;">${isSuspended ? 'Reinstate' : 'Suspend'}</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteProduct(${i})" style="padding:4px 8px;font-size:11px;">Remove</button>
                 </div>
             </div>
-        </div>`).join('');
+        </div>`;}).join('');
 }
 
 function filterProducts(text) {
@@ -2350,6 +2369,14 @@ function addProduct() {
     ['mp-name','mp-price','mp-img','mp-desc'].forEach(id => document.getElementById(id).value = '');
     closeModal('addProductModal');
     showToast(name + ' published to marketplace.', 'ok');
+}
+
+function suspendProduct(i) {
+    const realIdx = adminProducts.indexOf(filteredProducts[i]);
+    const p = adminProducts[realIdx];
+    p.status = p.status === 'Suspended' ? 'Active' : 'Suspended';
+    saveAdminProducts(); renderProducts(filteredProducts);
+    showToast(p.name + (p.status === 'Suspended' ? ' suspended — hidden from marketplace.' : ' reinstated — now visible on marketplace.'), p.status === 'Suspended' ? 'warn' : 'ok');
 }
 
 function deleteProduct(i) {
