@@ -5,7 +5,7 @@
 LinkUP is a peer-to-peer e-commerce marketplace built as a school project for South Africa. While it runs entirely on `localStorage` rather than a live database, it functions exactly like a real marketplace: users can register, browse, list products, add to cart, check out via PayFast, message sellers, and manage their accounts — and admins have a fully operational control panel to manage the whole platform.
 
 **Live demo:** [boisterous-biscotti-ebb824.netlify.app](https://boisterous-biscotti-ebb824.netlify.app)
-[📄 User Manual](LinkUP_User_Manual.pdf) 
+**.**[📄 User Manual](LinkUP_User_Manual.pdf) 
 
 **Admin portal:** navigate to `/admin-login.html` and use either of these credentials to manage users, products, and platform settings:
 
