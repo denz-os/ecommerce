@@ -1,5 +1,3 @@
-![Uploading linkup.png…]()
-
 # LinkUP Marketplace
 
 > **School Demo Project** — but a highly functional, production-quality one.
